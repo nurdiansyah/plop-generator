@@ -1,0 +1,107 @@
+# Extend Timeout due to long running e2e and redundant builds
+timeout: 35m0s
+steps:
+  - id:  Install Dependencies
+    name: node:12.16.2
+    dir: 'client'
+    entrypoint: npm
+    args: ['ci']
+
+  - id:  Run Unit Tests
+    name: node:12.16.2
+    dir: 'client'
+    entrypoint: npm
+    args: ['test']
+    env:
+      - NODE_ENV=development
+      - GATSBY_ACTIVE_ENV=development
+
+  - id:  Install Cypress/e2e Dependencies
+    name: cypress/base:12
+    dir: 'client'
+    entrypoint: npm
+    args: ['ci']
+
+  - id:  Build the e2e client
+    name: cypress/base:12
+    dir: 'client'
+    entrypoint: npm
+    args: ['run', 'build']
+    env:
+      - NODE_ENV=local
+      - GATSBY_ACTIVE_ENV=local
+
+  - id: Install Server Deps
+    name: node:12.16.2
+    dir: 'server'
+    entrypoint: npm
+    args: ['ci']
+
+  - id:  Run cypress e2e/smoke tests
+    name: cypress/base:12
+    dir: 'client'
+    entrypoint: npm
+    args: ['run', 'test:e2e']
+    env:
+      - NODE_ENV=local
+      - GATSBY_ACTIVE_ENV=local
+      - REACT_APP_MAPS_API_KEY=$_REACT_APP_MAPS_API_KEY
+      - REACT_APP_API_KEY=$_REACT_APP_API_KEY
+      - REACT_APP_AUTH_DOMAIN=$_REACT_APP_AUTH_DOMAIN
+      - REACT_APP_DATABASE_URL=$_REACT_APP_DATABASE_URL
+      - REACT_APP_PROJECT_ID=$PROJECT_ID
+      - REACT_APP_STORAGE_BUCKET=$_REACT_APP_STORAGE_BUCKET
+      - REACT_APP_MESSAGING_SENDER_ID=$_REACT_APP_MESSAGING_SENDER_ID
+      - REACT_APP_APP_ID=$_REACT_APP_APP_ID
+      - REACT_APP_MEASUREMENT_ID=$_REACT_APP_MEASUREMENT_ID
+      - GATSBY_SITE_DOMAIN=https://$PROJECT_ID.web.app/
+      - FIREBASE_TOKEN=$_FIREBASE_TOKEN
+      - USPS_API=$_USPS_API
+      - USPS_USERID=$_USPS_USERID
+      - NODE_ALIAS=$_NODE_ALIAS
+
+  - id:  Build Deployment Client Static Bundle
+    name: node:12.16.2
+    dir: 'client'
+    entrypoint: npm
+    args: ['run', 'build']
+    env:
+      - NODE_ENV=$_NODE_ENV
+      - REACT_APP_MAPS_API_KEY=$_REACT_APP_MAPS_API_KEY
+      - REACT_APP_API_KEY=$_REACT_APP_API_KEY
+      - REACT_APP_AUTH_DOMAIN=$_REACT_APP_AUTH_DOMAIN
+      - REACT_APP_DATABASE_URL=$_REACT_APP_DATABASE_URL
+      - REACT_APP_PROJECT_ID=$PROJECT_ID
+      - REACT_APP_STORAGE_BUCKET=$_REACT_APP_STORAGE_BUCKET
+      - REACT_APP_MESSAGING_SENDER_ID=$_REACT_APP_MESSAGING_SENDER_ID
+      - REACT_APP_APP_ID=$_REACT_APP_APP_ID
+      - REACT_APP_MEASUREMENT_ID=$_REACT_APP_MEASUREMENT_ID
+      - GATSBY_SITE_DOMAIN=https://$PROJECT_ID.web.app/
+      - FIREBASE_TOKEN=$_FIREBASE_TOKEN
+      - USPS_API=$_USPS_API
+      - USPS_USERID=$_USPS_USERID
+      - NODE_ALIAS=$_NODE_ALIAS
+      - GATSBY_ACTIVE_ENV=$_GATSBY_ACTIVE_ENV
+
+  - id:  Deploy static build to firebase hosting
+    name: node:12.16.2
+    dir: 'client'
+    env:
+      - NODE_ENV=$_NODE_ENV
+      - REACT_APP_MAPS_API_KEY=$_REACT_APP_MAPS_API_KEY
+      - REACT_APP_API_KEY=$_REACT_APP_API_KEY
+      - REACT_APP_AUTH_DOMAIN=$_REACT_APP_AUTH_DOMAIN
+      - REACT_APP_DATABASE_URL=$_REACT_APP_DATABASE_URL
+      - REACT_APP_PROJECT_ID=$PROJECT_ID
+      - REACT_APP_STORAGE_BUCKET=$_REACT_APP_STORAGE_BUCKET
+      - REACT_APP_MESSAGING_SENDER_ID=$_REACT_APP_MESSAGING_SENDER_ID
+      - REACT_APP_APP_ID=$_REACT_APP_APP_ID
+      - REACT_APP_MEASUREMENT_ID=$_REACT_APP_MEASUREMENT_ID
+      - GATSBY_SITE_DOMAIN=https://$PROJECT_ID.web.app/
+      - FIREBASE_TOKEN=$_FIREBASE_TOKEN
+      - USPS_API=$_USPS_API
+      - USPS_USERID=$_USPS_USERID
+      - NODE_ALIAS=$_NODE_ALIAS
+      - GATSBY_ACTIVE_ENV=$_GATSBY_ACTIVE_ENV
+    entrypoint: npm
+    args: ['run', 'deploy:hosting', '--', '--token', '$_FIREBASE_TOKEN']

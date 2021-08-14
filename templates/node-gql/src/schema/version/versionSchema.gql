@@ -1,0 +1,26 @@
+enum MutateVersionResponseEnum {
+  OK
+  ERROR
+}
+
+type QueryVersionResponse {
+  name: String
+  version: String
+  node: String
+}
+
+type MutateVersionResponse {
+  response: MutateVersionResponseEnum
+}
+
+input MutateVersionRequest {
+  body: String
+}
+
+extend type Query {
+  queryVersion: QueryVersionResponse
+}
+
+extend type Mutation {
+  mutateVersion(payload: MutateVersionRequest): MutateVersionResponse
+}

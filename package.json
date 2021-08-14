@@ -1,0 +1,64 @@
+{
+  "name": "@deboxsoft/plop-generator",
+  "version": "1.0.0",
+  "description": "Plop Generator to scaffold js/ts projects",
+  "main": "./bin/cli.js",
+  "scripts": {
+    "test": "echo Error: no test specified",
+    "start": "plop",
+    "plop": "plop",
+    "clean": "rimraf libs plugins",
+    "build": "npm run clean && tsc --build ./src/tsconfig.json",
+    "tsc": "npm run build",
+    "postinstall": "node ./bin/postInstall.ts"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "npm run build && git add dist/"
+    }
+  },
+  "author": "Nurdiansyah <nurdiansyah>",
+  "license": "SEE LICENSE",
+  "dependencies": {
+    "edit-json-file": "^1.4.1",
+    "minimist": "^1.2.5",
+    "node-plop": "^0.26.2",
+    "plop": "^2.7.4"
+  },
+  "bin": {
+    "plop-gen": "bin/cli.js"
+  },
+  "devDependencies": {
+    "@babel/types": "^7.11.0",
+    "@types/babel__generator": "^7.6.1",
+    "@types/edit-json-file": "^1.4.0",
+    "@types/node": "^14.0.0",
+    "@typescript-eslint/eslint-plugin": "^2.34.0",
+    "@typescript-eslint/eslint-plugin-tslint": "^2.34.0",
+    "@typescript-eslint/parser": "^2.34.0",
+    "chalk": "^4.1.2",
+    "eslint": "^6.8.0",
+    "eslint-config-prettier": "^6.11.0",
+    "eslint-plugin-immutable": "^1.0.0",
+    "eslint-plugin-import": "^2.22.0",
+    "eslint-plugin-prettier": "^3.1.4",
+    "fs": "0.0.1-security",
+    "husky": "^4.2.5",
+    "prettier": "^2.0.5",
+    "rimraf": "^3.0.2",
+    "ts-lint": "^4.5.1",
+    "ts-node": "^8.10.2",
+    "ts-node-dev": "^1.0.0-pre.56",
+    "ts-to-json": "^0.65.4",
+    "typescript": "^4.3.5"
+  },
+  "files": [
+    "dist",
+    "lib",
+    "docs"
+  ],
+  "directories": {
+    "doc": "docs",
+    "lib": "lib"
+  }
+}

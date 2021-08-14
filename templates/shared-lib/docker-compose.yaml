@@ -1,0 +1,10 @@
+version: '3'
+services:
+  {{name}}-test:
+    container_name: {{name}}-test
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    volumes:
+      - './src:/app/src'
+    entrypoint: npm test

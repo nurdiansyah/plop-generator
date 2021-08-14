@@ -1,0 +1,47 @@
+# Extend Timeout due to long running e2e and redundant builds
+timeout: 35m0s
+steps:
+  - id:  Install Dependencies
+    name: node:14.15.0
+    dir: 'client'
+    entrypoint: npm
+    args: ['ci']
+
+  - id:  Run Unit Tests
+    name: node:14.15.0
+    dir: 'client'
+    entrypoint: npm
+    args: ['test']
+    env:
+      - NODE_ENV=development
+      - GATSBY_ACTIVE_ENV=development
+
+  - id:  Install Cypress/e2e Dependencies
+    name: cypress/base:12
+    dir: 'client'
+    entrypoint: npm
+    args: ['ci']
+
+  - id:  Build the e2e client
+    name: cypress/base:12
+    dir: 'client'
+    entrypoint: npm
+    args: ['run', 'build']
+    env:
+      - NODE_ENV=local
+      - GATSBY_ACTIVE_ENV=local
+
+  - id: Install server deps
+    name: node:14.15.0
+    dir: 'server'
+    entrypoint: npm
+    args: ['ci']
+
+  - id:  Run cypress e2e/smoke tests
+    name: cypress/base:12
+    dir: 'client'
+    entrypoint: npm
+    args: ['run', 'test:e2e']
+    env:
+      - NODE_ENV=local
+      - GATSBY_ACTIVE_ENV=local

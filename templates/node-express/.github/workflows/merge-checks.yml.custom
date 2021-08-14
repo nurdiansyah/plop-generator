@@ -1,0 +1,36 @@
+name: Build and Deploy to Cloud Run
+
+on:
+  push:
+    pull_request:
+      - master
+      - development
+    paths:
+      - '{{dashCase name}}/**'
+
+env:
+  PROJECT_ID: ${{ secrets.RUN_PROJECT }}
+  RUN_REGION: us-west1
+  SERVICE_NAME: {{dashCase name}}
+
+jobs:
+  setup-build-deploy:
+  defaults:
+      run:
+        shell: bash
+        working-directory: {{dashCase name}}
+
+    name: Setup, Build, and Deploy
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+
+    # Run Tests
+    - name: Install Dependencies
+      run: npm ci
+    - name: Build Server
+      run: npm run build
+    - name: Run Unit/Integration Tests
+      run: npm test
