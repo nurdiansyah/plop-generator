@@ -1,6 +1,6 @@
 {
   "name": "@deboxsoft/plop-generator",
-  "version": "1.0.1-beta.2",
+  "version": "1.0.1-beta.3",
   "description": "Plop Generator to scaffold js/ts projects",
   "main": "./bin/cli.js",
   "scripts": {
@@ -10,7 +10,7 @@
     "clean": "rimraf libs plugins core",
     "build": "pnpm run clean && tsc --build ./src/tsconfig.json",
     "tsc": "pnpm run build",
-    "postinstall": "node ./bin/postInstall.ts",
+    "postinstall": "node ./bin/postInstall.js",
     "bump": "pnpm run build && bump",
     "release:patch": "pnpm run bump -- patch -cp && pnpm publish",
     "release:minor": "pnpm run bump -- minor -cp && pnpm publish",
