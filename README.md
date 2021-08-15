@@ -49,14 +49,14 @@ NPM Example: `npm run plop`
 
 This command will scaffold/bootstrap the selected project using the template files in the plop generator repo.
 
-## Generators
+## Generators project
 
 | NAME                            | Description                                                                              | Status            |
 | ------------------------------- | -----------------------------------------------------------------------------------------| -------------------
-| `CREATE-REACT-APP`              | NPX CRA with some flavor(structure), CI/CD Build Pipelines                               | NOT STARTED       |
-| `COMPONENT-LIB`                 | React Component Library with Storybook and CI/CD Build Pipelines                         | IN PROGRESS       |
+| `SVELTE-APP`                     | Svelte Scafolding, CI/CD Build Pipelines                                                | NOT STARTED       |
+| `COMPONENT-LIB`                 | Svelte Component with Storybook and CI/CD Build Pipelines                                | IN PROGRESS       |
 | `CYPRESS E2E`                   | Cypress Headless Browser Functional/Integration/E2E Test Suite                           | READY             |
-| `GATSBY`                        | React-based open source framework for creating websites and apps. CI/CD Build Pipelines  | IN REVIEW         |
+| `GATSBY`                        | Svelte-based open source framework for creating websites and apps. CI/CD Build Pipelines | IN REVIEW         |
 | `GATSBY-CONTENTFUL`             | Gatsby/Contentful CMS Project Template with CI/CD Build Pipelines                        | READY             |
 | `NEXT`                          | React framework with Storybook, CI/CD Build Pipelines and some flavor                    | NOT STARTED       |
 | `NODE-BACKEND-SERVICE`          | Non-REST Internal NodeJS/Typescript Service with CI/CD Pipelines                         | READY             |
@@ -67,6 +67,11 @@ This command will scaffold/bootstrap the selected project using the template fil
 | `SERVERLESS-AZURE-FUNCTIONS`    | Azure SAM Functions with CI/CD pipelines                                                 | NOT STARTED       |
 | `SERVERLESS-LAMBDA-FUNCTIONS`   | AWS SAM Lambda Functions with CI/CD pipelines                                            | NOT STARTED       |
 | `SHARED-LIB`                    | Shared/Common Util Workspace                                                             | IN PROGRESS       |
+
+## Generators Module
+| NAME                            | Description                                                                               |                   |
+|---------------------------------|-------------------------------------------------------------------------------------------|-------------------|
+| `API`                           | Module API                                                                                | PROGRESS          |
 
 ## Full Example
 
