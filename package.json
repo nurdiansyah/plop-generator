@@ -1,16 +1,21 @@
 {
   "name": "@deboxsoft/plop-generator",
-  "version": "1.0.0",
+  "version": "1.0.1-beta.1",
   "description": "Plop Generator to scaffold js/ts projects",
   "main": "./bin/cli.js",
   "scripts": {
     "test": "echo Error: no test specified",
     "start": "plop",
     "plop": "plop",
-    "clean": "rimraf libs plugins",
+    "clean": "rimraf libs plugins core",
     "build": "npm run clean && tsc --build ./src/tsconfig.json",
     "tsc": "npm run build",
-    "postinstall": "node ./bin/postInstall.ts"
+    "postinstall": "node ./bin/postInstall.ts",
+    "bump": "pnpm run build && bump",
+    "release:patch": "pnpm run bump -- patch -cp && pnpm publish",
+    "release:minor": "pnpm run bump -- minor -cp && pnpm publish",
+    "release:major": "pnpm run bump -- major -cp && pnpm publish",
+    "release:dev": "git add . && pnpm run bump -- -cp prerelease && pnpm publish --no-git-checks"
   },
   "husky": {
     "hooks": {
@@ -30,6 +35,8 @@
   },
   "devDependencies": {
     "@babel/types": "^7.11.0",
+    "@nurdiansyah/bump": "^6.1.2",
+    "@nurdiansyah/eslint-config-devel": "^7.1.1",
     "@types/babel__generator": "^7.6.1",
     "@types/edit-json-file": "^1.4.0",
     "@types/node": "^14.0.0",
