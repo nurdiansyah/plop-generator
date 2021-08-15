@@ -1,7 +1,7 @@
-const chalk = require("chalk")
+const chalk = require("chalk");
 
 // @ts-ignore
-const pkg = require("../package.json")
+const pkg = require("../package.json");
 
 console.info(`
   ${chalk.green("Hey there! 👋")}

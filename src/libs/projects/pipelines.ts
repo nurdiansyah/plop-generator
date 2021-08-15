@@ -5,8 +5,8 @@ export const prompts: PromptQuestion[] = [
     name: "CICD",
     when: (answers: { workspace: string }) => {
       const blacklist = ['shared-lib', 'cypress-e2e']
-      if (blacklist.includes(answers.workspace)) return false
-      return true
+      return !blacklist.includes(answers.workspace);
+
     },
     choices: [
       { name: 'Google Cloud Build', value: 'cloudbuild' },

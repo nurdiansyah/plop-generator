@@ -18,13 +18,13 @@ export default (plop: NodePlopAPI): PromptQuestion[] => {
   const recursivePrompts = (templateDir: string): PromptQuestion[] => {
     const dir = fs.readdirSync(templateDir)
     dir.forEach((file, idx) => {
-      const path = `${templateDir}/${file}`
+      const path = `${templateDir}/projects/${file}`
       if (fs.existsSync(path) && fs.lstatSync(path).isDirectory()) {
         return recursivePrompts(path)
       } else if (idx === dir.length - 1) {
         const choices = fs.readdirSync(templateDir)
           .filter(filename => filename.includes('.prompt'))
-          .map(filename => ({ description: `${templateDir}/${filename}`, value: filename, checked: false }))
+          .map(filename => ({ description: `${templateDir}/projects/${filename}`, value: filename, checked: false }))
 
         if (choices.length) {
           prompts.push({
@@ -35,7 +35,7 @@ export default (plop: NodePlopAPI): PromptQuestion[] => {
               `Do you want to include ${choices[0].description.replace('.prompt', '')}?`,
             choices,
             when: (answers: {[k:string]: any}) => answers.workspace === templateDir
-              .replace(`${plop.getPlopfilePath()}/templates/`, '')
+              .replace(`${plop.getPlopfilePath()}/projects/templates/`, '')
               .split('/')[0]
           })
         }

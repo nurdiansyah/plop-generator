@@ -1,0 +1,27 @@
+import { DeboxError, getConfig } from "@deboxsoft/module-core";
+import Mustache from "mustache";
+
+export type AccountCodeError = keyof typeof codeMessageDefault;
+const codeMessageDefault = {
+ACCOUNT_DUPLICATE: "account id `{{id}}` already exist.",
+ACCOUNT_NOT_FOUND: "account id `{{id}} not found.`",
+ACCOUNT_CREATE_FAILED: "create account id `{{id}}` failed.",
+ACCOUNT_IMPORT_FAILED: "import account failed",
+ACCOUNT_MULTIPLE_CREATE_FAILED: "create accounts failed.",
+ACCOUNT_UPDATE_FAILED: "update account id `{{id}}` failed.",
+ACCOUNT_REMOVE_FAILED: "remove account id `{{id}}` failed.",
+ACCOUNT_MULTIPLE_REMOVE_FAILED: "remove account failed."
+};
+
+export class AccountError extends DeboxError {
+indexes: number[];
+constructor(code: AccountCodeError, args: Record<string, any> = {}) {
+super();
+try {
+const messages = { ...codeMessageDefault, ...(getConfig().get("app:accounting:errors") || {}) };
+this.message = Mustache.render(messages[code], { id: args.id });
+this.code = code;
+this.indexes = args.indexes;
+} catch (ignore) {}
+}
+}

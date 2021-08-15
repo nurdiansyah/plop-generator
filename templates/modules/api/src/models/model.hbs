@@ -1,0 +1,20 @@
+import { z } from "@deboxsoft/zod";
+
+export const {{ pascalDase model }}Event = {
+  created: "{{ model }}Created",
+  updated: "{{ model }}Updated",
+  removed: "{{ model }}Removed"
+};
+
+export type {{ pascalDase model }}Input = z.infer<typeof {{ pascalDase model }}InputSchema> & {
+};
+
+export type {{ pascalDase model }} = {{ pascalDase model }}Input & {
+  id: string;
+};
+
+export type {{ pascalDase model }}Filter = {
+};
+
+export const {{ pascalDase model }}InputSchema = z.object({
+});
