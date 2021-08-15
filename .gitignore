@@ -102,4 +102,11 @@ typings/
 
 # TernJS port file
 .tern-port
+.vscode
+.idea
+/core
+/libs
+/plugins
+/plopfile.d.ts
+/plopfile.js
 

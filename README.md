@@ -39,7 +39,7 @@ Create a sym link so you can use the cli command:
 // package.json
 {
   "scripts": {
-    "plop": "./node_modules/modern-project-generator/bin/cli.js"
+    "plop": "./node_modules/@deboxsoft/plop-generator/bin/cli.js"
   },
   ...
 }

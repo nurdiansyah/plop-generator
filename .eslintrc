@@ -1,0 +1,18 @@
+{
+  "extends": [
+    "@nurdiansyah/devel"
+  ],
+  "parserOptions": {
+    "ecmaVersion": 2019
+  },
+  "ignorePatterns": [
+    "templates",
+    "*.js"
+  ],
+  "env": {
+    "es6": true,
+    "browser": true,
+    "node": true,
+    "jest": true
+  }
+}
