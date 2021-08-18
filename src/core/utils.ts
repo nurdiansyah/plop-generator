@@ -1,4 +1,5 @@
 import fs from "fs";
+import { ActionType } from "node-plop";
 
 export const getAppendAction = (
   file: string,
@@ -38,4 +39,29 @@ export const getPromptAction = (
     promptAction.skip = () => `Skipped ${action.path}`;
   }
   return promptAction;
+};
+
+export const getPatternRegex = (key?: string) =>
+  new RegExp(`(\\/\\* -- APPEND${key ? `-${key}` : ""} -- \\*\\/)`, "ig");
+
+export const getTemplateExportIndexAction = (
+  exportName: string,
+  path: string
+): ActionType => {
+  let type: any = "add";
+  let template = `export * from "${exportName}";`;
+  let pattern;
+  if (fs.existsSync(path)) {
+    type = "append";
+    pattern = getPatternRegex();
+    template = `${template}`;
+  } else {
+    template = `/* -- APPEND -- */\n${template}\n`;
+  }
+  return {
+    type,
+    path,
+    pattern,
+    template,
+  };
 };

@@ -1,29 +1,31 @@
-import { getActions } from '../../core/actions';
-import { Actions } from 'node-plop';
-import { NodePlopAPI } from 'plop'
+import { templateFilesGenerator } from "../../core/template-files";
+import { GeneratorOptions, PlopGeneratorFunction } from "../../types";
+import path from "path";
 
-export const gatsbyActionHandler = (
-  workspace: string,
-  actions: any[],
-  startingPath: string,
-  plop: NodePlopAPI
-): Actions => {
-  const whitelistedWorkspaces = ['gatsby', 'gatsby-contentful']
-  if (!whitelistedWorkspaces.includes(workspace)) return actions
-  // TODO: come back to. This works but I don't exactly like it since it's opinionated and dependent on each other
-  actions = getActions(`${process.cwd()}/packages/shared-lib/`, `${plop.getPlopfilePath()}/templates/projects/shared-lib`, {}, actions)
-  actions = getActions(`${startingPath}-components/`, `${plop.getPlopfilePath()}/templates/projects/component-lib`)
-  actions.push(...[
-    {
-      type: 'pnpmInstall',
-      path: `${process.cwd()}/shared-lib/`,
-      verbose: true
-    },
-    {
-      type: 'pnpmInstall',
+export const gatsbyGenerator: PlopGeneratorFunction = ({
+  path: startingPath,
+  plop,
+  prompts,
+}: GeneratorOptions) => {
+  return ({ data, actions, templateDir }) => {
+    const workspace = data.workspace;
+    const whitelistedWorkspaces = ["gatsby", "gatsby-contentful"];
+    if (!whitelistedWorkspaces.includes(workspace)) return [];
+    // TODO: come back to. This works but I don't exactly like it since it's opinionated and dependent on each other
+    templateFilesGenerator({
+      plop,
+      path: path.resolve(startingPath, "../shared-lib"),
+      templateDir: `${templateDir}/shared-lib`,
+      actions,
+      prompts,
+    })({ actions, data });
+    templateFilesGenerator({
+      plop,
+      actions,
       path: `${startingPath}-components/`,
-      verbose: true
-    }
-  ])
-  return actions
-}
+      templateDir: `${templateDir}/component-lib`,
+      prompts,
+    })({ actions, data });
+    return actions;
+  };
+};

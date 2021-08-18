@@ -1,30 +1,30 @@
-import { Actions, PromptQuestion } from 'node-plop'
+import { ActionType, PromptQuestion } from "node-plop";
+import { GeneratorOptions, Actions, PlopGeneratorFunction } from "../../types";
 
-export const prompts: PromptQuestion[] = [
+const prompts: PromptQuestion[] = [
   {
     name: "CICD",
     when: (answers: { workspace: string }) => {
-      const blacklist = ['shared-lib', 'cypress-e2e']
+      const blacklist = ["shared-lib", "cypress-e2e"];
       return !blacklist.includes(answers.workspace);
-
     },
     choices: [
-      { name: 'Google Cloud Build', value: 'cloudbuild' },
-      { name: 'GitHub Actions', value: 'github' },
-      { name: 'GitLab CI', value: 'gitlab' },
-      { name: 'Azure DevOps', value: 'azure' },
-      { name: 'None', value: false }
+      { name: "Google Cloud Build", value: "cloudbuild" },
+      { name: "GitHub Actions", value: "github" },
+      { name: "GitLab CI", value: "gitlab" },
+      { name: "Azure DevOps", value: "azure" },
+      { name: "None", value: false },
     ],
     message: "Do you want to include a CICD pipeline?",
-    type: 'list'
-  }
-]
+    type: "list",
+  },
+];
 
 enum Template {
-  'cloudbuild',
-  'github',
-  'gitlab',
-  'azure'
+  "cloudbuild",
+  "github",
+  "gitlab",
+  "azure",
 }
 
 const getCustomBasePath = (type: Template, defaultPath: string) => {
@@ -33,31 +33,44 @@ const getCustomBasePath = (type: Template, defaultPath: string) => {
     github: `${process.env.cwd}/.github/workflows/`,
     gitlab: process.cwd(),
     azure: defaultPath,
-  }
-  return customBasePath[type]
-}
+  };
+  return customBasePath[type];
+};
 
-export const pipelinesActionHandler = (
+const pipelinesActionHandler = (
   type: Template,
-  actions: any[],
+  actions: Actions,
   destination: string,
   templatePath: string
-): Actions => {
-  if (!type) return actions
+): ActionType[] => {
+  if (!type) return actions;
 
   const templateFiles = {
     cloudbuild: [`${templatePath}/pipelines/cloud*`],
     github: [`${templatePath}/.github/**`],
     gitlab: [],
     azure: [],
-  }
+  };
 
   actions.push({
     type: "addMany",
     destination: getCustomBasePath(type, destination),
     base: templatePath,
     templateFiles: templateFiles[type],
-    stripExtensions: '.custom'
-  })
-  return actions
-}
+    stripExtensions: [".custom"],
+  });
+  return actions;
+};
+
+export const pipelinesGenerator: PlopGeneratorFunction = (
+  options: GeneratorOptions
+) => {
+  options.prompts.push(...prompts);
+  return ({ data = { CICD: undefined }, actions = [] } = {}) =>
+    pipelinesActionHandler(
+      data.CICD,
+      options.actions,
+      options.path,
+      options.templateDir
+    );
+};

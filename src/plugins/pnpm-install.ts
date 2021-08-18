@@ -1,3 +1,5 @@
+import { ActionConfig } from "node-plop";
+
 const { spawn } = require("child_process");
 
 const didSucceed = (code) => `${code}` === "0";
@@ -25,6 +27,11 @@ function npmInstall(_, config) {
     });
   });
 }
+
+export type PnpmInstallAction = ActionConfig & {
+  type: "pnpm-install";
+  path: string;
+};
 
 export default function (plop) {
   plop.setDefaultInclude({ actionTypes: true });
