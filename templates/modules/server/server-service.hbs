@@ -1,0 +1,95 @@
+import { MQEmitter } from "mqemitter";
+import { {{ pascalCase  model }}ModuleOptions } from "../types";
+import {
+    {{ pascalCase  model }}Error,
+    {{ pascalCase  model }}Event,
+    {{ pascalCase  model }}Input,
+    {{ pascalCase  model }}Params,
+    {{ pascalCase  model }}Service,
+    {{ pascalCase  model }},
+    {{ pascalCase  model }}Filter,
+    {{ pascalCase  model }}InputSchema
+  } from "@deboxsoft/{{ kebabCase moduleName}}-api";
+import { Container, Logger } from "@deboxsoft/module-core";
+import { get{{ pascalCase  model }}Repo, {{ pascalCase  model }}Repo } from "../db";
+
+interface Options extends {{ pascalCase  model }}ModuleOptions {
+}
+
+const KEY = Symbol("{{ kebabCase  model }}-service-server");
+export const get{{ pascalCase  model }}ServiceServer = () => Container.get<{{ pascalCase  model }}ServiceServer>(KEY);
+  export const create{{ pascalCase  model }}ServiceServer = (options: Options) => {
+  const {{ camelCase  model }}Repo = get{{ pascalCase  model }}Repo();
+  const {{ camelCase  model }}Service = new {{ pascalCase  model }}ServiceServer({{ camelCase  model }}Repo, options);
+  Container.set(KEY, {{ camelCase  model }}Service);
+  return {{ camelCase  model }}Service;
+};
+
+export class {{ pascalCase  model }}ServiceServer implements {{ pascalCase  model }}Service {
+  event: MQEmitter;
+  logger: Logger;
+  constructor(private {{ camelCase  model }}Repo: {{ pascalCase  model }}Repo, options: Options) {
+    this.logger = options.logger;
+    this.event = options.event;
+  }
+
+  async create(input: {{ pascalCase  model }}Input) {
+    try {
+      input = {{ pascalCase  model }}InputSchema.parse(input);
+      const { data } = await this.{{ camelCase  model }}Repo.create(input);
+      return this.findById(data).then(({{ camelCase  model }}) => {
+        if ({{ camelCase  model }}) {
+          this.event.emit({ topic: {{ pascalCase  model }}Event.created, data: {{ camelCase  model }} });
+          return data;
+        } else {
+          throw new {{ pascalCase  model }}Error("{{ constantCase  model }}_CREATE_FAILED");
+        }
+      });
+    } catch (e) {
+      this.logger.error("[{{ pascalCase  model }}ServiceServer] %o", e);
+      throw e;
+    } finally {
+      this.transactionService.endTransaction();
+    }
+  }
+
+  async update(id: string, input: {{ pascalCase  model }}UpdateInput) {
+    try {
+      const { data } = await this.{{ camelCase  model }}Repo.update(id, input);
+      return this.findById(id, { detail: false }).then(({{ camelCase  model }}) => {
+        if ({{ camelCase  model }}) {
+          this.event.emit({ topic: {{ pascalCase  model }}Event.updated, data: {{ camelCase  model }} });
+          return data;
+        } else {
+          throw new {{ pascalCase  model }}Error("{{ constantCase  model }}_UPDATE_FAILED", { id });
+        }
+      });
+    } catch (e) {
+    this.logger.error("[{{ pascalCase  model }}ServiceServer] %o", e);
+    throw e;
+    }
+  }
+
+  async remove(id: string) {
+    try {
+      const { data } = await this.{{ camelCase  model }}Repo.remove(id);
+      data && this.event.emit({ topic: {{ pascalCase  model }}Event.removed, data: id });
+      return data;
+    } catch (e) {
+      this.logger.error("[{{ pascalCase  model }}ServiceServer] %o", e);
+      throw new {{ pascalCase  model }}Error("{{ constantCase  model }}_REMOVE_FAILED", { id });
+    }
+  }
+
+  findById(id: string, { detail = true }: { detail?: boolean } = {}): Promise<{{ pascalCase  model }}> {
+    return this.{{ camelCase  model }}Repo.findById(id);
+  }
+
+  findPage(params: {{ pascalCase  model }}Params = { pageCursor: {}, filter: {} }) {
+    return this.{{ camelCase  model }}Repo.findPage(params);
+  }
+
+  find(filter?: {{ pascalCase  model }}Filter) {
+    return this.{{ camelCase  model }}Repo.find(filter);
+  }
+}

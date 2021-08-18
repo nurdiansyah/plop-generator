@@ -1,0 +1,10 @@
+/* -- APPEND -- */
+import { create{{ pascalCase model }}Repo } from "./{{ pascalCase model }}Collection";
+
+export const register{{ pascalCase moduleName }}Repo = () => {
+  /* -- APPEND-REGISTER -- */
+  create{{ pascalCase model }}Repo();
+};
+
+/* -- APPEND-COLLECTION -- */
+export { {{ pascalCase model }}Collection, create{{ pascalCase model }}Repo } from "./{{ pascalCase model }}Collection";

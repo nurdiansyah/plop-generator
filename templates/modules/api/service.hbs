@@ -1,0 +1,15 @@
+import { PageCursorResult } from "@deboxsoft/module-core";
+import {
+  {{ pascalCase model }}Filter,
+  {{ pascalCase model }}Input,
+  {{ pascalCase model }}Params
+} from "../models";
+
+export interface {{ pascalCase model }}Service {
+  create(input: {{ pascalCase model }}Input): Promise<string>;
+  update(id: string, input: Partial<{{ pascalCase model }}Input>): Promise<boolean>;
+  remove(id: string): Promise<boolean>;
+  findById(id: string): Promise<{{ pascalCase model }} | undefined>;
+  findPage(params?: {{ pascalCase model }}Params): Promise<PageCursorResult<{{ pascalCase model }}>>;
+  find(filter?: {{ pascalCase model }}Filter): Promise<{{ pascalCase model }}[]>;
+}

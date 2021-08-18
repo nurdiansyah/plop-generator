@@ -1,0 +1,13 @@
+import { {{ pascalCase model }}, {{ pascalCase model }}Filter, {{ pascalCase model }}Input } from "@deboxsoft/{{ kebabCase module }}-api";
+import { Container } from "@deboxsoft/module-core";
+import { ModifiedResult } from "@deboxsoft/module-server";
+
+export const {{ constantCase  model }}_REPO_KEY = Symbol("{{ kebabCase model }}-repo-key");
+export const get{{ pascalCase model }}Repo = () => Container.get<{{ pascalCase model }}Repo>({{ constantCase  model }}_REPO_KEY);
+export interface {{ pascalCase model }}Repo {
+  create(input: {{ pascalCase model }}Input): Promise<ModifiedResult<string>>;
+  update(id: string, input: {{ pascalCase model }}Input): Promise<ModifiedResult<boolean>>;
+  remove(id: string | string[]): Promise<ModifiedResult<boolean>>;
+  findById(id: string): Promise<{{ pascalCase model }} | undefined>;
+  find(query?: {{ pascalCase model }}Filter, options?: Record<string, any>): Promise<{{ pascalCase model }}[]>;
+}

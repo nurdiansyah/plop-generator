@@ -1,0 +1,90 @@
+import { gql } from "@deboxsoft/module-graphql";
+import { PageCursorInfoFragment } from "./page-cursor";
+
+const {{ pascalCase  model }}Fragment = gql`
+  fragment {{ pascalCase  model }}Fragment on {{ pascalCase  model }} {
+    id
+  }
+`;
+
+const {{ pascalCase  model }}PageResultFragment = gql`
+  fragment {{ pascalCase  model }}PageResultFragment on {{ pascalCase  model }}PageResult {
+    data {
+      ...{{ pascalCase  model }}Fragment
+    }
+    pageInfo {
+      ...PageCursorInfoFragment
+    }
+  }
+  {{#preCurly (pascalCase model) }}{{/preCurly}}Fragment}
+  ${PageCursorInfoFragment}
+`;
+
+export const Create{{ pascalCase  model }}Mutation = gql`
+  mutation create($input: {{ pascalCase  model }}Input!) {
+    create{{ pascalCase  model }}(input: $input)
+  }
+`;
+
+export const Update{{ pascalCase  model }}Mutation = gql`
+  mutation update($id: ID!, $input: {{ pascalCase  model }}Input!) {
+    update{{ pascalCase  model }}(id: $id, input: $input)
+  }
+`;
+
+export const Remove{{ pascalCase  model }}Mutation = gql`
+  mutation remove($id: ID!) {
+    remove{{ pascalCase  model }}(id: $id)
+  }
+`;
+
+export const Find{{ pascalCase  model }}Query = gql`
+  query find {
+    find{{ pascalCase  model }} {
+      ...{{ pascalCase  model }}Fragment
+    }
+  }
+  {{#preCurly (pascalCase model) }}{{/preCurly}}Fragment}
+`;
+
+export const Find{{ pascalCase  model }}PageQuery = gql`
+  query find {
+    find{{ pascalCase  model }}Page {
+      ...{{ pascalCase  model }}PageResultFragment
+    }
+  }
+  {{#preCurly (pascalCase model) }}{{/preCurly}}Fragment}
+`;
+
+export const Find{{ pascalCase  model }}ByIdQuery = gql`
+  query findById($id: ID!) {
+    find{{ pascalCase  model }}ById(id: $id) {
+      ...{{ pascalCase  model }}Fragment
+    }
+  }
+  {{#preCurly (pascalCase model) }}{{/preCurly}}Fragment}
+`;
+
+export const {{ pascalCase  model }}CreatedSubs = gql`
+  subscription on{{ pascalCase  model }}Created {
+    {{ camelCase  model }}Created {
+      ...{{ pascalCase  model }}Fragment
+    }
+  }
+  {{#preCurly (pascalCase model) }}{{/preCurly}}Fragment}
+`;
+
+export const {{ pascalCase  model }}UpdatedSubs = gql`
+  subscription on{{ pascalCase  model }}Updated {
+    {{ camelCase  model }}Updated {
+      ...{{ pascalCase  model }}Fragment
+    }
+  }
+  {{#preCurly (pascalCase model) }}{{/preCurly}}Fragment}
+`;
+
+export const {{ pascalCase  model }}RemovedSubs = gql`
+  subscription on{{ pascalCase  model }}Removed {
+    {{ camelCase  model }}Removed
+  }
+`;

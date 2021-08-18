@@ -1,0 +1,12 @@
+import { {{ pascalCase moduleName }}ModuleOptions } from "../types";
+
+/* -- APPEND -- */
+import { create{{ pascalCase model }}ServiceServer } from "./{{ pascalCase model }}ServiceServer";
+
+export const register{{ pascalCase moduleName }}Module = async (options: {{ pascalCase moduleName }}ModuleOptions) => {
+  /* -- APPEND-REGISTER -- */
+  create{{ pascalCase model}}Server(options);
+};
+
+/* -- APPEND-EXPORT -- */
+export { get{{ pascalCase model }}ServiceServer, {{ pascalCase model }}ServiceServer, create{{ pascalCase model }}ServiceServer } from "./{{ pascalCase model }}ServiceServer";

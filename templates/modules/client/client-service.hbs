@@ -1,0 +1,123 @@
+import { {{ pascalCase  model }}, {{ pascalCase  model }}Filter, {{ pascalCase  model }}Input, {{ pascalCase  model }}Params } from "@deboxsoft/{{ kebabCase  moduleName }}-api";
+import { FetchGraphql } from "@deboxsoft/module-graphql";
+import { SubscriptionClient } from "graphql-subscriptions-client";
+import { {{ pascalCase  model }}ClientConfig, ObserverSubscription } from "../types";
+
+import {
+  Create{{ pascalCase  model }}Mutation,
+  Remove{{ pascalCase  model }}Mutation,
+  Update{{ pascalCase  model }}Mutation,
+  Find{{ pascalCase  model }}Query,
+  Find{{ pascalCase  model }}PageQuery,
+  Find{{ pascalCase  model }}ByIdQuery,
+  {{ pascalCase  model }}CreatedSubs,
+  {{ pascalCase  model }}UpdatedSubs,
+  {{ pascalCase  model }}RemovedSubs
+} from "../graphql/{{ kebabCase  model }}Document";
+import { PageCursorResult } from "@deboxsoft/module-client";
+
+interface Options extends {{ pascalCase  model }}ClientConfig {}
+
+const createInputDefault: Partial<{{ pascalCase  model }}Input> = {};
+let {{ camelCase  model }}Service: {{ pascalCase  model }}ServiceClient;
+
+export const create{{ pascalCase  model }}Service = (options: Options) => {
+  if (!{{ camelCase  model }}Service) {
+    {{ camelCase  model }}Service = new {{ pascalCase  model }}ServiceClient(options);
+  }
+    return {{ camelCase  model }}Service;
+  };
+
+export const get{{ pascalCase  model }}Service = () => {{ camelCase  model }}Service;
+export class {{ pascalCase  model }}ServiceClient implements {{ pascalCase  model }}ServiceClient {
+  fetchGraphqlWS: SubscriptionClient;
+  fetchGraphql: FetchGraphql;
+  subscribers: any = {};
+
+  constructor({ fetchGraphql, fetchGraphqlWS }: Options) {
+    this.fetchGraphql = fetchGraphql;
+    this.fetchGraphqlWS = fetchGraphqlWS;
+  }
+
+  create(input: {{ pascalCase  model }}Input) {
+    input = { ...createInputDefault, ...input };
+    return this.fetchGraphql(CreateMutation, { variables: { input } }).then((result) => {
+    return result.create{{ pascalCase  model }};
+    });
+  }
+
+  update(id: string, input: {{ pascalCase  model }}Input) {
+    return this.fetchGraphql(UpdateMutation, { variables: { id, input } }).then((result) => result.update{{ pascalCase  model }});
+  }
+
+  remove(id: string) {
+    const variables = { id };
+    return this.fetchGraphql(RemoveMutation, { variables }).then((result) => result.remove{{ pascalCase  model }});
+  }
+
+  findById(id: string): Promise<{{ pascalCase  model }} | undefined> {
+    return this.fetchGraphql(FindByIdQuery, { variables: { id } }).then((result) => result.find{{ pascalCase  model }}ById);
+  }
+
+  find(filter?: {{ pascalCase  model }}Filter): Promise<{{ pascalCase  model }}[]> {
+    return this.fetchGraphql(FindQuery, { variables: { filter } }).then((result) => result.find{{ pascalCase  model }} || []);
+  }
+
+  findPage(params?: {{ pascalCase  model }}Params): Promise<PageCursorResult<{{ pascalCase  model }}>> {
+    return this.fetchGraphql(FindPageQuery, { variables: { params } }).then((result) => result.findPage{{ pascalCase  model }} || []);
+  }
+
+  on{{ pascalCase  model }}Created({ next, complete, error }: ObserverSubscription) {
+    if (!this.subscribers.created) {
+      this.subscribers.created = this.fetchGraphqlWS
+        .request({
+          query: {{ pascalCase  model }}CreatedSubs
+        })
+        .subscribe({
+          next: ({ data }) => next(data.{{ camelCase  model }}Created),
+          error,
+          complete
+        });
+    }
+    return () => {
+      this.subscribers.created.unsubscribe();
+      this.subscribers.created = undefined;
+    };
+  }
+
+  on{{ pascalCase  model }}Updated({ next, complete, error }: ObserverSubscription) {
+    if (!this.subscribers.updated) {
+      this.subscribers.updated = this.fetchGraphqlWS
+        .request({
+          query: {{ pascalCase  model }}UpdatedSubs
+        })
+        .subscribe({
+          next: ({ data }) => next(data.{{ camelCase  model }}Updated),
+          error,
+          complete
+        });
+    }
+    return () => {
+      this.subscribers.updated.unsubscribe();
+      this.subscribers.updated = undefined;
+    };
+  }
+
+  on{{ pascalCase  model }}Removed({ next, complete, error }: ObserverSubscription) {
+    if (!this.subscribers.removed) {
+      this.subscribers.removed = this.fetchGraphqlWS
+        .request({
+          query: {{ pascalCase  model }}RemovedSubs
+        })
+        .subscribe({
+          next: ({ data }) => next(data.{{ camelCase  model }}Removed),
+          error,
+          complete
+        });
+    }
+    return () => {
+      this.subscribers.removed.unsubscribe();
+      this.subscribers.removed = undefined;
+    };
+  }
+}
