@@ -1,4 +1,5 @@
 import { pascalCase } from "@deboxsoft/module-core";
+import { templateFilesGenerator } from "../../core/template-files";
 import { getTemplateExportIndexAction } from "../../core/utils";
 import { Actions, PlopGeneratorFunction } from "../../types";
 
@@ -7,9 +8,19 @@ export const moduleApiGenerator: PlopGeneratorFunction =
   ({ actions, templateDir, path, data }) => {
     const model = pascalCase(data.model),
       modulePackage = "api",
-      srcPath = `${path}/${modulePackage}/src`;
+      rootPath = `${path}/${modulePackage}`,
+      srcPath = `${rootPath}/src`;
     templateDir = `${templateDir}/${modulePackage}`;
+    const rootTemplateDir = `${templateDir}/root`;
     data.modulePackage = modulePackage;
+    // copy template root
+    templateFilesGenerator({
+      prompts,
+      actions,
+      env: data,
+      plop,
+      recursive: true,
+    })({ data, actions, templateDir: rootTemplateDir, path: rootPath });
     // model
     const modelActions: Actions = [
       {

@@ -1,5 +1,6 @@
 import { pascalCase } from "@deboxsoft/module-core";
 import fs from "fs";
+import { templateFilesGenerator } from "../../core/template-files";
 import { getPatternRegex } from "../../core/utils";
 import { Actions, PlopGeneratorFunction } from "../../types";
 
@@ -8,9 +9,19 @@ export const moduleServerGenerator: PlopGeneratorFunction =
   ({ actions, templateDir, path, data }) => {
     const model = pascalCase(data.model),
       modulePackage = "server",
-      srcPath = `${path}/${modulePackage}/src`;
+      rootPath = `${path}/${modulePackage}`,
+      srcPath = `${rootPath}/src`;
     templateDir = `${templateDir}/${modulePackage}`;
+    const rootTemplateDir = `${templateDir}/root`;
     data.modulePackage = modulePackage;
+    // copy template root
+    templateFilesGenerator({
+      prompts,
+      actions,
+      env: data,
+      plop,
+      recursive: true,
+    })({ data, actions, templateDir: rootTemplateDir, path: rootPath });
     const getIndexGraphqlAction = (): Actions => {
       const path = `${srcPath}/graphql/index.ts`;
       if (fs.existsSync(path)) {
