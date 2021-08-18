@@ -25,6 +25,8 @@
   "author": "Nurdiansyah <nurdiansyah>",
   "license": "SEE LICENSE",
   "dependencies": {
+    "@deboxsoft/module-core": "^2.2.2",
+    "dotenv": "^10.0.0",
     "edit-json-file": "^1.4.1",
     "minimist": "^1.2.5",
     "node-plop": "^0.26.2",
@@ -51,6 +53,7 @@
     "eslint-plugin-prettier": "^3.1.4",
     "fs": "0.0.1-security",
     "husky": "^4.2.5",
+    "inquirer": "^8.1.2",
     "prettier": "^2.0.5",
     "rimraf": "^3.0.2",
     "ts-lint": "^4.5.1",

@@ -109,4 +109,6 @@ typings/
 /plugins
 /plopfile.d.ts
 /plopfile.js
+/types.*
+examples
 
