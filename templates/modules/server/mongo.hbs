@@ -1,41 +1,41 @@
 import { BulkWriteOperation, Collection, Db } from "mongodb";
-import { {{ pascalCase  module }}Repo } from "../{{ pascalCase  module }}Repo";
-import { {{ constantCase  module }}_REPO_KEY } from "../{{ pascalCase  module }}Repo";
-import { {{ pascalCase  module }}, {{ pascalCase  module }}Error, {{ pascalCase  module }}Input } from "@deboxsoft/{{ kebabCase module }}-api";
+import { {{ pascalCase model }}Repo } from "../{{ pascalCase model }}Repo";
+import { {{ constantCase model }}_REPO_KEY } from "../{{ pascalCase model }}Repo";
+import { {{ pascalCase model }}, {{ pascalCase model }}Error, {{ pascalCase model }}Input } from "@deboxsoft/{{ kebabCase moduleName }}-api";
 
 import { Container } from "@deboxsoft/module-core";
 import { BaseRepository, getMongoDb } from "@deboxsoft/module-mongo";
 
-export const create{{ pascalCase  module }}Repo = () => {
+export const create{{ pascalCase model }}Repo = () => {
   const db = getMongoDb();
-  const {{ camelCase  module }}Repo = new {{ pascalCase  module }}Collection(db);
-  Container.set({{ constantCase  module }}_REPO_KEY, {{ camelCase  module }}Repo);
-  return {{ camelCase  module }}Repo;
+  const {{ camelCase model }}Repo = new {{ pascalCase model }}Collection(db);
+  Container.set({{ constantCase model }}_REPO_KEY, {{ camelCase model }}Repo);
+  return {{ camelCase model }}Repo;
 };
 
-export class {{ pascalCase  module }}Collection extends BaseRepository implements {{ pascalCase  module }}Repo {
+export class {{ pascalCase model }}Collection extends BaseRepository implements {{ pascalCase model }}Repo {
   collection: Collection;
   constructor(db: Db) {
     super();
-    this.collection = db.collection("{{ pascalCase  module }}");
+    this.collection = db.collection("{{ pascalCase model }}");
   }
 
-  async create(input: {{ pascalCase  module }}Input) {
+  async create(input: {{ pascalCase model }}Input) {
     try {
       const metadata = await this.collection.insertOne(this._parseDataInput(input));
       if (metadata.result.ok === 1) {
         return { metadata, data: metadata.insertedId };
       }
-      throw new {{ pascalCase  module }}Error("{{ constantCase  module }}_CREATE_FAILED");
+      throw new {{ pascalCase model }}Error("{{ constantCase model }}_CREATE_FAILED");
     } catch (e) {
       if (e.code === 11000) {
-        throw new {{ pascalCase  module }}Error("{{ constantCase  module }}_DUPLICATE", e.keyValue._id);
+        throw new {{ pascalCase model }}Error("{{ constantCase model }}_DUPLICATE", e.keyValue._id);
       }
       throw e;
     }
   }
 
-  async update(id, input: {{ pascalCase  module }}Input) {
+  async update(id, input: {{ pascalCase model }}Input) {
     const metadata = await this.collection.updateOne(
       { _id: id },
       { $set: input }
@@ -56,22 +56,22 @@ export class {{ pascalCase  module }}Collection extends BaseRepository implement
     }
   }
 
-  find(query): Promise<{{ pascalCase  module }}[]> {
+  find(query): Promise<{{ pascalCase model }}[]> {
     return this.collection
       .find(query, { sort: { _id: 1 } })
       .map(this._parseDataOutput)
       .toArray();
   }
 
-  findById(id: string): Promise<{{ pascalCase  module }} | undefined> {
+  findById(id: string): Promise<{{ pascalCase model }} | undefined> {
     return this.collection.findOne({ _id: id }).then(this._parseDataOutput);
   }
 
-  _parseDataInput({ id, ...input }: {{ pascalCase  module }}Input) {
+  _parseDataInput({ id, ...input }: {{ pascalCase model }}Input) {
     return { _id: id, ...input };
   }
 
-  _parseDataOutput({ _id, ...input }: any): {{ pascalCase  module }} {
+  _parseDataOutput({ _id, ...input }: any): {{ pascalCase model }} {
     return { id: _id, ...input };
   }
 }
