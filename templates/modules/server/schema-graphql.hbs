@@ -14,6 +14,19 @@ export const create{{ pascalCase  model }}Schema: GraphqlSchemaModule = () => {
       input {{ pascalCase  model }}Input {
       }
 
+      type {{ pascalCase model }}PageResult {
+        data: [{{ pascalCase model }}]
+        pageInfo: PageCursorInfo
+      }
+
+      input {{ pascalCase model }}Filter {
+      }
+
+      input {{ pascalCase model }}Params {
+        filter: {{ pascalCase model }}Filter
+        pageCursor: PageCursorParams
+      }
+
       extend type Query {
         find{{ pascalCase  model }}: [{{ pascalCase  model }}]
         find{{ pascalCase  model }}Page(params: {{ pascalCase  model }}PageParams): {{ pascalCase  model }}PageResult

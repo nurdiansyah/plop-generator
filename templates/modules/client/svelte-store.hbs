@@ -1,5 +1,5 @@
 import type { PageCursorInfo } from "@deboxsoft/module-core";
-import type { {{ pascalCase  model }}, {{ pascalCase  model }}Filter, {{ pascalCase  model }}Input, {{ pascalCase  model }}Params } from "@deboxsoft/{{ kebabCase  moduleName }}api";
+import type { {{ pascalCase  model }}, {{ pascalCase  model }}Filter, {{ pascalCase  model }}Input, {{ pascalCase  model }}Params } from "@deboxsoft/{{ kebabCase  moduleName }}-api";
 import type { {{ pascalCase  moduleName }}ClientConfig, ItemDataOptions } from "../types";
 
 import { create{{ pascalCase  model }}Service } from "../services";
@@ -19,7 +19,7 @@ export interface {{ pascalCase  model }}Context {
   {{ camelCase  model }}Store: Writable<{{ pascalCase  model }}[]>;
   {{ camelCase  model }}PageInfo: Readable<PageCursorInfo>;
 }
-const KEY = Symbol("{{ kebabCase  model }}context");
+const KEY = Symbol("{{ kebabCase  model }}-context");
 export const create{{ pascalCase  model }}Context = (options: Options): {{ pascalCase  model }}Context => {
   const {{ camelCase  model }}Service = create{{ pascalCase  model }}Service(options);
   const {{ camelCase  model }}Store = writable<{{ pascalCase  model }}[]>([]);

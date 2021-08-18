@@ -41,30 +41,30 @@ export class {{ pascalCase  model }}ServiceClient implements {{ pascalCase  mode
 
   create(input: {{ pascalCase  model }}Input) {
     input = { ...createInputDefault, ...input };
-    return this.fetchGraphql(CreateMutation, { variables: { input } }).then((result) => {
+    return this.fetchGraphql(Create{{ pascalCase  model }}Mutation, { variables: { input } }).then((result) => {
     return result.create{{ pascalCase  model }};
     });
   }
 
   update(id: string, input: {{ pascalCase  model }}Input) {
-    return this.fetchGraphql(UpdateMutation, { variables: { id, input } }).then((result) => result.update{{ pascalCase  model }});
+    return this.fetchGraphql(Update{{ pascalCase  model }}Mutation, { variables: { id, input } }).then((result) => result.update{{ pascalCase  model }});
   }
 
   remove(id: string) {
     const variables = { id };
-    return this.fetchGraphql(RemoveMutation, { variables }).then((result) => result.remove{{ pascalCase  model }});
+    return this.fetchGraphql(Remove{{ pascalCase  model }}Mutation, { variables }).then((result) => result.remove{{ pascalCase  model }});
   }
 
   findById(id: string): Promise<{{ pascalCase  model }} | undefined> {
-    return this.fetchGraphql(FindByIdQuery, { variables: { id } }).then((result) => result.find{{ pascalCase  model }}ById);
+    return this.fetchGraphql(Find{{ pascalCase  model }}ByIdQuery, { variables: { id } }).then((result) => result.find{{ pascalCase  model }}ById);
   }
 
   find(filter?: {{ pascalCase  model }}Filter): Promise<{{ pascalCase  model }}[]> {
-    return this.fetchGraphql(FindQuery, { variables: { filter } }).then((result) => result.find{{ pascalCase  model }} || []);
+    return this.fetchGraphql(Find{{ pascalCase  model }}Query, { variables: { filter } }).then((result) => result.find{{ pascalCase  model }} || []);
   }
 
   findPage(params?: {{ pascalCase  model }}Params): Promise<PageCursorResult<{{ pascalCase  model }}>> {
-    return this.fetchGraphql(FindPageQuery, { variables: { params } }).then((result) => result.findPage{{ pascalCase  model }} || []);
+    return this.fetchGraphql(Find{{ pascalCase  model }}PageQuery, { variables: { params } }).then((result) => result.findPage{{ pascalCase  model }} || []);
   }
 
   on{{ pascalCase  model }}Created({ next, complete, error }: ObserverSubscription) {

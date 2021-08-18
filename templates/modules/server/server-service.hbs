@@ -1,15 +1,15 @@
 import { MQEmitter } from "mqemitter";
 import { {{ pascalCase  model }}ModuleOptions } from "../types";
 import {
-    {{ pascalCase  model }}Error,
-    {{ pascalCase  model }}Event,
-    {{ pascalCase  model }}Input,
-    {{ pascalCase  model }}Params,
-    {{ pascalCase  model }}Service,
-    {{ pascalCase  model }},
-    {{ pascalCase  model }}Filter,
-    {{ pascalCase  model }}InputSchema
-  } from "@deboxsoft/{{ kebabCase moduleName}}-api";
+  {{ pascalCase  model }}Error,
+  {{ pascalCase  model }}Event,
+  {{ pascalCase  model }}Input,
+  {{ pascalCase  model }}Params,
+  {{ pascalCase  model }}Service,
+  {{ pascalCase  model }},
+  {{ pascalCase  model }}Filter,
+  {{ pascalCase  model }}InputSchema
+} from "@deboxsoft/{{ kebabCase moduleName}}-api";
 import { Container, Logger } from "@deboxsoft/module-core";
 import { get{{ pascalCase  model }}Repo, {{ pascalCase  model }}Repo } from "../db";
 
