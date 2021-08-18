@@ -21,6 +21,8 @@ export const moduleServerGenerator: PlopGeneratorFunction =
       env: data,
       plop,
       recursive: true,
+      templateDir: rootTemplateDir,
+      path: rootPath,
     })({ data, actions, templateDir: rootTemplateDir, path: rootPath });
     const getIndexGraphqlAction = (): Actions => {
       const path = `${srcPath}/graphql/index.ts`;

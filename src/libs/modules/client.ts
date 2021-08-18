@@ -20,6 +20,8 @@ export const moduleClientGenerator: PlopGeneratorFunction =
       env: data,
       plop,
       recursive: true,
+      templateDir: rootTemplateDir,
+      path: rootPath,
     })({ data, actions, templateDir: rootTemplateDir, path: rootPath });
     const graphqlActions: Actions = [
       {

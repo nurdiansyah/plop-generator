@@ -20,6 +20,8 @@ export const moduleApiGenerator: PlopGeneratorFunction =
       env: data,
       plop,
       recursive: true,
+      templateDir: rootTemplateDir,
+      path: rootPath,
     })({ data, actions, templateDir: rootTemplateDir, path: rootPath });
     // model
     const modelActions: Actions = [
