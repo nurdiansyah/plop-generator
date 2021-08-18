@@ -1,5 +1,5 @@
 import { MQEmitter } from "mqemitter";
-import { {{ pascalCase  model }}ModuleOptions } from "../types";
+import { {{ pascalCase  moduleName }}ModuleOptions } from "../types";
 import {
   {{ pascalCase  model }}Error,
   {{ pascalCase  model }}Event,
@@ -13,7 +13,7 @@ import {
 import { Container, Logger } from "@deboxsoft/module-core";
 import { get{{ pascalCase  model }}Repo, {{ pascalCase  model }}Repo } from "../db";
 
-interface Options extends {{ pascalCase  model }}ModuleOptions {
+interface Options extends {{ pascalCase  moduleName }}ModuleOptions {
 }
 
 const KEY = Symbol("{{ kebabCase  model }}-service-server");
@@ -48,8 +48,6 @@ export class {{ pascalCase  model }}ServiceServer implements {{ pascalCase  mode
     } catch (e) {
       this.logger.error("[{{ pascalCase  model }}ServiceServer] %o", e);
       throw e;
-    } finally {
-      this.transactionService.endTransaction();
     }
   }
 

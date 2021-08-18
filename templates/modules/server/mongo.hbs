@@ -1,10 +1,9 @@
 import { Collection, Db } from "mongodb";
-import { {{ pascalCase model }}Repo } from "../{{ pascalCase model }}Repo";
-import { {{ constantCase model }}_REPO_KEY } from "../{{ pascalCase model }}Repo";
-import { {{ pascalCase model }}, {{ pascalCase model }}Error, {{ pascalCase model }}Input } from "@deboxsoft/{{ kebabCase moduleName }}-api";
+import { {{ pascalCase model }}Repo, {{ constantCase model }}_REPO_KEY } from "../{{ pascalCase model }}Repo";
+import { {{ pascalCase model }}, {{ pascalCase model }}Error, {{ pascalCase model }}Input, {{ pascalCase model }}Params } from "@deboxsoft/{{ kebabCase moduleName }}-api";
 
-import { Container } from "@deboxsoft/module-core";
-import { BaseRepository, getMongoDb } from "@deboxsoft/module-mongo";
+import { Container, PageCursorResult } from "@deboxsoft/module-core";
+import { BaseRepository, getMongoDb, paginationCursor } from "@deboxsoft/module-mongo";
 
 export const create{{ pascalCase model }}Repo = () => {
   const db = getMongoDb();
@@ -35,7 +34,7 @@ export class {{ pascalCase model }}Collection extends BaseRepository implements 
     }
   }
 
-  async update(id, input: {{ pascalCase model }}Input) {
+  async update(id, input: Partial<{{ pascalCase model }}Input>) {
     const metadata = await this.collection.updateOne(
       { _id: id },
       { $set: input }
@@ -63,15 +62,16 @@ export class {{ pascalCase model }}Collection extends BaseRepository implements 
       .toArray();
   }
 
+  findPage( params: {{ pascalCase model }}Params = { filter: {}, pageCursor: {} }, options?: Record<string, any>): Promise<PageCursorResult<{{ pascalCase model }}>> {
+    const query = params.filter;
+    return paginationCursor.find(this.collection, {
+      query,
+      ...params.pageCursor
+    });
+  }
+
+
   findById(id: string): Promise<{{ pascalCase model }} | undefined> {
     return this.collection.findOne({ _id: id }).then(this._parseDataOutput);
-  }
-
-  _parseDataInput({ id, ...input }: {{ pascalCase model }}Input) {
-    return { _id: id, ...input };
-  }
-
-  _parseDataOutput({ _id, ...input }: any): {{ pascalCase model }} {
-    return { id: _id, ...input };
   }
 }

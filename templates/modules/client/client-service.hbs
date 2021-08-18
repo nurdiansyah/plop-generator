@@ -1,7 +1,7 @@
 import { {{ pascalCase  model }}, {{ pascalCase  model }}Filter, {{ pascalCase  model }}Input, {{ pascalCase  model }}Params } from "@deboxsoft/{{ kebabCase  moduleName }}-api";
 import { FetchGraphql } from "@deboxsoft/module-graphql";
 import { SubscriptionClient } from "graphql-subscriptions-client";
-import { {{ pascalCase  model }}ClientConfig, ObserverSubscription } from "../types";
+import { {{ pascalCase  moduleName }}ClientConfig, ObserverSubscription } from "../types";
 
 import {
   Create{{ pascalCase  model }}Mutation,
@@ -13,10 +13,10 @@ import {
   {{ pascalCase  model }}CreatedSubs,
   {{ pascalCase  model }}UpdatedSubs,
   {{ pascalCase  model }}RemovedSubs
-} from "../graphql/{{ kebabCase  model }}Document";
+} from "../graphql";
 import { PageCursorResult } from "@deboxsoft/module-client";
 
-interface Options extends {{ pascalCase  model }}ClientConfig {}
+interface Options extends {{ pascalCase  moduleName }}ClientConfig {}
 
 const createInputDefault: Partial<{{ pascalCase  model }}Input> = {};
 let {{ camelCase  model }}Service: {{ pascalCase  model }}ServiceClient;

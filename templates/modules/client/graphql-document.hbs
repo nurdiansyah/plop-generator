@@ -1,5 +1,4 @@
-import { gql } from "@deboxsoft/module-graphql";
-import { PageCursorInfoFragment } from "./page-cursor";
+import { gql, PageCursorInfoFragment } from "@deboxsoft/module-graphql";
 
 const {{ pascalCase  model }}Fragment = gql`
   fragment {{ pascalCase  model }}Fragment on {{ pascalCase  model }} {
@@ -53,7 +52,7 @@ export const Find{{ pascalCase  model }}PageQuery = gql`
       ...{{ pascalCase  model }}PageResultFragment
     }
   }
-  {{#preCurly (pascalCase model) }}{{/preCurly}}Fragment}
+  {{#preCurly (pascalCase model) }}{{/preCurly}}PageResultFragment}
 `;
 
 export const Find{{ pascalCase  model }}ByIdQuery = gql`

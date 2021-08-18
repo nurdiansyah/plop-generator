@@ -1,5 +1,5 @@
 import type { GraphqlSchemaModule } from "@deboxsoft/module-graphql";
-import { {{ pascalCase  model }}Event } from "@deboxsoft/{{ kebabCase  model }}-api";
+import { {{ pascalCase  model }}Event } from "@deboxsoft/{{ kebabCase  moduleName }}-api";
 import { gql } from "@deboxsoft/module-graphql";
 import { get{{ pascalCase  model }}ServiceServer } from "../services";
 
@@ -29,7 +29,7 @@ export const create{{ pascalCase  model }}Schema: GraphqlSchemaModule = () => {
 
       extend type Query {
         find{{ pascalCase  model }}: [{{ pascalCase  model }}]
-        find{{ pascalCase  model }}Page(params: {{ pascalCase  model }}PageParams): {{ pascalCase  model }}PageResult
+        find{{ pascalCase  model }}Page(params: {{ pascalCase  model }}Params): {{ pascalCase  model }}PageResult
         find{{ pascalCase  model }}ById(id: ID!): {{ pascalCase  model }}
       }
 
