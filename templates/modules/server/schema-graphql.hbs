@@ -45,43 +45,44 @@ export const create{{ pascalCase  model }}Schema: GraphqlSchemaModule = () => {
         {{ camelCase  model }}Removed: ID!
       }
     `,
-  resolvers: {
-    Query: {
-      find{{ pascalCase  model }}: () => {
-        return {{ camelCase  model }}Service.find();
+    resolvers: {
+      Query: {
+        find{{ pascalCase  model }}: () => {
+          return {{ camelCase  model }}Service.find();
+        },
+        find{{ pascalCase  model }}Page: (_, { params }) => {
+          return {{ camelCase  model }}Service.findPage(params);
+        },
+        find{{ pascalCase  model }}ById: (_, { id }) => {
+          return {{ camelCase  model }}Service.findById(id);
+        },
       },
-      find{{ pascalCase  model }}Page: (_, { params }) => {
-        return {{ camelCase  model }}Service.findPage(params);
-      },
-      find{{ pascalCase  model }}ById: (_, { id }) => {
-        return {{ camelCase  model }}Service.findById(id);
-      },
-    },
-    Mutation: {
-      create{{ pascalCase  model }}: (_, { input }) => {
-        return {{ camelCase  model }}Service.create(input);
-      },
-      update{{ pascalCase  model }}: (_, { id, input }) => {
-        return {{ camelCase  model }}Service.update(id, input);
-      },
-      remove{{ pascalCase  model }}: (_, { id }) => {
-        return {{ camelCase  model }}Service.remove(id);
-      }
-    },
-    Subscription: {
-      {{ camelCase  model }}Created: {
-        subscribe: (_, __, { pubsub }) => {
-          return pubsub.subscribe({{ pascalCase  model }}Event.created);
+      Mutation: {
+        create{{ pascalCase  model }}: (_, { input }) => {
+          return {{ camelCase  model }}Service.create(input);
+        },
+        update{{ pascalCase  model }}: (_, { id, input }) => {
+          return {{ camelCase  model }}Service.update(id, input);
+        },
+        remove{{ pascalCase  model }}: (_, { id }) => {
+          return {{ camelCase  model }}Service.remove(id);
         }
       },
-      {{ camelCase  model }}Updated: {
-        subscribe: (_, __, { pubsub }) => {
-          return pubsub.subscribe({{ pascalCase  model }}Event.updated);
-        }
-      },
-      {{ camelCase  model }}Removed: {
-        subscribe: (_, __, { pubsub }) => {
-          return pubsub.subscribe({{ pascalCase  model }}Event.removed);
+      Subscription: {
+        {{ camelCase  model }}Created: {
+          subscribe: (_, __, { pubsub }) => {
+            return pubsub.subscribe({{ pascalCase  model }}Event.created);
+          }
+        },
+        {{ camelCase  model }}Updated: {
+          subscribe: (_, __, { pubsub }) => {
+            return pubsub.subscribe({{ pascalCase  model }}Event.updated);
+          }
+        },
+        {{ camelCase  model }}Removed: {
+          subscribe: (_, __, { pubsub }) => {
+            return pubsub.subscribe({{ pascalCase  model }}Event.removed);
+          }
         }
       }
     }

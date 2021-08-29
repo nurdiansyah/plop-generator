@@ -17,13 +17,14 @@ interface Options extends {{ pascalCase  moduleName }}ModuleOptions {
 }
 
 const KEY = Symbol("{{ kebabCase  model }}-service-server");
-export const get{{ pascalCase  model }}ServiceServer = () => Container.get<{{ pascalCase  model }}ServiceServer>(KEY);
-  export const create{{ pascalCase  model }}ServiceServer = (options: Options) => {
+export const create{{ pascalCase  model }}ServiceServer = (options: Options) => {
   const {{ camelCase  model }}Repo = get{{ pascalCase  model }}Repo();
   const {{ camelCase  model }}Service = new {{ pascalCase  model }}ServiceServer({{ camelCase  model }}Repo, options);
   Container.set(KEY, {{ camelCase  model }}Service);
   return {{ camelCase  model }}Service;
 };
+
+export const get{{ pascalCase  model }}ServiceServer = () => Container.get<{{ pascalCase  model }}ServiceServer>(KEY);
 
 export class {{ pascalCase  model }}ServiceServer implements {{ pascalCase  model }}Service {
   event: MQEmitter;

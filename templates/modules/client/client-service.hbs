@@ -1,4 +1,5 @@
 import { {{ pascalCase  model }}, {{ pascalCase  model }}Filter, {{ pascalCase  model }}Input, {{ pascalCase  model }}Params } from "@deboxsoft/{{ kebabCase  moduleName }}-api";
+import { Container } from "@deboxsoft/module-core";
 import { FetchGraphql } from "@deboxsoft/module-graphql";
 import { SubscriptionClient } from "graphql-subscriptions-client";
 import { {{ pascalCase  moduleName }}ClientConfig, ObserverSubscription } from "../types";
@@ -19,16 +20,17 @@ import { PageCursorResult } from "@deboxsoft/module-client";
 interface Options extends {{ pascalCase  moduleName }}ClientConfig {}
 
 const createInputDefault: Partial<{{ pascalCase  model }}Input> = {};
-let {{ camelCase  model }}Service: {{ pascalCase  model }}ServiceClient;
-
+const KEY = Symbol("{{ kebabCase  model }}-context");
 export const create{{ pascalCase  model }}Service = (options: Options) => {
-  if (!{{ camelCase  model }}Service) {
-    {{ camelCase  model }}Service = new {{ pascalCase  model }}ServiceClient(options);
-  }
+    if (Container.has(KEY)) {
+      return get{{ pascalCase model }}Service();
+    }
+    const {{ camelCase  model }}Service = new {{ pascalCase  model }}ServiceClient(options);
+    Container.set(KEY, {{ camelCase model }}Service);
     return {{ camelCase  model }}Service;
   };
 
-export const get{{ pascalCase  model }}Service = () => {{ camelCase  model }}Service;
+export const get{{ pascalCase  model }}Service = () => Container.get<{{ pascalCase  model }}ServiceClient>(KEY);
 export class {{ pascalCase  model }}ServiceClient implements {{ pascalCase  model }}ServiceClient {
   fetchGraphqlWS: SubscriptionClient;
   fetchGraphql: FetchGraphql;
@@ -64,7 +66,7 @@ export class {{ pascalCase  model }}ServiceClient implements {{ pascalCase  mode
   }
 
   findPage(params?: {{ pascalCase  model }}Params): Promise<PageCursorResult<{{ pascalCase  model }}>> {
-    return this.fetchGraphql(Find{{ pascalCase  model }}PageQuery, { variables: { params } }).then((result) => result.findPage{{ pascalCase  model }} || []);
+    return this.fetchGraphql(Find{{ pascalCase  model }}PageQuery, { variables: { params } }).then((result) => result.find{{ pascalCase  model }}Page || []);
   }
 
   on{{ pascalCase  model }}Created({ next, complete, error }: ObserverSubscription) {

@@ -2,13 +2,17 @@ import { z } from "@deboxsoft/zod";
 import { CollectionParams } from "@deboxsoft/module-core";
 
 export const {{ pascalCase model }}Event = {
-  created: "{{ model }}Created",
-  updated: "{{ model }}Updated",
-  removed: "{{ model }}Removed"
+  created: "{{ pascalCase model }}Created",
+  updated: "{{ pascalCase model }}Updated",
+  removed: "{{ pascalCase model }}Removed"
 };
+
+export const {{ pascalCase model }}InputSchema = z.object({
+});
 
 export type {{ pascalCase model }}Input = z.infer<typeof {{ pascalCase model }}InputSchema> & {
 };
+export type {{ pascalCase model }}UpdateInput = Partial<{{ pascalCase model }}Input>;
 
 export type {{ pascalCase model }} = {{ pascalCase model }}Input & {
   id: string;
@@ -18,6 +22,3 @@ export type {{ pascalCase model }}Filter = {
 };
 
 export type {{ pascalCase model }}Params = CollectionParams<{{ pascalCase model }}Filter>;
-
-export const {{ pascalCase model }}InputSchema = z.object({
-});
