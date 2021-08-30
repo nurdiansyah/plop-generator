@@ -28,7 +28,7 @@ export const create{{ pascalCase  model }}Schema: GraphqlSchemaModule = () => {
       }
 
       extend type Query {
-        find{{ pascalCase  model }}: [{{ pascalCase  model }}]
+        find{{ pascalCase  model }}(filter: {{ pascalCase model }}Filter): [{{ pascalCase  model }}]
         find{{ pascalCase  model }}Page(params: {{ pascalCase  model }}Params): {{ pascalCase  model }}PageResult
         find{{ pascalCase  model }}ById(id: ID!): {{ pascalCase  model }}
       }
@@ -47,8 +47,8 @@ export const create{{ pascalCase  model }}Schema: GraphqlSchemaModule = () => {
     `,
     resolvers: {
       Query: {
-        find{{ pascalCase  model }}: () => {
-          return {{ camelCase  model }}Service.find();
+        find{{ pascalCase  model }}: (_, { filter }) => {
+          return {{ camelCase  model }}Service.find(filter);
         },
         find{{ pascalCase  model }}Page: (_, { params }) => {
           return {{ camelCase  model }}Service.findPage(params);
