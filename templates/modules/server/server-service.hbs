@@ -1,12 +1,13 @@
 import { MQEmitter } from "mqemitter";
 import { {{ pascalCase  moduleName }}ModuleOptions } from "../types";
 import {
+  {{ pascalCase  model }},
   {{ pascalCase  model }}Error,
   {{ pascalCase  model }}Event,
-  {{ pascalCase  model }}Input,
+  {{ pascalCase  model }}CreateInput,
+  {{ pascalCase  model }}UpdateInput,
   {{ pascalCase  model }}Params,
   {{ pascalCase  model }}Service,
-  {{ pascalCase  model }},
   {{ pascalCase  model }}Filter,
   {{ pascalCase  model }}InputSchema
 } from "@deboxsoft/{{ kebabCase moduleName}}-api";
@@ -34,7 +35,7 @@ export class {{ pascalCase  model }}ServiceServer implements {{ pascalCase  mode
     this.event = options.event;
   }
 
-  async create(input: {{ pascalCase  model }}Input) {
+  async create(input: {{ pascalCase  model }}CreateInput) {
     try {
       input = {{ pascalCase  model }}InputSchema.parse(input);
       const { data } = await this.{{ camelCase  model }}Repo.create(input);

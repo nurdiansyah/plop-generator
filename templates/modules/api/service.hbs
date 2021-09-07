@@ -2,13 +2,14 @@ import { PageCursorResult } from "@deboxsoft/module-core";
 import {
   {{ pascalCase model }},
   {{ pascalCase model }}Filter,
-  {{ pascalCase model }}Input,
+  {{ pascalCase model }}CreateInput,
+  {{ pascalCase model }}UpdateInput,
   {{ pascalCase model }}Params
 } from "../models";
 
 export interface {{ pascalCase model }}Service {
-  create(input: {{ pascalCase model }}Input): Promise<string>;
-  update(id: string, input: Partial<{{ pascalCase model }}Input>): Promise<boolean>;
+  create(input: {{ pascalCase model }}CreateInput): Promise<string>;
+  update(id: string, input: {{ pascalCase model }}UpdateInput): Promise<boolean>;
   remove(id: string): Promise<boolean>;
   findById(id: string): Promise<{{ pascalCase model }} | undefined>;
   findPage(params?: {{ pascalCase model }}Params): Promise<PageCursorResult<{{ pascalCase model }}>>;

@@ -1,4 +1,10 @@
-import { {{ pascalCase  model }}, {{ pascalCase  model }}Filter, {{ pascalCase  model }}Input, {{ pascalCase  model }}Params } from "@deboxsoft/{{ kebabCase  moduleName }}-api";
+import {
+  {{ pascalCase  model }},
+  {{ pascalCase  model }}Filter,
+  {{ pascalCase  model }}CreateInput,
+  {{ pascalCase  model }}UpdateInput,
+  {{ pascalCase  model }}Params
+} from "@deboxsoft/{{ kebabCase  moduleName }}-api";
 import { Container } from "@deboxsoft/module-core";
 import { FetchGraphql } from "@deboxsoft/module-graphql";
 import { SubscriptionClient } from "graphql-subscriptions-client";
@@ -41,14 +47,14 @@ export class {{ pascalCase  model }}ServiceClient implements {{ pascalCase  mode
     this.fetchGraphqlWS = fetchGraphqlWS;
   }
 
-  create(input: {{ pascalCase  model }}Input) {
+  create(input: {{ pascalCase  model }}CreateInput) {
     input = { ...createInputDefault, ...input };
     return this.fetchGraphql(Create{{ pascalCase  model }}Mutation, { variables: { input } }).then((result) => {
     return result.create{{ pascalCase  model }};
     });
   }
 
-  update(id: string, input: {{ pascalCase  model }}Input) {
+  update(id: string, input: {{ pascalCase  model }}UpdateInput) {
     return this.fetchGraphql(Update{{ pascalCase  model }}Mutation, { variables: { id, input } }).then((result) => result.update{{ pascalCase  model }});
   }
 

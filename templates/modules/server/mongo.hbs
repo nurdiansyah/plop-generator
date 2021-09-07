@@ -1,6 +1,12 @@
 import { Collection, Db } from "mongodb";
 import { {{ pascalCase model }}Repo, {{ constantCase model }}_REPO_KEY } from "../{{ pascalCase model }}Repo";
-import { {{ pascalCase model }}, {{ pascalCase model }}Error, {{ pascalCase model }}Input, {{ pascalCase model }}Params } from "@deboxsoft/{{ kebabCase moduleName }}-api";
+import {
+  {{ pascalCase model }},
+  {{ pascalCase model }}Error,
+  {{ pascalCase model }}CreateDataInput,
+  {{ pascalCase model }}UpdateDataInput,
+  {{ pascalCase model }}Params
+} from "@deboxsoft/{{ kebabCase moduleName }}-api";
 
 import { Container, PageCursorResult } from "@deboxsoft/module-core";
 import { BaseRepository, getMongoDb, paginationCursor } from "@deboxsoft/module-mongo";
@@ -19,7 +25,7 @@ export class {{ pascalCase model }}Collection extends BaseRepository implements 
     this.collection = db.collection("{{ pascalCase model }}");
   }
 
-  async create(input: {{ pascalCase model }}Input) {
+  async create(input: {{ pascalCase model }}CreateInput) {
     try {
       const metadata = await this.collection.insertOne(this._parseDataInput(input));
       if (metadata.result.ok === 1) {
@@ -34,7 +40,7 @@ export class {{ pascalCase model }}Collection extends BaseRepository implements 
     }
   }
 
-  async update(id, input: Partial<{{ pascalCase model }}Input>) {
+  async update(id, input: {{ pascalCase model }}UpdateDataInput) {
     const metadata = await this.collection.updateOne(
       { _id: id },
       { $set: input }

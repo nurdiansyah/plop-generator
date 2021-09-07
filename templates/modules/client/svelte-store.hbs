@@ -1,5 +1,5 @@
 import type { PageCursorInfo } from "@deboxsoft/module-core";
-import type { {{ pascalCase  model }}, {{ pascalCase  model }}Filter, {{ pascalCase  model }}Input, {{ pascalCase  model }}Params } from "@deboxsoft/{{ kebabCase  moduleName }}-api";
+import type { {{ pascalCase  model }}, {{ pascalCase  model }}Filter, {{ pascalCase  model }}CreateInput, {{ pascalCase  model }}UpdateInput, {{ pascalCase  model }}Params } from "@deboxsoft/{{ kebabCase  moduleName }}-api";
 import type { {{ pascalCase  moduleName }}ClientConfig, ItemDataOptions } from "../types";
 
 import { create{{ pascalCase  model }}Service } from "../services";
@@ -9,8 +9,8 @@ import { getContext, setContext } from "svelte";
 interface Options extends {{ pascalCase  moduleName }}ClientConfig {}
 
 export interface {{ pascalCase  model }}Context {
-  create(input: {{ pascalCase  model }}Input): Promise<void>;
-  update(id: string, input: {{ pascalCase  model }}Input, options?: ItemDataOptions): Promise<void>;
+  create(input: {{ pascalCase  model }}CreateInput): Promise<void>;
+  update(id: string, input: {{ pascalCase  model }}UpdateInput, options?: ItemDataOptions): Promise<void>;
   remove(id: string, options?: ItemDataOptions): Promise<void>;
   findById(id: string): Promise<{{ pascalCase  model }} | undefined>;
   find(filter?: {{ pascalCase  model }}Filter): Promise<{{ pascalCase  model }}[]>;
@@ -60,7 +60,7 @@ export const create{{ pascalCase  model }}Context = (options: Options): {{ pasca
   const {{ camelCase  model }}Context: {{ pascalCase  model }}Context = {
     {{ camelCase  model }}Store,
     {{ camelCase  model }}PageInfo,
-    create: (input: {{ pascalCase  model }}Input): Promise<void> => {
+    create: (input: {{ pascalCase  model }}CreateInput): Promise<void> => {
       return {{ camelCase  model }}Service.create(input).catch((reason) => {
         if (reason?.response?.errors[0]?.message) {
           const message = reason.response.errors[0].message;
@@ -69,7 +69,7 @@ export const create{{ pascalCase  model }}Context = (options: Options): {{ pasca
         console.error(reason);
       });
     },
-    update: (id: string, input: {{ pascalCase  model }}Input, { index }: { index?: number } = {}): Promise<void> => {
+    update: (id: string, input: {{ pascalCase  model }}UpdateInput, { index }: { index?: number } = {}): Promise<void> => {
       return {{ camelCase  model }}Service.update(id, input).catch((reason) => {
         if (reason?.response?.errors[0]?.message) {
           const message = reason.response.errors[0].message;
