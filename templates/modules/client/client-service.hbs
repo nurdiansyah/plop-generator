@@ -26,7 +26,7 @@ import { PageCursorResult } from "@deboxsoft/module-client";
 interface Options extends {{ pascalCase  moduleName }}ClientConfig {}
 
 const createInputDefault: Partial<{{ pascalCase  model }}Input> = {};
-const KEY = Symbol("{{ kebabCase  model }}-context");
+const KEY = Symbol("{{ kebabCase  model }}-service-client");
 export const create{{ pascalCase  model }}Service = (options: Options) => {
     if (Container.has(KEY)) {
       return get{{ pascalCase model }}Service();
