@@ -17,11 +17,6 @@
     "release:major": "pnpm run bump -- major -cp && pnpm publish",
     "release:dev": "git add . && pnpm run bump -- -cp prerelease && pnpm publish --no-git-checks"
   },
-  "husky": {
-    "hooks": {
-      "pre-commit": "npm run build && git add dist/"
-    }
-  },
   "author": "Nurdiansyah <nurdiansyah>",
   "license": "SEE LICENSE",
   "dependencies": {
