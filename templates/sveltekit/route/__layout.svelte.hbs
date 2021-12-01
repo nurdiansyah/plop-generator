@@ -1,0 +1,107 @@
+<script context="module">
+  /** @type{import("@sveltejs/kit").Load} */
+  export async function load ({ fetch, page, session, stuff }) {
+    return {
+      props: {
+      }
+    };
+  }
+</script>
+
+<script>
+  import PageContent from "@deboxsoft/svelte-components/themes/limitless/layout/PageContent.svelte";
+  import Card from "@deboxsoft/svelte-components/base/Card.svelte";
+  import Button from "@deboxsoft/svelte-components/base/Button.svelte";
+  import PageContentInner from "@deboxsoft/svelte-components/themes/limitless/layout/PageContentInner.svelte";
+  import { getUIContext } from "@deboxsoft/svelte-core";
+  import {{ pascalCase model }}Dialog from "./_components/{{ pascalCase model }}Dialog.svelte";
+  import { writable } from "svelte/store";
+  import { {{ pascalCase model }}Input } from "@deboxsoft/{{ kebabCase module }}-api";
+  import { fetchUtils } from "$lib/utils";
+  import { get{{ pascalCase model }}Context } from "$lib/context";
+  import {{ pascalCase model }}Table from "./_components/{{ pascalCase model }}Table.svelte";
+  import { goto } from "$app/navigation";
+
+  const uiContext = getUIContext();
+  const { {{ camelCase model }}Store } = get{{ pascalCase model }}Context();
+  let {{ camelCase model }}DialogOpen = writable(false);
+
+  export let userId;
+  let values = {},
+    action;
+
+  function {{ camelCase model }}SelectHandler({{ camelCase model }}) {
+    goto(`./{{ camelCase model }}/${{{ camelCase model }}.id}`, { state: { {{ camelCase model }} } });
+  }
+
+  function open{{ pascalCase model }}Dialog() {
+    ${{ camelCase model }}DialogOpen = true;
+  }
+
+  function create{{ pascalCase model }}Action(_action, item) {
+    return (input) => {
+      action = _action;
+      switch (action) {
+        case "CREATE":
+          values = {};
+          open{{ pascalCase model }}Dialog();
+          break;
+        case "UPDATE":
+        case "REMOVE":
+          values = item;
+          open{{ pascalCase model }}Dialog();
+          break;
+      }
+    };
+  }
+
+  async function save{{ pascalCase model }}Handler(input) {
+    try {
+      input.userId = userId;
+      if (action === "CREATE") {
+        input = {{ pascalCase model }}Input.parse(input);
+        const {{ camelCase model }} = await fetchUtils.post("./{{ camelCase model }}s.json", input);
+        {{ camelCase model }}Store.add{{ pascalCase model }}({{ camelCase model }});
+      } else if (action === "REMOVE") {
+        const result = await fetchUtils.del(`./{{ camelCase model }}/${input.id}.api`);
+        if (result) {
+          {{ camelCase model }}Store.remove{{ pascalCase model }}(input.id);
+        }
+      } else {
+        const id = input.id;
+        input = {{ pascalCase model }}Input.partial().parse(input);
+        const result = await fetchUtils.put(`./{{ camelCase model }}/${id}.api`, input);
+        {{ camelCase model }}Store.update{{ pascalCase model }}(id, result);
+      }
+    } catch (e) {
+      console.error(e, "error proyek form");
+    } finally {
+      ${{ camelCase model }}DialogOpen = false;
+      values = {};
+    }
+  }
+</script>
+
+<{{ pascalCase model }}Dialog open={{{ camelCase model }}DialogOpen} onSave={save{{ pascalCase model }}Handler} {values} {action} />
+<PageContentInner {uiContext}>
+  <PageContent class="p-4 page-content" slot="page-content">
+    <svelte:fragment slot="header">
+      <h6 class="card-title">Proyek Saya</h6>
+      <div>
+        <div class="btn-group">
+          <Button class="btn-primary" on:click={create{{ pascalCase model }}Action("CREATE")}>
+            <i class="icon-plus22" />
+            <!--isi-->
+          </Button>
+        </div>
+      </div>
+    </svelte:fragment>
+    <Card class="min-h-full" headerClass="bg-transparent">
+      <{{ pascalCase model }}Table
+        items={${{ camelCase model }}Store}
+        onActionHandler={create{{ pascalCase model }}Action}
+        on{{ pascalCase model }}Select={{{ camelCase model }}SelectHandler}
+      />
+    </Card>
+  </PageContent>
+</PageContentInner>

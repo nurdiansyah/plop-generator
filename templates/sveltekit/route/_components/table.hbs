@@ -1,0 +1,38 @@
+<script>
+  import Table from "@deboxsoft/svelte-components/base/Table.svelte";
+  import Button from "@deboxsoft/svelte-components/base/Button.svelte";
+  export let {{ camelCase model }}List;
+  export let onActionHandler = (action, {{ camelCase model }}) => {};
+  export let onItemSelect = (file) => {};
+
+  function createActionHandler(action, {{ camelCase model }}) {
+    const _handler = onActionHandler(action, {{ camelCase model }});
+    return (e) => {
+      _handler(e);
+    };
+  }
+
+  function createItemSelectHandler({{ camelCase model }}) {
+    return () => {
+      onItemSelect({{ camelCase model }});
+    }
+  }
+</script>
+
+<Table class="table-selectable" {{{ camelCase model }}List} let:{{ camelCase model }}>
+  <tr slot="header">
+    <th>Nama</th>
+    <th width="100" />
+  </tr>
+  <tr on:click={createItemSelectHandler({{ camelCase model }})}>
+    <td>{file.name}</td>
+    <td class="table-menu-item">
+      <Button class="btn-link" on:click={createActionHandler("UPDATE", {{ camelCase model }})}>
+        <i class="icon-pencil4" />
+      </Button>
+      <Button class="btn-link" on:click={createActionHandler("REMOVE", {{ camelCase model }})}>
+        <i class="icon-bin" />
+      </Button>
+    </td>
+  </tr>
+</Table>

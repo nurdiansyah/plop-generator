@@ -4,6 +4,7 @@ import { NodePlopAPI } from "plop";
 import { initMessage } from "./bin/plop-init";
 import projectGenerator from "./libs/projects";
 import moduleGenerator from "./libs/modules";
+import sveltekitGenerator from "./libs/sveltekit";
 
 export default (plop: NodePlopAPI): void => {
   initMessage();
@@ -12,4 +13,5 @@ export default (plop: NodePlopAPI): void => {
   });
   projectGenerator(plop);
   moduleGenerator(plop);
+  sveltekitGenerator(plop);
 };
