@@ -12,7 +12,7 @@ export const {{ pascalCase model }}Event = {
 export const {{ pascalCase model }}Schema = z.object({
 });
 export const {{ pascalCase model }}CreateSchema = {{ pascalCase model }}Schema.omit({ id: true });
-export const {{ pasclaCase model }}UpdateSchema = {{ pascalCase model }}CreateSchema.partial();
+export const {{ pascalCase model }}UpdateSchema = {{ pascalCase model }}CreateSchema.partial();
 
 //*********************************** Type **********************************
 export type {{ pascalCase model }} = z.infer<typeof {{ pascalCase model }}Schema>;
