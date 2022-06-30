@@ -1,6 +1,6 @@
-const chalk = require("chalk");
+import chalk from "chalk";
 // @ts-ignore
-const version = require("../package.json").version;
+import {version} from "../package.json";
 
 module.exports = {
   initMessage: () => {

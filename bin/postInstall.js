@@ -1,7 +1,6 @@
-const chalk = require("chalk");
-
+import chalk from "chalk";
 // @ts-ignore
-const pkg = require("../package.json");
+import pkg from "../package.json";
 
 console.info(`
   ${chalk.green("Hey there! 👋")}

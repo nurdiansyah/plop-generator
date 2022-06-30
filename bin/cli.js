@@ -1,10 +1,13 @@
 #!/usr/bin/env node
-require("dotenv").config();
-const path = require("path");
+import {config} from "dotenv";
+import path from "path";
+import minimist from "minimist";
+import dboxCore from "@deboxsoft/module-core";
+
+config();
 const args = process.argv.slice(2);
 const { Plop, run } = require("plop");
-const argv = require("minimist")(args);
-const dboxCore = require("@deboxsoft/module-core");
+const argv = minimist(args);
 Plop.launch(
   {
     cwd: argv.cwd,
