@@ -106,10 +106,6 @@ typings/
 .idea
 /core
 /libs
-/plugins
-/plopfile.d.ts
-/plopfile.js
 /types.*
-examples
-libs
+/examples
 
