@@ -1,9 +1,5 @@
 import { ActionType, PromptQuestion } from "node-plop";
-import {
-  GeneratorOptions,
-  Actions,
-  PlopGeneratorFunction,
-} from "../../types.js";
+import { GeneratorOptions, Actions, PlopGeneratorFunction } from "../../types.js";
 
 const prompts: PromptQuestion[] = [
   {
@@ -17,18 +13,18 @@ const prompts: PromptQuestion[] = [
       { name: "GitHub Actions", value: "github" },
       { name: "GitLab CI", value: "gitlab" },
       { name: "Azure DevOps", value: "azure" },
-      { name: "None", value: false },
+      { name: "None", value: false }
     ],
     message: "Do you want to include a CICD pipeline?",
-    type: "list",
-  },
+    type: "list"
+  }
 ];
 
 enum Template {
   "cloudbuild",
   "github",
   "gitlab",
-  "azure",
+  "azure"
 }
 
 const getCustomBasePath = (type: Template, defaultPath: string) => {
@@ -36,7 +32,7 @@ const getCustomBasePath = (type: Template, defaultPath: string) => {
     cloudbuild: defaultPath,
     github: `${process.env.cwd}/.github/workflows/`,
     gitlab: process.cwd(),
-    azure: defaultPath,
+    azure: defaultPath
   };
   return customBasePath[type];
 };
@@ -53,7 +49,7 @@ const pipelinesActionHandler = (
     cloudbuild: [`${templatePath}/pipelines/cloud*`],
     github: [`${templatePath}/.github/**`],
     gitlab: [],
-    azure: [],
+    azure: []
   };
 
   actions.push({
@@ -61,20 +57,13 @@ const pipelinesActionHandler = (
     destination: getCustomBasePath(type, destination),
     base: templatePath,
     templateFiles: templateFiles[type],
-    stripExtensions: [".custom"],
+    stripExtensions: [".custom"]
   });
   return actions;
 };
 
-export const pipelinesGenerator: PlopGeneratorFunction = (
-  options: GeneratorOptions
-) => {
+export const pipelinesGenerator: PlopGeneratorFunction = (options: GeneratorOptions) => {
   options.prompts.push(...prompts);
   return ({ data = { CICD: undefined }, actions = [] } = {}) =>
-    pipelinesActionHandler(
-      data.CICD,
-      options.actions,
-      options.path || "./",
-      options.templateDir || "./"
-    );
+    pipelinesActionHandler(data.CICD, options.actions, options.path || "./", options.templateDir || "./");
 };

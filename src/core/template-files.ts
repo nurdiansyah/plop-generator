@@ -1,10 +1,5 @@
 import fs from "fs";
-import {
-  ActionOptions,
-  GeneratorOptions,
-  PlopGeneratorFunction,
-  PromptOptions,
-} from "../types.js";
+import { ActionOptions, GeneratorOptions, PlopGeneratorFunction, PromptOptions } from "../types.js";
 import { getAppendAction, getPromptAction } from "./utils.js";
 
 type RecursiveOptions = ActionOptions & GeneratorOptions;
@@ -17,14 +12,14 @@ export const templateFilesGenerator: PlopGeneratorFunction = ({
   path,
   prompts,
   actions = [],
-  templateDir,
+  templateDir
 }: GeneratorOptions) => {
   recursivePrompts({
     templateDir,
     pathDir: templateDir || "",
     prompts,
     data: env,
-    path,
+    path
   });
   return (options) =>
     recursiveFilesAction({
@@ -35,16 +30,11 @@ export const templateFilesGenerator: PlopGeneratorFunction = ({
       prompts,
       skipPattern,
       recursive,
-      actions: options.actions || actions,
+      actions: options.actions || actions
     });
 };
 
-function recursivePrompts({
-  templateDir,
-  pathDir,
-  data,
-  prompts,
-}: PromptOptions & { pathDir: string }) {
+function recursivePrompts({ templateDir, pathDir, data, prompts }: PromptOptions & { pathDir: string }) {
   const dir = fs.readdirSync(pathDir);
   dir.forEach((file, idx) => {
     const path = `${pathDir}/${file}`;
@@ -57,7 +47,7 @@ function recursivePrompts({
         .map((filename) => ({
           description: `${pathDir}/${filename}`,
           value: filename,
-          checked: false,
+          checked: false
         }));
 
       if (choices.length) {
@@ -67,14 +57,10 @@ function recursivePrompts({
           message:
             choices.length > 1
               ? `What additional ${pathDir} files do you want`
-              : `Do you want to include ${choices[0].description.replace(
-                  ".prompt",
-                  ""
-                )}?`,
+              : `Do you want to include ${choices[0].description.replace(".prompt", "")}?`,
           choices,
           when: (answers: { [k: string]: any }) =>
-            answers.workspace ===
-            pathDir.replace(`${templateDir}/`, "").split("/")[0],
+            answers.workspace === pathDir.replace(`${templateDir}/`, "").split("/")[0]
         };
         prompts?.push(prompt);
       }
@@ -91,7 +77,7 @@ function recursiveFilesAction({
   path,
   data,
   actions,
-  recursive,
+  recursive
 }: RecursiveOptions) {
   const tmpDir = templateDir.replace(".", "");
   const files = fs.readdirSync(templateDir);
@@ -106,7 +92,7 @@ function recursiveFilesAction({
         templateFile: `${templateDir}/${file}`,
         skipIfExists: !file.includes(".modify") && !file.includes(".append"),
         abortOnFail: true,
-        skip: () => false,
+        skip: () => false
       };
       action = getAppendAction(file, templateDir, action);
       action = getPromptAction(file, tmpDir, data, action);
@@ -126,7 +112,7 @@ function recursiveFilesAction({
         data,
         actions,
         skipPattern,
-        prompts,
+        prompts
       });
     }
   });

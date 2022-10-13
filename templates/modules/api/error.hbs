@@ -1,0 +1,33 @@
+import {
+  DbxError,
+  DbxErrorOptions,
+  ModuleConfig,
+} from "@deboxsoft/module-core";
+
+export type {{ pascalCase model }}CodeMessageError = keyof typeof codeMessageDefault;
+type Options = DbxErrorOptions<{{ pascalCase model }}CodeMessageError> & {
+  config?: Partial<ModuleConfig>;
+};
+const codeMessageDefault = {
+  {{ constantCase model }}_NOT_FOUND: "{{ pascalCase model }} id `{{ hbsVariable "id"}} not found.`",
+  {{ constantCase model }}_CREATE_FAILED: "create {{ pascalCase model }} id `{{ hbsVariable "id"}}` failed.",
+  {{ constantCase model }}_UPDATE_FAILED: "update {{ pascalCase model }} id `{{ hbsVariable "id"}}` failed.",
+  {{ constantCase model }}_REMOVE_FAILED: "remove {{ pascalCase model }} id `{{ hbsVariable "id"}}` failed.",
+};
+
+export class {{ pascalCase model }}Error extends DbxError<{{ pascalCase model }}CodeMessageError> {
+  constructor({ config = {}, message, ...options }: Options) {
+    super({
+      instanceOf: "{{ pascalCase model }}Error",
+      ...options,
+    });
+    if (this.code) {
+      this.setMessage(
+        config[this.code] || codeMessageDefault[this.code],
+        this.args
+      );
+    } else if (message) {
+      this.setMessage(message, this.args);
+    }
+  }
+}

@@ -6,9 +6,13 @@ import { ActionOptions, Actions, GeneratorOptions, Prompts } from "../../types.j
 import { moduleApiGenerator } from "./api.js";
 import { moduleServerGenerator } from "./server.js";
 import { moduleClientGenerator } from "./client.js";
+import { hbsVariableHelpers } from "../../helpers/index.js";
 
 const generatorId = "modules";
 export default (plop: NodePlopAPI) => {
+  // helpers
+  hbsVariableHelpers(plop);
+
   const config = getConfigService();
   const templateDir = `${plop.getPlopfilePath()}/templates/${generatorId}`;
   const actions: Actions = [];
@@ -17,27 +21,25 @@ export default (plop: NodePlopAPI) => {
       type: "input",
       name: "moduleName",
       message: "module name",
-      validate: validatePackageName,
-    },
+      validate: validatePackageName
+    }
   ];
   const env: Record<string, any> = {
-    isMonorepo: config.get("is-monorepo"),
-    generatorId,
+    isMonorepo: config.get("is-monorepo") || fs.existsSync(`${process.cwd()}/pnpm-workspace.yaml`),
+    generatorId
   };
   if (!env.isMonorepo) {
     prompts.push({
       type: "list",
       name: "modulePackage",
-      choices: fs
-        .readdirSync(templateDir)
-        .map((dir) => ({ name: dir, value: dir })),
+      choices: fs.readdirSync(templateDir).map((dir) => ({ name: dir, value: dir }))
     });
   }
   prompts.push({
     type: "input",
     name: "model",
     message: "model name",
-    validate: validatePackageName,
+    validate: validatePackageName
   });
 
   const generatorOptions: GeneratorOptions = {
@@ -45,7 +47,7 @@ export default (plop: NodePlopAPI) => {
     env,
     prompts,
     actions,
-    templateDir,
+    templateDir
   };
   const moduleApiAction = moduleApiGenerator(generatorOptions);
   const moduleServerAction = moduleServerGenerator(generatorOptions);
@@ -62,7 +64,7 @@ export default (plop: NodePlopAPI) => {
         actions,
         path: startingPath,
         templateDir,
-        data,
+        data
       };
       /* GENERATE SELECTED WORKSPACE FILES */
 
@@ -101,6 +103,6 @@ export default (plop: NodePlopAPI) => {
         }
         return acc;
       }, []);
-    },
+    }
   });
 };

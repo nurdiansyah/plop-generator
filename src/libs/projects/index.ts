@@ -9,24 +9,28 @@ import { gatsbyGenerator } from "./gatsby.js";
 import { pipelinesGenerator } from "./pipelines.js";
 import { Prompts, Actions, GeneratorOptions, ActionOptions } from "../../types.js";
 import { getConfigService } from "@deboxsoft/module-core/libs/config";
+import { hbsVariableHelpers } from "../../helpers/index.js";
 
 const generatorId = "projects";
 
 export default (plop: NodePlopAPI) => {
   const config = getConfigService();
+
+  // load plugin
   plop.load(`${plop.getPlopfilePath()}/plugins/pnpm-install.js`, undefined, undefined);
+
+  // helpers
+  hbsVariableHelpers(plop);
   const templateDir = `${plop.getPlopfilePath()}/templates/${generatorId}`;
   let env: any = {
     generatorId,
-    isMonorepo: config.get("is-monorepo"),
+    isMonorepo: config.get("is-monorepo")
   };
   const prompts: Prompts = [
     {
       type: "list",
       name: "workspace",
-      choices: fs
-        .readdirSync(templateDir)
-        .map((dir) => ({ name: dir, value: dir })),
+      choices: fs.readdirSync(templateDir).map((dir) => ({ name: dir, value: dir }))
     },
     {
       type: "input",
@@ -40,7 +44,7 @@ export default (plop: NodePlopAPI) => {
       name: "name",
       message: "workspace name",
       validate: validatePackageName
-    },
+    }
   ];
   const actions: Actions = [];
   const generatorOptions: GeneratorOptions = {
@@ -48,7 +52,7 @@ export default (plop: NodePlopAPI) => {
     env,
     prompts,
     actions,
-    templateDir,
+    templateDir
   };
   const templateFilesAction = templateFilesGenerator(generatorOptions);
   const e2eAction = e2eGenerator(generatorOptions);
@@ -62,24 +66,22 @@ export default (plop: NodePlopAPI) => {
       const cwd = process.cwd();
       let startingPath = cwd;
       if (data.isMonorepo || fs.existsSync(`${cwd}/pnpm-workspace.yaml`)) {
-        startingPath = `${startingPath}/packages/${data.name}`
+        startingPath = `${startingPath}/packages/${data.name}`;
       } else {
-        startingPath = `${startingPath}/${data.name}`
+        startingPath = `${startingPath}/${data.name}`;
       }
       data.basePath = startingPath;
-      const workspaceTemplatePath = path.resolve(
-        `${templateDir}/${data.workspace}/`
-      );
+      const workspaceTemplatePath = path.resolve(`${templateDir}/${data.workspace}/`);
       const actionOptions: ActionOptions = {
         path: startingPath,
         templateDir,
         actions,
-        data,
+        data
       };
       /* GENERATE SELECTED WORKSPACE FILES */
       templateFilesAction({
         ...actionOptions,
-        templateDir: workspaceTemplatePath,
+        templateDir: workspaceTemplatePath
       });
 
       /* APPEND CUSTOM ACTION HANDLERS BELOW */
@@ -100,7 +102,7 @@ export default (plop: NodePlopAPI) => {
         actions.push({
           type: "pnpm-install",
           path: dir,
-          verbose: true,
+          verbose: true
         });
       });
 
@@ -123,6 +125,6 @@ export default (plop: NodePlopAPI) => {
         }
         return acc;
       }, []);
-    },
+    }
   });
 };

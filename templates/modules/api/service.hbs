@@ -1,0 +1,30 @@
+import {
+  {{ pascalCase moduleName }},
+  {{ pascalCase moduleName }}CreateResponse,
+  {{ pascalCase moduleName }}Filter,
+  {{ pascalCase moduleName }}Input,
+  {{ pascalCase moduleName }}RemoveResponse,
+  {{ pascalCase moduleName }}UpdateInput,
+  {{ pascalCase moduleName }}UpdateResponse
+} from "../models/index.js";
+import { Container, Pagination, PaginationOptions } from "@deboxsoft/module-core";
+
+export const {{ pascalCase moduleName }}Event = {
+  onBeforeCreate: "{{ constantCase moduleName }}-BEFORE-CREATE",
+  onAfterCreate: "{{ constantCase moduleName }}-AFTER-CREATE",
+  onBeforeUpdate: "{{ constantCase moduleName }}-BEFORE-UPDATE",
+  onAfterUpdate: "{{ constantCase moduleName }}-AFTER-UPDATE-EVENT",
+  onBeforeRemove: "{{ constantCase moduleName }}-BEFORE-REMOVE-EVENT",
+  onAfterRemove: "{{ constantCase moduleName }}-AFTER-REMOVE-EVENT"
+};
+export const {{ constantCase moduleName }}_SERVICE_KEY = "{{ constantCase moduleName }}-SERVICE-KEY";
+export const get{{ pascalCase moduleName }}Service = <S extends {{ pascalCase moduleName }}Service = {{ pascalCase moduleName }}Service>() => Container.get<S>({{ constantCase moduleName }}_SERVICE_KEY);
+export const has{{ pascalCase moduleName }}Service = () => Container.has({{ constantCase moduleName }}_SERVICE_KEY);
+export interface {{ pascalCase moduleName }}Service {
+  create(input: {{ pascalCase moduleName }}Input): Promise<{{ pascalCase moduleName }}CreateResponse>;
+  update(id: string, input: {{ pascalCase moduleName }}UpdateInput): Promise<{{ pascalCase moduleName }}UpdateResponse>;
+  remove(id: string): Promise<{{ pascalCase moduleName }}RemoveResponse>;
+  findById(id: string): Promise<{{ pascalCase moduleName }} | undefined>;
+  find(filter?: Record<string, any>): Promise<{{ pascalCase moduleName }}[]>;
+  findPage(options?: PaginationOptions<{{ pascalCase moduleName }}Filter>): Promise<Pagination<{{ pascalCase moduleName }}>>;
+}

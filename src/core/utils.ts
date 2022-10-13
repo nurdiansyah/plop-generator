@@ -1,38 +1,24 @@
 import fs from "fs";
 import { ActionType } from "node-plop";
 
-export const getAppendAction = (
-  file: string,
-  templateDir: string,
-  action: Record<string, any>
-) => {
+export const getAppendAction = (file: string, templateDir: string, action: Record<string, any>) => {
   if (file.includes(".append")) {
     const appendAction = { ...action };
     appendAction.type = "modify";
     appendAction.pattern = /(-- APPEND ITEMS HERE --)/gi;
-    appendAction.template = fs
-      .readFileSync(`${templateDir}/${file}`)
-      .toString();
+    appendAction.template = fs.readFileSync(`${templateDir}/${file}`).toString();
     appendAction.path = appendAction.path.replace(".append", "");
     return appendAction;
   }
   return action;
 };
 
-export const getPromptAction = (
-  file: string,
-  tmpDir: string,
-  data: any,
-  action: Record<string, any>
-) => {
+export const getPromptAction = (file: string, tmpDir: string, data: any, action: Record<string, any>) => {
   const isPrompt = file.includes(".prompt");
   const promptAction = { ...action };
   const dirExists = data[tmpDir];
   const isMultiplePrompt =
-    isPrompt &&
-    dirExists &&
-    Array.isArray(dirExists) &&
-    !data?.[tmpDir]?.find((f: string) => f === file);
+    isPrompt && dirExists && Array.isArray(dirExists) && !data?.[tmpDir]?.find((f: string) => f === file);
 
   const notFound = isPrompt && !data?.[tmpDir];
   if (isMultiplePrompt || notFound) {
@@ -44,10 +30,7 @@ export const getPromptAction = (
 export const getPatternRegex = (key?: string) =>
   new RegExp(`(\\/\\* -- APPEND${key ? `-${key}` : ""} -- \\*\\/)`, "ig");
 
-export const getTemplateExportIndexAction = (
-  exportName: string,
-  path: string
-): ActionType => {
+export const getTemplateExportIndexAction = (exportName: string, path: string): ActionType => {
   let type: any = "add";
   let template = `export * from "${exportName}";`;
   let pattern;
@@ -62,6 +45,6 @@ export const getTemplateExportIndexAction = (
     type,
     path,
     pattern,
-    template,
+    template
   };
 };

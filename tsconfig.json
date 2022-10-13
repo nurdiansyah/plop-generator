@@ -11,9 +11,9 @@
     "allowSyntheticDefaultImports": true,
     "importHelpers": true,
     "resolveJsonModule": true,
-    "emitDeclarationOnly": false,
     "declaration": true,
     "declarationDir": "libs",
+    "outDir": "libs"
   },
   "include": ["src"]
 }

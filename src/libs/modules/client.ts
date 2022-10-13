@@ -1,69 +1,52 @@
 import { pascalCase } from "@deboxsoft/module-core";
-import {
-  templateFilesGenerator,
-  getTemplateExportIndexAction,
-} from "../../core/index.js";
+import { templateFilesGenerator, getTemplateExportIndexAction } from "../../core/index.js";
 import { Actions, PlopGeneratorFunction } from "../../types.js";
+import fs from "fs";
 
 export const moduleClientGenerator: PlopGeneratorFunction =
   ({ plop, prompts }) =>
   ({ actions = [], templateDir, path, data = {} }) => {
+    const isMonorepo = data.isMonorepo;
     const model = pascalCase(data.model),
       modulePackage = "client",
-      rootPath = `${path}${data.isMonorepo ? `/${modulePackage}` : ""}`,
-      srcPath = `${rootPath}/src`;
+      rootPath = `${path}${isMonorepo ? `/${modulePackage}` : ""}`,
+      srcPath = `${rootPath}/src`,
+      svelteTemplateDir = `${templateDir}/svelte`;
     templateDir = `${templateDir}/${modulePackage}`;
-    const rootTemplateDir = `${templateDir}/root`;
     data.modulePackage = modulePackage;
-    // copy template root
-    templateFilesGenerator({
-      prompts,
-      actions,
-      env: data,
-      plop,
-      recursive: true,
-      templateDir: rootTemplateDir,
-      path: rootPath,
-    })({ data, actions, templateDir: rootTemplateDir, path: rootPath });
-    const graphqlActions: Actions = [
+    if (isMonorepo && !fs.existsSync(rootPath)) {
+      const rootTemplateDir = `${templateDir}/root`;
+      // copy template root
+      templateFilesGenerator({
+        prompts,
+        actions,
+        env: data,
+        plop,
+        recursive: true,
+        templateDir: rootTemplateDir,
+        path: rootPath
+      })({ data, actions, templateDir: rootTemplateDir, path: rootPath });
+    }
+    const restActions: Actions = [
       {
         type: "add",
-        path: `${srcPath}/graphql/${model}Document.ts`,
+        path: `${srcPath}/rest/${model}Rest.ts`,
         data,
         skipIfExists: true,
-        templateFile: `${templateDir}/graphql-document.hbs`,
+        templateFile: `${templateDir}/rest.hbs`
       },
-      getTemplateExportIndexAction(
-        `./${model}Document`,
-        `${srcPath}/graphql/index.ts`
-      ),
+      getTemplateExportIndexAction(`./${model}Rest.js`, `${srcPath}/rest/index.ts`)
     ];
-    const serviceActions: Actions = [
+    const svelteContextActions: Actions = [
       {
         type: "add",
-        path: `${srcPath}/services/${model}Service.ts`,
+        path: `${srcPath}/svelte/context/${model}Context.ts`,
         data,
         skipIfExists: true,
-        templateFile: `${templateDir}/client-service.hbs`,
+        templateFile: `${svelteTemplateDir}/context.hbs`
       },
-      getTemplateExportIndexAction(
-        `./${model}Service`,
-        `${srcPath}/services/index.ts`
-      ),
+      getTemplateExportIndexAction(`./${model}Context.js`, `${srcPath}/svelte/context/index.ts`)
     ];
-    const svelteStoresActions: Actions = [
-      {
-        type: "add",
-        path: `${srcPath}/stores/${model}Store.ts`,
-        data,
-        skipIfExists: true,
-        templateFile: `${templateDir}/svelte-store.hbs`,
-      },
-      getTemplateExportIndexAction(
-        `./${model}Store`,
-        `${srcPath}/stores/index.ts`
-      ),
-    ];
-    actions.push(...graphqlActions, ...serviceActions, ...svelteStoresActions);
+    actions.push(...restActions, ...svelteContextActions);
     return actions;
   };

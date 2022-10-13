@@ -13,28 +13,20 @@
       "email": "nur.diansyah.ckt@gmail.com"
     }
   ],
-  "main": "index.js",
-  "types": "types",
+  "types": "libs/index.d.ts",
   "type": "module",
   "exports": {
-    ".": {
-      "import": "./index.js",
-      "require": "./index.cjs"
-    }
+    ".": "./libs/index.js"
   },
   "files": [
-    "types",
-    "index.*"
+    "libs"
   ],
   "scripts": {
-    "build": "run-p build:*",
-    "build:rollup": "cre8-bundle",
-    "build:tsc": "rimraf types clean && tsc",
-    "lint": "eslint --fix 'src/**/*.ts'",
-    "format": "prettier --write --plugin-search-dir=. src",
+    "build": "tsup",
+    "format": "eslint --fix 'src/**/*.ts'",
     "test": "ava",
     "test:watch": "ava -w",
-    "bump": "pnpm run build && bump",
+    "bump": "pnpm build && bump",
     "publish:dev": "pnpm publish --tag dev --no-git-checks",
     "release": "pnpm bump -t \"api-v\" -c \"release api v\" && pnpm publish",
     "release:dev": "pnpm bump prerelease && pnpm publish:dev"
@@ -42,12 +34,12 @@
   "publishConfig": {
     "access": "public"
   },
-  "dependencies": {
-    "@deboxsoft/module-core": "^2.4.9",
-    "@deboxsoft/zod": "^3.11.5"
+  "devDependencies": {
+    "@deboxsoft/module-core": "^2.6.41",
+    "mustache": "~4.1.0"
   },
   "peerDependencies": {
-    "@deboxsoft/module-core": "2.3.x || 2.4.x",
-    "@deboxsoft/zod": "3.x"
+    "@deboxsoft/module-core": "2.x",
+    "mustache": "4.x"
   }
 }

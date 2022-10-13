@@ -1,10 +1,4 @@
 {
-  "extends": [
-    "@nurdiansyah/devel"
-  ],
-  "parserOptions": {
-    "ecmaVersion": 2019
-  },
   "ignorePatterns": [
     "templates",
     "*.js",
@@ -13,7 +7,13 @@
   "env": {
     "es6": true,
     "browser": true,
-    "node": true,
-    "jest": true
+    "node": true
+  },
+  "extends": ["@nurdiansyah/devel"],
+  "root": true,
+  "rules": {
+    "@typescript-eslint/no-empty-function": 0,
+    "@typescript-eslint/no-var-requires": 0,
+    "no-empty": 0
   }
 }

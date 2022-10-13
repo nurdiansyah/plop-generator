@@ -33,6 +33,4 @@ export interface GeneratorReturn {
   prompts: (options: PromptOptions) => void;
 }
 
-export type PlopGeneratorFunction = (
-  options: GeneratorOptions
-) => (actionOptions: ActionOptions) => Actions;
+export type PlopGeneratorFunction = (options: GeneratorOptions) => (actionOptions: ActionOptions) => Actions;

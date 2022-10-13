@@ -2,11 +2,7 @@ import { templateFilesGenerator } from "../../core/index.js";
 import { GeneratorOptions, PlopGeneratorFunction } from "../../types.js";
 import path from "path";
 
-export const gatsbyGenerator: PlopGeneratorFunction = ({
-  path: startingPath,
-  plop,
-  prompts,
-}: GeneratorOptions) => {
+export const gatsbyGenerator: PlopGeneratorFunction = ({ path: startingPath, plop, prompts }: GeneratorOptions) => {
   return ({ data = {}, actions = [], templateDir }) => {
     const workspace = data.workspace;
     const whitelistedWorkspaces = ["gatsby", "gatsby-contentful"];
@@ -14,19 +10,17 @@ export const gatsbyGenerator: PlopGeneratorFunction = ({
     // TODO: come back to. This works but I don't exactly like it since it's opinionated and dependent on each other
     templateFilesGenerator({
       plop,
-      path: startingPath
-        ? path.resolve(startingPath, "../shared-lib")
-        : startingPath,
+      path: startingPath ? path.resolve(startingPath, "../shared-lib") : startingPath,
       templateDir: `${templateDir}/shared-lib`,
       actions,
-      prompts,
+      prompts
     })({ actions, data });
     templateFilesGenerator({
       plop,
       actions,
       path: `${startingPath}-components/`,
       templateDir: `${templateDir}/component-lib`,
-      prompts,
+      prompts
     })({ actions, data });
     return actions;
   };

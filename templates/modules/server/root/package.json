@@ -1,0 +1,82 @@
+{
+  "name": "@{{ organization }}/ {{ kebabCase moduleName }}",
+  "version": "0.0.0",
+  "license": "SEE LICENSE IN LICENSE.md",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/deboxsoft/{{ kebabCase moduleName }}",
+    "directory": "packages/server"
+  },
+  "maintainers": [
+    {
+      "name": "Nurdiansyah",
+      "email": "nur.diansyah.ckt@gmail.com"
+    }
+  ],
+  "type": "module",
+  "types": "libs/index.d.ts",
+  "exports": {
+    ".": "./libs/index.js",
+    "./fastify": {
+      "import": {
+        "default": "./libs/fastify/index.js",
+        "types": "./libs/fastify/index.d.ts"
+      }
+    }
+  },
+  "files": [
+    "libs"
+  ],
+  "scripts": {
+    "build": "tsup",
+    "format": "eslint --fix 'src/**/*.ts'",
+    "test": "ava",
+    "test:watch": "ava -w",
+    "bump": "pnpm build && bump",
+    "publish:dev": "pnpm publish --tag dev --no-git-checks",
+    "release": "pnpm bump -t \"server-v\" -c \"release server v\" && pnpm publish",
+    "release:dev": "pnpm bump prerelease && pnpm publish:dev"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "dependencies": {
+    "@deboxsoft/teaching-factory-api": "workspace:^"
+  },
+  "devDependencies": {
+    "@deboxsoft/module-core": "~2.6.40",
+    "@deboxsoft/module-mongo": "~2.6.17",
+    "@deboxsoft/module-server": "~2.6.14",
+    "@fastify/jwt": "^6.3.1",
+    "@fastify/sensible": "^5.1.0",
+    "@fastify/swagger": "^7.4.1",
+    "@types/jsonwebtoken": "^8.5.8",
+    "fastify": "^4.3.0",
+    "fastify-plugin": "^4.0.0",
+    "mongodb": "~4.9.0",
+    "mongodb-memory-server": "^6.9.6",
+    "mqemitter": "~5.0.0",
+    "notation": "~2.0.0"
+  },
+  "peerDependencies": {
+    "@deboxsoft/module-core": "2.4.x",
+    "@deboxsoft/module-mongo": "2.4.x",
+    "@deboxsoft/module-server": "2.4.x",
+    "mongodb": "4.x",
+    "mqemitter": "4.x"
+  },
+  "peerDependenciesMeta": {
+    "fastify": {
+      "optional": true
+    },
+    "@fastify/jwt": {
+      "optional": true
+    },
+    "@fastify/sensible": {
+      "optional": true
+    },
+    "@fastify/swagger": {
+      "optional": true
+    }
+  }
+}

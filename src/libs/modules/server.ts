@@ -6,23 +6,26 @@ import { Actions, PlopGeneratorFunction } from "../../types.js";
 export const moduleServerGenerator: PlopGeneratorFunction =
   ({ plop, prompts }) =>
   ({ actions = [], templateDir, path, data = {} }) => {
+    const isMonorepo = data.isMonorepo;
     const model = pascalCase(data.model),
       modulePackage = "server",
-      rootPath = `${path}${data.isMonorepo ? `/${modulePackage}` : ""}`,
+      rootPath = `${path}${isMonorepo ? `/${modulePackage}` : ""}`,
       srcPath = `${rootPath}/src`;
     templateDir = `${templateDir}/${modulePackage}`;
-    const rootTemplateDir = `${templateDir}/root`;
     data.modulePackage = modulePackage;
-    // copy template root
-    templateFilesGenerator({
-      prompts,
-      actions,
-      env: data,
-      plop,
-      recursive: true,
-      templateDir: rootTemplateDir,
-      path: rootPath,
-    })({ data, actions, templateDir: rootTemplateDir, path: rootPath });
+    if (isMonorepo && !fs.existsSync(rootPath)) {
+      const rootTemplateDir = `${templateDir}/root`;
+      // copy template root
+      templateFilesGenerator({
+        prompts,
+        actions,
+        env: data,
+        plop,
+        recursive: true,
+        templateDir: rootTemplateDir,
+        path: rootPath
+      })({ data, actions, templateDir: rootTemplateDir, path: rootPath });
+    }
     const getIndexGraphqlAction = (): Actions => {
       const path = `${srcPath}/graphql/index.ts`;
       if (fs.existsSync(path)) {
@@ -32,8 +35,7 @@ export const moduleServerGenerator: PlopGeneratorFunction =
             path,
             data,
             pattern: getPatternRegex(),
-            template:
-              'import { create{{ pascalCase model }}Schema } from "./{{ pascalCase model }}schema";',
+            template: 'import { create{{ pascalCase model }}Schema } from "./{{ pascalCase model }}schema";'
           },
           {
             type: "append",
@@ -42,15 +44,15 @@ export const moduleServerGenerator: PlopGeneratorFunction =
             pattern: /typedefs: `/gi,
             template:
               // eslint-disable-next-line no-template-curly-in-string
-              "${{#preCurly (pascalCase model) }}{{/preCurly}}Schema.typeDef}",
+              "${{#preCurly (pascalCase model) }}{{/preCurly}}Schema.typeDef}"
           },
           {
             type: "append",
             path,
             data,
             pattern: /resolvers: \[/gi,
-            template: "{{ camelCase model }}Schema.resolvers",
-          },
+            template: "{{ camelCase model }}Schema.resolvers"
+          }
         ];
       }
       return [
@@ -59,8 +61,8 @@ export const moduleServerGenerator: PlopGeneratorFunction =
           path,
           data,
           templateFile: `${templateDir}/index-graphql.hbs`,
-          skipIfExists: true,
-        },
+          skipIfExists: true
+        }
       ];
     };
 
@@ -74,14 +76,14 @@ export const moduleServerGenerator: PlopGeneratorFunction =
             data,
             pattern: getPatternRegex(),
             template:
-              'import { create{{ pascalCase model }}ServiceServer } from "./{{ pascalCase model }}ServiceServer";',
+              'import { create{{ pascalCase model }}ServiceServer } from "./{{ pascalCase model }}ServiceServer";'
           },
           {
             type: "append",
             path,
             data,
             pattern: getPatternRegex("REGISTER"),
-            template: "create{{ pascalCase model}}Server(options);",
+            template: "create{{ pascalCase model}}Server(options);"
           },
           {
             type: "append",
@@ -89,8 +91,8 @@ export const moduleServerGenerator: PlopGeneratorFunction =
             data,
             pattern: getPatternRegex("EXPORT"),
             template:
-              'export { get{{ pascalCase model }}ServiceServer, {{ pascalCase model }}ServiceServer, create{{ pascalCase model }}ServiceServer } from "./{{ pascalCase model }}ServiceServer";',
-          },
+              'export { get{{ pascalCase model }}ServiceServer, {{ pascalCase model }}ServiceServer, create{{ pascalCase model }}ServiceServer } from "./{{ pascalCase model }}ServiceServer";'
+          }
         ];
       }
       return [
@@ -99,8 +101,8 @@ export const moduleServerGenerator: PlopGeneratorFunction =
           path,
           data,
           templateFile: `${templateDir}/index-service.hbs`,
-          skipIfExists: true,
-        },
+          skipIfExists: true
+        }
       ];
     };
     const getIndexRepoAction = (): Actions => {
@@ -112,8 +114,8 @@ export const moduleServerGenerator: PlopGeneratorFunction =
             path,
             data,
             pattern: getPatternRegex(),
-            template: 'export * from "./{{ pascalCase model }}Repo";',
-          },
+            template: 'export * from "./{{ pascalCase model }}Repo";'
+          }
         ];
       }
       return [
@@ -122,8 +124,8 @@ export const moduleServerGenerator: PlopGeneratorFunction =
           path,
           data,
           templateFile: `${templateDir}/index-repo.hbs`,
-          skipIfExists: true,
-        },
+          skipIfExists: true
+        }
       ];
     };
     const getIndexMongoAction = (): Actions => {
@@ -135,15 +137,14 @@ export const moduleServerGenerator: PlopGeneratorFunction =
             path,
             data,
             pattern: getPatternRegex(),
-            template:
-              'import { create{{ pascalCase model }}Repo } from "./{{ pascalCase model }}Collection";',
+            template: 'import { create{{ pascalCase model }}Repo } from "./{{ pascalCase model }}Collection";'
           },
           {
             type: "append",
             path,
             data,
             pattern: getPatternRegex("REGISTER"),
-            template: "  create{{ pascalCase model }}Repo();",
+            template: "  create{{ pascalCase model }}Repo();"
           },
           {
             type: "append",
@@ -151,8 +152,8 @@ export const moduleServerGenerator: PlopGeneratorFunction =
             data,
             pattern: getPatternRegex("COLLECTION"),
             template:
-              'export { {{ pascalCase model }}Collection, create{{ pascalCase model }}Repo } from "./{{ pascalCase model }}Collection";',
-          },
+              'export { {{ pascalCase model }}Collection, create{{ pascalCase model }}Repo } from "./{{ pascalCase model }}Collection";'
+          }
         ];
       }
       return [
@@ -161,8 +162,8 @@ export const moduleServerGenerator: PlopGeneratorFunction =
           path,
           data,
           templateFile: `${templateDir}/index-mongo.hbs`,
-          skipIfExists: true,
-        },
+          skipIfExists: true
+        }
       ];
     };
     const graphqlActions: Actions = [
@@ -171,8 +172,8 @@ export const moduleServerGenerator: PlopGeneratorFunction =
         path: `${srcPath}/graphql/${model}Schema.ts`,
         data,
         skipIfExists: true,
-        templateFile: `${templateDir}/schema-graphql.hbs`,
-      },
+        templateFile: `${templateDir}/schema-graphql.hbs`
+      }
     ];
     const serviceActions: Actions = [
       {
@@ -180,8 +181,8 @@ export const moduleServerGenerator: PlopGeneratorFunction =
         path: `${srcPath}/services/${model}Service.ts`,
         data,
         skipIfExists: true,
-        templateFile: `${templateDir}/server-service.hbs`,
-      },
+        templateFile: `${templateDir}/server-service.hbs`
+      }
     ];
     const repoActions: Actions = [
       {
@@ -189,8 +190,8 @@ export const moduleServerGenerator: PlopGeneratorFunction =
         path: `${srcPath}/db/${model}Repo.ts`,
         data,
         skipIfExists: true,
-        templateFile: `${templateDir}/repo.hbs`,
-      },
+        templateFile: `${templateDir}/repo.hbs`
+      }
     ];
     const mongoActions: Actions = [
       {
@@ -198,8 +199,8 @@ export const moduleServerGenerator: PlopGeneratorFunction =
         path: `${srcPath}/db/mongo/${model}Collection.ts`,
         data,
         skipIfExists: true,
-        templateFile: `${templateDir}/mongo.hbs`,
-      },
+        templateFile: `${templateDir}/mongo.hbs`
+      }
     ];
     actions.push(
       ...graphqlActions,

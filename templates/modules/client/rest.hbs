@@ -1,0 +1,102 @@
+import { createURLSearchParams, FetchApi, getFetchApi, RestOptions } from "@deboxsoft/module-client";
+import { Container, DataResponse, getLogger, Logger, Pagination, PaginationOptions } from "@deboxsoft/module-core";
+import {
+  {{ pascalCase model }},
+  {{ pascalCase model }}Input,
+  {{ pascalCase model }}Error,
+  {{ pascalCase model }}UpdateInput,
+  {{ pascalCase model }}Filter,
+  {{ pascalCase model }}CreateResponse,
+  {{ pascalCase model }}UpdateResponse,
+  {{ pascalCase model }}RemoveResponse,
+  {{ constantCase model }}_SERVICE_KEY,
+  {{ pascalCase model }}Service
+} from "@deboxsoft/{{ kebabCase moduleName }}-api";
+import { getModuleApiRoute } from "@deboxsoft/{{ kebabCase moduleName }}-api";
+
+type {{ pascalCase model }}ServiceRestOptions = RestOptions;
+export const create{{ pascalCase model }}ServiceRest = (opts: {{ pascalCase model }}ServiceRestOptions) => {
+  const {{ camelCase model }}ServiceRest = new {{ pascalCase model }}ServiceRest(opts);
+  Container.set({{ constantCase model }}_SERVICE_KEY, {{ camelCase model }}ServiceRest);
+  return {{ camelCase model }}ServiceRest;
+};
+
+class {{ pascalCase model }}ServiceRest implements {{ pascalCase model }}Service {
+  private readonly fetchApi: FetchApi;
+  private readonly logger: Logger;
+  private readonly apiPath: string;
+
+  constructor({ fetchApi }: {{ pascalCase model }}ServiceRestOptions) {
+    this.logger = getLogger();
+    this.apiPath = getModuleApiRoute().{{ camelCase model }}Route;
+    this.fetchApi = fetchApi || getFetchApi();
+  }
+
+  async create(input: {{ pascalCase model }}Input): Promise<{{ pascalCase model }}CreateResponse> {
+    try {
+      const response = await this.fetchApi.post(this.apiPath, {
+        json: input
+      });
+      if (!response.ok) {
+        throw new {{ pascalCase model }}Error({ message: response.statusText });
+      }
+      return response.json<{{ pascalCase model }}CreateResponse>();
+    } catch (e) {
+      this.logger.error(e);
+      throw e;
+    }
+  }
+
+  async update(id: string, input: {{ pascalCase model }}UpdateInput): Promise<{{ pascalCase model }}UpdateResponse> {
+    const response = await this.fetchApi.put(`${this.apiPath}/${id}`, { json: input });
+    if (!response.ok) {
+      throw new {{ pascalCase model }}Error({ message: response.statusText });
+    }
+    return response.json<{{ pascalCase model }}UpdateResponse>();
+  }
+
+  async remove(id: string): Promise<{{ pascalCase model }}RemoveResponse> {
+    const response = await this.fetchApi.delete(`${this.apiPath}/${id}`);
+    if (!response.ok) {
+      throw new {{ pascalCase model }}Error({ message: response.statusText });
+    }
+
+    return response.json<{{ pascalCase model }}RemoveResponse>();
+  }
+
+  // @ts-ignore
+  async find(filter: {{ pascalCase model }}Filter = {}): Promise<{{ pascalCase model }}[]> {
+    try {
+      const searchParams = createURLSearchParams(filter);
+      const response = await this.fetchApi.get(this.apiPath, {
+        searchParams
+      });
+      if (!response.ok) {
+        throw new {{ pascalCase model }}Error({ message: response.statusText });
+      }
+      return response.json<DataResponse<{{ pascalCase model }}[]>>().then((_) => _.data);
+    } catch (e) {
+      this.logger.debug("error find");
+      this.logger.error(e.message);
+      throw e;
+    }
+  }
+
+  async findById(id: string): Promise<{{ pascalCase model }} | undefined> {
+    const response = await this.fetchApi.get(`${this.apiPath}/${id}`, {});
+    if (!response.ok) {
+      throw new {{ pascalCase model }}Error({ message: response.statusText });
+    }
+    return response.json<DataResponse<{{ pascalCase model }} | undefined>>().then((_) => _.data);
+  }
+
+  async findPage(filter: PaginationOptions<{{ pascalCase model }}Filter>): Promise<Pagination<{{ pascalCase model }}>> {
+    const response = await this.fetchApi.post(`${this.apiPath}/page`, {
+      json: filter
+    });
+    if (!response.ok) {
+      throw new {{ pascalCase model }}Error({ message: response.statusText });
+    }
+    return response.json<Pagination<{{ pascalCase model }}>>();
+  }
+}
