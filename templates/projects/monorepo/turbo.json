@@ -1,0 +1,40 @@
+{
+  "$schema": "https://turborepo.org/schema.json",
+  "pipeline": {
+    "build": {
+      "inputs": ["src/**"],
+      "outputs": [
+        "build/**",
+        "dist/**",
+        "libs/**"
+      ]
+    },
+    "format": {},
+    "test": {
+      "dependsOn": ["^build", "$CI", "$TURBO_CACHE_KEY"],
+      "outputs": []
+    },
+    "lint": {
+      "outputs": []
+    },
+    "precommit": {
+      "dependsOn": ["format", "lint"],
+      "outputs": []
+    },
+    "package": {
+      "inputs": ["src/**"],
+      "outputs": [
+        "package/*"
+      ]
+    },
+    "release:dev": {
+      "dependsOn": ["^build"]
+    },
+    "bump": {
+      "dependsOn": ["^build"],
+      "inputs": ["package.json"],
+      "outputs": ["package.json"]
+    }
+  },
+  "globalDependencies": [".eslintrc.json", ".prettierrc", "tsconfig.json"]
+}

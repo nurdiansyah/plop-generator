@@ -1,21 +1,20 @@
 import path from "path";
 import fs from "fs";
 
-import { templateFilesGenerator } from "../../core/template-files";
 import { ActionType, NodePlopAPI } from "plop";
 
-import { validatePackageName } from "../../core/validations";
-import { e2eGenerator } from "./e2e";
-import { gatsbyGenerator } from "./gatsby";
-import { pipelinesGenerator } from "./pipelines";
-import { Prompts, Actions, GeneratorOptions, ActionOptions } from "../../types";
-import { getConfig } from "@deboxsoft/module-core";
+import { validatePackageName, templateFilesGenerator } from "../../core/index.js";
+import { e2eGenerator } from "./e2e.js";
+import { gatsbyGenerator } from "./gatsby.js";
+import { pipelinesGenerator } from "./pipelines.js";
+import { Prompts, Actions, GeneratorOptions, ActionOptions } from "../../types.js";
+import { getConfigService } from "@deboxsoft/module-core/libs/config";
 
 const generatorId = "projects";
 
 export default (plop: NodePlopAPI) => {
-  const config = getConfig();
-  plop.load(`${plop.getPlopfilePath()}/plugins/pnpm-install.js`, null, null);
+  const config = getConfigService();
+  plop.load(`${plop.getPlopfilePath()}/plugins/pnpm-install.js`, undefined, undefined);
   const templateDir = `${plop.getPlopfilePath()}/templates/${generatorId}`;
   let env: any = {
     generatorId,
@@ -34,12 +33,13 @@ export default (plop: NodePlopAPI) => {
       name: "organization",
       message: "organization name",
       validate: validatePackageName,
+      default: "deboxsoft"
     },
     {
       type: "input",
       name: "name",
       message: "workspace name",
-      validate: validatePackageName,
+      validate: validatePackageName
     },
   ];
   const actions: Actions = [];
@@ -57,12 +57,15 @@ export default (plop: NodePlopAPI) => {
   plop.setGenerator(generatorId, {
     description: "Module Project Files",
     prompts,
-    actions: (data = {}) => {
-      data = { ...env, ...data };
+    actions: (_data = {}) => {
+      const data = Object.assign(env, _data);
       const cwd = process.cwd();
-      const startingPath = `${cwd}${data.isMonorepo ? "/packages" : ""}/${
-        data.name
-      }`;
+      let startingPath = cwd;
+      if (data.isMonorepo || fs.existsSync(`${cwd}/pnpm-workspace.yaml`)) {
+        startingPath = `${startingPath}/packages/${data.name}`
+      } else {
+        startingPath = `${startingPath}/${data.name}`
+      }
       data.basePath = startingPath;
       const workspaceTemplatePath = path.resolve(
         `${templateDir}/${data.workspace}/`
@@ -82,11 +85,11 @@ export default (plop: NodePlopAPI) => {
       /* APPEND CUSTOM ACTION HANDLERS BELOW */
       /***************👇👇👇*************** */
       /* CYPRESS/E2E FILES */
-      e2eAction(actionOptions);
+      // e2eAction(actionOptions);
       /* CICD SUPPORT */
       pipelineAction(actionOptions);
       /* GATSBY CUSTOM HANDLERS */
-      gatsbyAction(actionOptions);
+      // gatsbyAction(actionOptions);
 
       /* INSTALL DEPENDENCIES */
       console.info("Install Dependencies");

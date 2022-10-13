@@ -1,0 +1,26 @@
+{
+  "bracketSpacing": true,
+  "semi": true,
+  "trailingComma": "none",
+  "printWidth": 120,
+  "overrides": [
+    {
+      "files": [".js", ".jsx"],
+      "options": {
+        "parser": "babel"
+      }
+    },
+    {
+      "files": "*.{ts,tsx}",
+      "options": {
+        "parser": "typescript"
+      }
+    },
+    {
+      "files": ["yaml", "yml"],
+      "options": {
+        "parser": "yaml"
+      }
+    }
+  ]
+}

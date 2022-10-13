@@ -1,7 +1,6 @@
 import { ActionType, NodePlopAPI, PromptQuestion } from "node-plop";
-import { PnpmInstallAction } from "./plugins/pnpm-install";
 
-export type Actions = (ActionType | PnpmInstallAction)[];
+export type Actions = (ActionType & { type?: string })[];
 export type Prompts = PromptQuestion[];
 
 export interface GeneratorOptions {

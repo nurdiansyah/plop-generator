@@ -1,32 +1,33 @@
 #!/usr/bin/env node
-import {config} from "dotenv";
-import path from "path";
+import path from "node:path";
 import minimist from "minimist";
-import dboxCore from "@deboxsoft/module-core";
+import { Container, camelCase, constantCase } from "@deboxsoft/module-core";
+import { CONFIG_KEY } from "@deboxsoft/module-core/libs/config";
+import { Plop, run } from "plop";
+import { fileURLToPath } from "node:url";
 
-config();
 const args = process.argv.slice(2);
-const { Plop, run } = require("plop");
 const argv = minimist(args);
-Plop.launch(
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+
+Plop.prepare(
   {
     cwd: argv.cwd,
-    // In order for `plop` to always pick up the `plopfile.js` despite the CWD, you must use `__dirname`
     configPath: path.join(__dirname, "..", "plopfile.js"),
-    require: argv.require,
+    preload: argv.preload || [],
     completion: argv.completion,
-    // This will merge the `plop` argv and the generator argv.
-    // This means that you don't need to use `--` anymore
   },
-  (env) => {
-    env.isMonorepo = process.env.IS_MONOREPO === "true" || false;
-    const config = () => ({
-      get: (key, defaultValue) =>
-        env[dboxCore.camelCase(key)] ||
-        process.env[dboxCore.constantCase(key)] ||
-        defaultValue,
-    });
-    dboxCore.Container.set(dboxCore.CONFIG_KEY, config());
-    run(env, undefined, true);
-  }
+  (env) =>
+    Plop.execute(env, (env) => {
+      env.isMonorepo = process.env.IS_MONOREPO === "true" || false;
+      const config = () => ({
+        get: (key, defaultValue) =>
+          env[camelCase(key)] || process.env[constantCase(key)] || defaultValue,
+      });
+      Container.set(CONFIG_KEY, config());
+      const opts = {
+        ...env,
+      };
+      return run(opts, undefined, true);
+    })
 );

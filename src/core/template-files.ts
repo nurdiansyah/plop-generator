@@ -4,8 +4,8 @@ import {
   GeneratorOptions,
   PlopGeneratorFunction,
   PromptOptions,
-} from "../types";
-import { getAppendAction, getPromptAction } from "./utils";
+} from "../types.js";
+import { getAppendAction, getPromptAction } from "./utils.js";
 
 type RecursiveOptions = ActionOptions & GeneratorOptions;
 
@@ -16,12 +16,12 @@ export const templateFilesGenerator: PlopGeneratorFunction = ({
   recursive = true,
   path,
   prompts,
-  actions,
+  actions = [],
   templateDir,
 }: GeneratorOptions) => {
   recursivePrompts({
     templateDir,
-    pathDir: templateDir,
+    pathDir: templateDir || "",
     prompts,
     data: env,
     path,
@@ -76,7 +76,7 @@ function recursivePrompts({
             answers.workspace ===
             pathDir.replace(`${templateDir}/`, "").split("/")[0],
         };
-        prompts.push(prompt);
+        prompts?.push(prompt);
       }
     }
   });
@@ -86,7 +86,7 @@ function recursivePrompts({
 function recursiveFilesAction({
   plop,
   prompts,
-  templateDir,
+  templateDir = "templates",
   skipPattern,
   path,
   data,
@@ -97,7 +97,7 @@ function recursiveFilesAction({
   const files = fs.readdirSync(templateDir);
   files.forEach((file) => {
     const isFile = file.includes(".") || file.endsWith("file");
-    const skip = skipPattern.test(file);
+    const skip = skipPattern?.test(file);
     let action: any = {};
     if (isFile && !skip) {
       action = {

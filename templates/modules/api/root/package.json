@@ -4,7 +4,7 @@
   "license": "SEE LICENSE IN LICENSE.md",
   "repository": {
     "type": "git",
-    "url": "https://github.com/deboxsoft/{{ kebabCase moduleName }}-system",
+    "url": "https://github.com/deboxsoft/{{ kebabCase moduleName }}",
     "directory": "packages/api"
   },
   "maintainers": [
@@ -14,47 +14,40 @@
     }
   ],
   "main": "index.js",
-  "module": "index.mjs",
-  "types": "types/index.d.ts",
+  "types": "types",
+  "type": "module",
   "exports": {
     ".": {
-      "import": "./index.mjs",
-      "require": "./index.js"
+      "import": "./index.js",
+      "require": "./index.cjs"
     }
   },
   "files": [
-    "*",
-    "!src",
-    "!tests"
+    "types",
+    "index.*"
   ],
   "scripts": {
-    "build": "run-p build:rollup build:tsc",
-    "build:rollup": "rollup -c",
-    "build:tsc": "rimraf types && tsc",
+    "build": "run-p build:*",
+    "build:rollup": "cre8-bundle",
+    "build:tsc": "rimraf types clean && tsc",
     "lint": "eslint --fix 'src/**/*.ts'",
-    "test": "uvu -r ts-node/register",
+    "format": "prettier --write --plugin-search-dir=. src",
+    "test": "ava",
+    "test:watch": "ava -w",
     "bump": "pnpm run build && bump",
-    "release:dev": "git add . && pnpm run bump -- -cp prerelease && pnpm publish --tag dev --no-git-checks"
+    "publish:dev": "pnpm publish --tag dev --no-git-checks",
+    "release": "pnpm bump -t \"api-v\" -c \"release api v\" && pnpm publish",
+    "release:dev": "pnpm bump prerelease && pnpm publish:dev"
   },
   "publishConfig": {
     "access": "public"
   },
-  "dependencies": {},
-  "devDependencies": {
-    "@deboxsoft/module-core": "~2.2.1",
-    "@nurdiansyah/bump": "^6.1.2",
-    "@nurdiansyah/rollup": "^1.6.8",
-    "@types/mustache": "^4.1.1",
-    "@types/node": "^14.14.31",
-    "mqemitter": "^4.4.1",
-    "nodemon": "^2.0.7",
-    "npm-run-all": "^4.1.5",
-    "rimraf": "^3.0.2",
-    "rollup": "^2.51.2",
-    "ts-node": "^10.0.0",
-    "tslib": "^2.2.0",
-    "typescript": "~4.2.0",
-    "utility-types": "^3.10.0",
-    "uvu": "^0.5.1"
+  "dependencies": {
+    "@deboxsoft/module-core": "^2.4.9",
+    "@deboxsoft/zod": "^3.11.5"
+  },
+  "peerDependencies": {
+    "@deboxsoft/module-core": "2.3.x || 2.4.x",
+    "@deboxsoft/zod": "3.x"
   }
 }
