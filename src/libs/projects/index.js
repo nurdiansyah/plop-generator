@@ -1,19 +1,18 @@
 import path from "path";
 import fs from "fs";
 
-import { ActionType, NodePlopAPI } from "plop";
-
 import { validatePackageName, templateFilesGenerator } from "../../core/index.js";
 import { e2eGenerator } from "./e2e.js";
 import { gatsbyGenerator } from "./gatsby.js";
 import { pipelinesGenerator } from "./pipelines.js";
-import { Prompts, Actions, GeneratorOptions, ActionOptions } from "../../types.js";
 import { getConfigService } from "@deboxsoft/module-core/libs/config";
-import { hbsVariableHelpers } from "../../helpers/index.js";
 
 const generatorId = "projects";
 
-export default (plop: NodePlopAPI) => {
+/**
+ * @param plop {import("@nurdiansyah/plop").NodePlopAPI}
+ */
+export default (plop) => {
   const config = getConfigService();
 
   // load plugin
@@ -22,11 +21,15 @@ export default (plop: NodePlopAPI) => {
   // helpers
   hbsVariableHelpers(plop);
   const templateDir = `${plop.getPlopfilePath()}/templates/${generatorId}`;
-  let env: any = {
+  let env = {
     generatorId,
     isMonorepo: config.get("is-monorepo")
   };
-  const prompts: Prompts = [
+  /**
+   *
+   * @type {import("../../types.js").Prompts}
+   */
+  const prompts = [
     {
       type: "list",
       name: "workspace",
@@ -46,8 +49,16 @@ export default (plop: NodePlopAPI) => {
       validate: validatePackageName
     }
   ];
-  const actions: Actions = [];
-  const generatorOptions: GeneratorOptions = {
+  /**
+   *
+   * @type {import("../../types.js").Actions}
+   */
+  const actions = [];
+  /**
+   *
+   * @type {import("../../types.js").GeneratorOptions}
+   */
+  const generatorOptions = {
     plop,
     env,
     prompts,
@@ -72,7 +83,11 @@ export default (plop: NodePlopAPI) => {
       }
       data.basePath = startingPath;
       const workspaceTemplatePath = path.resolve(`${templateDir}/${data.workspace}/`);
-      const actionOptions: ActionOptions = {
+      /**
+       *
+       * @type {import("../../types.js").ActionOptions}
+       */
+      const actionOptions = {
         path: startingPath,
         templateDir,
         actions,
@@ -107,8 +122,8 @@ export default (plop: NodePlopAPI) => {
       });
 
       /* DEDUPE ACTIONS */
-      const _tmp: Record<string, ActionType> = {};
-      return actions.reduce((acc: Actions, curr) => {
+      const _tmp = {};
+      return actions.reduce((acc, curr) => {
         // @ts-ignore
         const path = curr?.path;
         if (path) {

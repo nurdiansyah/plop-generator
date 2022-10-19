@@ -1,10 +1,10 @@
 {
-  "name": "@deboxsoft/{{ kebabCase moduleName }}-api",
+  "name": "@deboxsoft/{{ kebabCase projectName }}-api",
   "version": "0.0.0",
   "license": "SEE LICENSE IN LICENSE.md",
   "repository": {
     "type": "git",
-    "url": "https://github.com/deboxsoft/{{ kebabCase moduleName }}",
+    "url": "https://github.com/deboxsoft/{{ kebabCase projectName }}",
     "directory": "packages/api"
   },
   "maintainers": [

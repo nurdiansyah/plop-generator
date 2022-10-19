@@ -1,0 +1,14 @@
+export const MODULE_NAME = "{{ projectName }}";
+
+export type ModuleApiRoute = {
+  /* GEN-ADD: type */
+  {{ camelCase model }}Route: string;
+};
+
+export const getModuleApiRoute = (): ModuleApiRoute => {
+  const base = MODULE_NAME;
+  return {
+    /* GEN-ADD: route */
+    {{ camelCase model }}Route: `${base}/{{ camelCase model }}`
+  };
+};

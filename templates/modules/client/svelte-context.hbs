@@ -1,0 +1,121 @@
+import { getContext, hasContext, setContext } from "svelte";
+import {
+  {{ pascalCase  model }},
+  {{ pascalCase  model }}CreateResponse,
+  {{ pascalCase  model }}Event,
+  {{ pascalCase  model }}Filter,
+  {{ pascalCase  model }}Input,
+  {{ pascalCase  model }}RemoveResponse,
+  {{ pascalCase  model }}Service,
+  {{ pascalCase  model }}UpdateInput,
+  {{ pascalCase  model }}UpdateResponse
+} from "@deboxsoft/gft-api";
+import { Logger, Pagination, PaginationOptions } from "@deboxsoft/module-core";
+import { createEventEmitter } from "@deboxsoft/module-client";
+import { createPaginationStore, PaginationStore } from "@deboxsoft/module-client/libs/svelte";
+
+type {{ pascalCase  model }}ContextOptions = {
+  initial?: {{ pascalCase  model }}[];
+  {{ camelCase  model }}Service: {{ pascalCase  model }}Service;
+  logger: Logger;
+};
+
+export class {{ pascalCase  model }}Context implements {{ pascalCase  model }}Service {
+  private paginationStore: PaginationStore<{{ pascalCase  model }}, {{ pascalCase  model }}Filter>;
+  private logger: Logger;
+  private {{ camelCase  model }}Service: {{ pascalCase  model }}Service;
+  private event = createEventEmitter();
+
+  constructor(opts: {{ pascalCase  model }}ContextOptions) {
+    this.{{ camelCase  model }}Service = opts.{{ camelCase  model }}Service;
+    this.paginationStore = createPaginationStore<{{ pascalCase  model }}, {{ pascalCase  model }}Filter>({ initial: opts.initial });
+    this.logger = opts.logger;
+  }
+
+  get dataStore() {
+    return this.paginationStore.dataStore;
+  }
+
+  get pageInfo() {
+    return this.paginationStore.pageInfo;
+  }
+
+  async create(input: {{ pascalCase  model }}Input): Promise<{{ pascalCase  model }}CreateResponse> {
+    try {
+      const _input = {{ pascalCase  model }}Input.parse(input);
+      this.event.emit({{ pascalCase  model }}Event.onBeforeCreate, _input);
+      const response = await this.{{ camelCase  model }}Service.create(input);
+      const {{ camelCase  model }} = {
+        ..._input,
+        ...response.meta,
+        id: response.data
+      };
+      this.paginationStore.dataStore.push({{ camelCase  model }});
+      this.event.emit({{ pascalCase  model }}Event.onAfterCreate, {{ camelCase  model }});
+      return response;
+    } catch (e) {
+      this.logger.debug(`[error] ${e?.message}`);
+      throw e;
+    }
+  }
+
+  async update(id: string, input: {{ pascalCase  model }}UpdateInput): Promise<{{ pascalCase  model }}UpdateResponse> {
+    try {
+      input = {{ pascalCase  model }}UpdateInput.parse(input);
+      this.event.emit({{ pascalCase  model }}Event.onBeforeUpdate, { id, input });
+      const response = await this.{{ camelCase  model }}Service.update(id, input);
+      if (response.data) {
+        this.paginationStore.dataStore.update({ id, input });
+        this.event.emit({{ pascalCase  model }}Event.onAfterUpdate, id, input);
+      }
+      return response;
+    } catch (e) {
+      this.logger.debug(`[error] ${e?.message}`);
+      throw e;
+    }
+  }
+
+  async remove(id: string, index?: number): Promise<{{ pascalCase  model }}RemoveResponse> {
+    try {
+      this.event.emit({{ pascalCase  model }}Event.onBeforeRemove, id);
+      const response = await this.{{ camelCase  model }}Service.remove(id);
+      if (response.data) {
+        this.paginationStore.dataStore.remove({
+          id,
+          index
+        });
+        this.event.emit({{ pascalCase  model }}Event.onAfterRemove, id);
+      }
+      return response;
+    } catch (e) {
+      this.logger.debug(`[error] ${e?.message}`);
+      throw e;
+    }
+  }
+
+  findById(id: string): Promise<{{ pascalCase  model }} | undefined> {
+    return this.{{ camelCase  model }}Service.findById(id);
+  }
+
+  find(filter: {{ pascalCase  model }}Filter): Promise<{{ pascalCase  model }}[]> {
+    return this.{{ camelCase  model }}Service.find(filter);
+  }
+
+  findPage(filter: PaginationOptions<{{ pascalCase  model }}Filter>): Promise<Pagination<{{ pascalCase  model }}>> {
+    return this.{{ camelCase  model }}Service.findPage(filter);
+  }
+}
+
+const {{ camelCase  model }}ContextKey = "BOOK-CONTEXT-KEY";
+export const create{{ pascalCase  model }}Context = (opts: {{ pascalCase  model }}ContextOptions) => {
+  if (has{{ pascalCase  model }}Context()) {
+    return get{{ pascalCase  model }}Context();
+  }
+  const {{ camelCase  model }}Context: {{ pascalCase  model }}Context = new {{ pascalCase  model }}Context(opts);
+  setContext({{ camelCase  model }}ContextKey, {{ camelCase  model }}Context);
+  return {{ camelCase  model }}Context;
+};
+
+export const get{{ pascalCase  model }}Context = () => getContext<{{ pascalCase  model }}Context>({{ camelCase  model }}ContextKey);
+
+export const has{{ pascalCase  model }}Context = () => hasContext({{ camelCase  model }}ContextKey);

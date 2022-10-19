@@ -9,10 +9,10 @@ type Options = DbxErrorOptions<{{ pascalCase model }}CodeMessageError> & {
   config?: Partial<ModuleConfig>;
 };
 const codeMessageDefault = {
-  {{ constantCase model }}_NOT_FOUND: "{{ pascalCase model }} id `{{ hbsVariable "id"}} not found.`",
-  {{ constantCase model }}_CREATE_FAILED: "create {{ pascalCase model }} id `{{ hbsVariable "id"}}` failed.",
-  {{ constantCase model }}_UPDATE_FAILED: "update {{ pascalCase model }} id `{{ hbsVariable "id"}}` failed.",
-  {{ constantCase model }}_REMOVE_FAILED: "remove {{ pascalCase model }} id `{{ hbsVariable "id"}}` failed.",
+  {{ constantCase model }}_NOT_FOUND: "{{ pascalCase model }} id `{{ exceptVar "id"}} not found.`",
+  {{ constantCase model }}_CREATE_FAILED: "create {{ pascalCase model }} id `{{ exceptVar "id"}}` failed.",
+  {{ constantCase model }}_UPDATE_FAILED: "update {{ pascalCase model }} id `{{ exceptVar "id"}}` failed.",
+  {{ constantCase model }}_REMOVE_FAILED: "remove {{ pascalCase model }} id `{{ exceptVar "id"}}` failed.",
 };
 
 export class {{ pascalCase model }}Error extends DbxError<{{ pascalCase model }}CodeMessageError> {

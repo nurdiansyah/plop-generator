@@ -10,9 +10,9 @@ import {
   {{ pascalCase model }}UpdateResponse,
   {{ pascalCase model }}RemoveResponse,
   {{ constantCase model }}_SERVICE_KEY,
-  {{ pascalCase model }}Service
-} from "@deboxsoft/{{ kebabCase moduleName }}-api";
-import { getModuleApiRoute } from "@deboxsoft/{{ kebabCase moduleName }}-api";
+  {{ pascalCase model }}Service,
+  getModuleApiRoute
+} from "@deboxsoft/{{ kebabCase projectName }}-api";
 
 type {{ pascalCase model }}ServiceRestOptions = RestOptions;
 export const create{{ pascalCase model }}ServiceRest = (opts: {{ pascalCase model }}ServiceRestOptions) => {

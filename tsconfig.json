@@ -12,8 +12,10 @@
     "importHelpers": true,
     "resolveJsonModule": true,
     "declaration": true,
-    "declarationDir": "libs",
-    "outDir": "libs"
+    "emitDeclarationOnly": true,
+    "declarationDir": "src",
+    "allowJs": true
   },
-  "include": ["src"]
+  "include": ["src"],
+  "exclude": ["src/types.d.ts"]
 }

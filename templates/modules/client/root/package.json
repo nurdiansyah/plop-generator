@@ -1,10 +1,10 @@
 {
-  "name": "@{{ organization }}/{{ kebabCase moduleName}}",
+  "name": "@{{ organization }}/{{ kebabCase projectName}}",
   "version": "0.0.0",
   "license": "SEE LICENSE IN LICENSE.md",
   "repository": {
     "type": "git",
-    "url": "https://github.com/deboxsoft/{{ kebabCase moduleName}}",
+    "url": "https://github.com/deboxsoft/{{ kebabCase projectName}}",
     "directory": "packages/client"
   },
   "maintainers": [
@@ -42,16 +42,16 @@
     "@deboxsoft/module-client": "^2.6.21",
     "@deboxsoft/module-core": "^2.6.40",
     "@deboxsoft/svelte-core": "1.1.3-beta.12",
-    "@deboxsoft/{{ kebabCase moduleName }}-api": "workspace:^",
-    "@deboxsoft/{{ kebabCase moduleName }}-server": "workspace:^",
+    "@deboxsoft/{{ kebabCase projectName }}-api": "workspace:^",
+    "@deboxsoft/{{ kebabCase projectName }}-server": "workspace:^",
     "svelte": "^3.x"
   },
   "peerDependencies": {
     "@deboxsoft/module-client": "2.x",
     "@deboxsoft/module-core": "2.x",
     "@deboxsoft/svelte-core": "1.x || 1.1.3-beta.x",
-    "@deboxsoft/{{ kababCase moduleName }}-api": "workspace:^",
-    "@deboxsoft/{{ kababCase moduleName }}-server": "workspace:^",
+    "@deboxsoft/{{ kebabCase projectName }}-api": "workspace:^",
+    "@deboxsoft/{{ kebabCase projectName }}-server": "workspace:^",
     "svelte": "^3.x"
   }
 }

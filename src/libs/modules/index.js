@@ -1,38 +1,51 @@
 import fs from "fs";
-import { ActionType, NodePlopAPI } from "node-plop";
 import { getConfigService } from "@deboxsoft/module-core/libs/config";
 import { validatePackageName } from "../../core/index.js";
-import { ActionOptions, Actions, GeneratorOptions, Prompts } from "../../types.js";
 import { moduleApiGenerator } from "./api.js";
 import { moduleServerGenerator } from "./server.js";
 import { moduleClientGenerator } from "./client.js";
-import { hbsVariableHelpers } from "../../helpers/index.js";
-
+import inquirer from "inquirer";
 const generatorId = "modules";
-export default (plop: NodePlopAPI) => {
-  // helpers
-  hbsVariableHelpers(plop);
 
+/**
+ *
+ * @param plop {import("@nurdiansyah/plop").NodePlopAPI}
+ * @return {Promise<void>}
+ */
+export default async (plop) => {
   const config = getConfigService();
   const templateDir = `${plop.getPlopfilePath()}/templates/${generatorId}`;
-  const actions: Actions = [];
-  const prompts: Prompts = [
+  const actions = [];
+  const prompts = [
     {
       type: "input",
-      name: "moduleName",
-      message: "module name",
-      validate: validatePackageName
+      name: "projectName",
+      message: "project name",
+      validate: validatePackageName,
+      default: config.get("project-name")
     }
   ];
-  const env: Record<string, any> = {
+  const env = {
     isMonorepo: config.get("is-monorepo") || fs.existsSync(`${process.cwd()}/pnpm-workspace.yaml`),
     generatorId
   };
+  const promptModule = inquirer.createPromptModule();
   if (!env.isMonorepo) {
-    prompts.push({
+    await promptModule({
       type: "list",
-      name: "modulePackage",
+      name: "package",
+      message: "module",
       choices: fs.readdirSync(templateDir).map((dir) => ({ name: dir, value: dir }))
+    }).then((answer) => {
+      env.package = answer.package;
+    });
+  } else {
+    await promptModule({
+      type: "checkbox",
+      name: "packages",
+      choices: ["api", "server", "client"]
+    }).then((answer) => {
+      env.packages = answer.packages;
     });
   }
   prompts.push({
@@ -41,17 +54,19 @@ export default (plop: NodePlopAPI) => {
     message: "model name",
     validate: validatePackageName
   });
-
-  const generatorOptions: GeneratorOptions = {
+  if (env.isMonorepo) {
+  }
+  const generatorOptions = {
     plop,
     env,
     prompts,
     actions,
     templateDir
   };
-  const moduleApiAction = moduleApiGenerator(generatorOptions);
-  const moduleServerAction = moduleServerGenerator(generatorOptions);
-  const moduleClientAction = moduleClientGenerator(generatorOptions);
+  let moduleApiAction, moduleServerAction, moduleClientAction;
+  moduleApiAction = moduleApiGenerator(generatorOptions);
+  moduleServerAction = moduleServerGenerator(generatorOptions);
+  moduleClientAction = moduleClientGenerator(generatorOptions);
   plop.setGenerator(generatorId, {
     description: "generator module deboxsoft framework",
     prompts,
@@ -60,33 +75,27 @@ export default (plop: NodePlopAPI) => {
       const isMonorepo = data.isMonorepo || false;
       const cwd = process.cwd();
       const startingPath = `${cwd}${isMonorepo ? "/packages" : ""}`;
-      const actionOptions: ActionOptions = {
+      const actionOptions = {
         actions,
         path: startingPath,
         templateDir,
         data
       };
       /* GENERATE SELECTED WORKSPACE FILES */
-
       /* APPEND CUSTOM ACTION HANDLERS BELOW */
       /***************👇👇👇*************** */
       if (isMonorepo) {
-        moduleApiAction(actionOptions);
-        moduleClientAction(actionOptions);
-        moduleServerAction(actionOptions);
+        if (data.packages.includes("api")) moduleApiAction(actionOptions);
+        if (data.packages.includes("client")) moduleClientAction(actionOptions);
+        if (data.packages.includes("server")) moduleServerAction(actionOptions);
       } else {
-        if (data.modulePackage === "api") {
-          moduleApiAction(actionOptions);
-        } else if (data.modulePackage === "server") {
-          moduleServerAction(actionOptions);
-        } else if (data.modulePackage === "client") {
-          moduleClientAction(actionOptions);
-        }
+        if (data.package === "api") moduleApiAction(actionOptions);
+        else if (data.package === "server") moduleServerAction(actionOptions);
+        else if (data.package === "client") moduleClientAction(actionOptions);
       }
-
       /* DEDUPE ACTIONS */
-      const _tmp: Record<string, ActionType> = {};
-      return actions.reduce((acc: Actions, curr) => {
+      const _tmp = {};
+      return actions.reduce((acc, curr) => {
         // @ts-ignore
         const path = curr?.path;
         if (path) {

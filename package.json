@@ -1,6 +1,6 @@
 {
   "name": "@deboxsoft/plop-generator",
-  "version": "1.0.1-beta.36",
+  "version": "1.0.1-beta.37",
   "description": "Plop Generator to scaffold js/ts projects",
   "type": "module",
   "types": "libs",
@@ -8,15 +8,13 @@
     "cre8-gen": "bin/cli.js"
   },
   "exports": {
-    ".": "./libs/cli.js",
-    "./libs/plopfile": "./libs/plopfile.js"
+    ".": "./plopfile.js"
   },
   "scripts": {
     "test": "echo Error: no test specified",
     "start": "plop",
     "plop": "plop",
-    "clean": "rimraf libs",
-    "build": "pnpm clean && tsc",
+    "build": "fd --glob \"*.d.ts\" src -x rm {} && tsc",
     "postinstall": "node ./bin/postInstall.js",
     "bump": "pnpm build && bump",
     "publish:dev": "pnpm publish --tag dev --no-git-checks",
@@ -27,14 +25,14 @@
   "license": "SEE LICENSE",
   "dependencies": {
     "@deboxsoft/module-core": "^2.6.41",
+    "@nurdiansyah/node-plop": "^0.31.0",
+    "@nurdiansyah/plop": "^3.1.2",
     "dotenv": "^16.0.1",
     "edit-json-file": "^1.7.0",
     "minimist": "^1.2.6",
     "nconf": "^0.12.0",
     "nconf-yaml": "^1.0.2",
-    "node": "^18.5.0",
-    "node-plop": "^0.31.0",
-    "plop": "^3.1.1"
+    "node": "^18.5.0"
   },
   "devDependencies": {
     "@babel/types": "^7.11.0",
@@ -42,6 +40,7 @@
     "@nurdiansyah/eslint-config-devel": "^8.0.3",
     "@types/babel__generator": "^7.6.1",
     "@types/edit-json-file": "^1.4.0",
+    "@types/inquirer": "^9.0.2",
     "@types/node": "^16.11.45",
     "@typescript-eslint/eslint-plugin": "^5.30.7",
     "@typescript-eslint/parser": "^5.30.7",
@@ -59,7 +58,7 @@
     "plopfile.*",
     "core",
     "plugins",
-    "libs",
+    "src",
     "types.*",
     "templates",
     "CODEOWNERS"

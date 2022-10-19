@@ -1,0 +1,99 @@
+import { Container, getLogger, Logger, PaginationOptions } from "@deboxsoft/module-core";
+import {
+  {{ pascalCase model }}Filter,
+  {{ pascalCase model }},
+  {{ pascalCase model }}Error,
+  {{ pascalCase model }}Event,
+  {{ pascalCase model }}Input,
+  {{ pascalCase model }}Service,
+  {{ pascalCase model }}UpdateInput,
+  {{ pascalCase model }}DataInput,
+  {{ pascalCase model }}CreateResponse,
+  {{ pascalCase model }}UpdateResponse,
+  {{ pascalCase model }}RemoveResponse
+} from "@deboxsoft/{{ camelCase  projectName }}-api";
+import { MQEmitter } from "mqemitter";
+import { get{{ pascalCase model }}Repo, {{ pascalCase model }}Repo } from "../db/index.js";
+import { {{ pascalCase  projectName }}ServerModuleConfig } from "../types.js";
+
+const KEY = "{{ constantCase model }}_SERVICE_SERVER";
+export const create{{ pascalCase model }}ServiceServer = async (opts: {{ pascalCase  projectName }}ServerModuleConfig) => {
+  const {{ pascalCase model }}Repo = get{{ pascalCase model }}Repo();
+  const {{ pascalCase model }}Service = new {{ pascalCase model }}ServiceServer({{ pascalCase model }}Repo, opts);
+  Container.set(KEY, {{ pascalCase model }}Service);
+  return {{ pascalCase model }}Service;
+};
+
+export const get{{ pascalCase model }}ServiceServer = () => Container.get<{{ pascalCase model }}ServiceServer>(KEY);
+
+export class {{ pascalCase model }}ServiceServer implements {{ pascalCase model }}Service {
+  logger: Logger;
+  event: MQEmitter;
+  constructor(private {{ pascalCase model }}Repo: {{ pascalCase model }}Repo, { logger, event }: {{ pascalCase  projectName }}ServerModuleConfig) {
+    this.logger = getLogger();
+    this.event = event;
+  }
+
+  async create(input: {{ pascalCase model }}Input): Promise<{{ pascalCase model }}CreateResponse> {
+    const dataInput: {{ pascalCase model }}DataInput = {{ pascalCase model }}Input.parse(input);
+    this.event.emit({ topic: {{ pascalCase model }}Event.onBeforeCreate, input: dataInput });
+    const { data: id } = await this.{{ pascalCase model }}Repo.create(dataInput);
+    if (id) {
+      this.{{ pascalCase model }}Repo.findById(id).then((_) => {
+        if (_) {
+          this.event.emit({ topic: {{ pascalCase model }}Event.onAfterCreate, data: _ });
+          return _;
+        } else {
+        }
+      });
+      return {
+        data: id,
+        meta: {}
+      };
+    }
+    throw new {{ pascalCase model }}Error({ code: "{{ constantCase model }}_CREATE_FAILED" });
+  }
+
+  async update(id, input: {{ pascalCase model }}UpdateInput): Promise<{{ pascalCase model }}UpdateResponse> {
+    const dataInput: Partial<{{ pascalCase model }}DataInput> = {{ pascalCase model }}UpdateInput.parse(input);
+    this.event.emit({ topic: {{ pascalCase model }}Event.onBeforeUpdate, id, input: dataInput });
+    const { data } = await this.{{ pascalCase model }}Repo.update(id, dataInput);
+    if (data) {
+      this.findById(id).then((_) => {
+        if (_) {
+          this.event.emit({ topic: {{ pascalCase model }}Event.onAfterUpdate, data: _ });
+        }
+      });
+      return {
+        data,
+        meta: {}
+      };
+    }
+    throw new {{ pascalCase model }}Error({ code: "{{ constantCase model }}_UPDATE_FAILED", args: { id } });
+  }
+
+  async remove(id: string): Promise<{{ pascalCase model }}RemoveResponse> {
+    this.event.emit({ topic: {{ pascalCase model }}Event.onBeforeRemove, id });
+    const { data } = await this.{{ pascalCase model }}Repo.remove(id);
+    if (data) {
+      this.event.emit({ topic: {{ pascalCase model }}Event.onAfterRemove, id });
+      return {
+        data,
+        meta: {}
+      };
+    }
+    throw new {{ pascalCase model }}Error({ code: "{{ constantCase model }}_REMOVE_FAILED", args: { id } });
+  }
+
+  async findById(id: string): Promise<{{ pascalCase model }} | undefined> {
+    return await this.{{ pascalCase model }}Repo.findById(id);
+  }
+
+  async find(filter?: {{ pascalCase model }}Filter): Promise<{{ pascalCase model }}[]> {
+    return await this.{{ pascalCase model }}Repo.find(filter);
+  }
+
+  findPage(opts: PaginationOptions<{{ pascalCase model }}Filter>) {
+    return this.{{ pascalCase model }}Repo.findPage(opts);
+  }
+}

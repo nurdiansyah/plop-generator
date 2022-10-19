@@ -1,0 +1,14 @@
+import { {{ pascalCase model }}, {{ pascalCase model }}DataInput, {{ pascalCase model }}Filter } from "@deboxsoft/{{ kebabCase projectName }}-api";
+import { Container, Pagination, PaginationOptions } from "@deboxsoft/module-core";
+import { ModifiedResult, RepoTransactionOptions } from "@deboxsoft/module-server";
+
+export const {{ constantCase model }}_REPO_KEY = "{{ constantCase model }}-REPO-KEY";
+export const get{{ pascalCase model }}Repo = () => Container.get<{{ pascalCase model }}Repo>({{ constantCase model }}_REPO_KEY);
+export interface {{ pascalCase model }}Repo {
+  create(input: {{ pascalCase model }}DataInput, opts?: RepoTransactionOptions): Promise<ModifiedResult<string>>;
+  update(id: string, input: Partial<{{ pascalCase model }}DataInput>, opts?: RepoTransactionOptions): Promise<ModifiedResult<boolean>>;
+  remove(id: string | string[], opts?: RepoTransactionOptions): Promise<ModifiedResult<boolean>>;
+  findById(id: string, opts?: RepoTransactionOptions): Promise<{{ pascalCase model }} | undefined>;
+  find(filter?: {{ pascalCase model }}Filter, opts?: RepoTransactionOptions): Promise<{{ pascalCase model }}[]>;
+  findPage(options?: PaginationOptions<{{ pascalCase model }}Filter>): Promise<Pagination<{{ pascalCase model }}>>;
+}

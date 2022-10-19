@@ -2,7 +2,9 @@
   "$schema": "https://turborepo.org/schema.json",
   "pipeline": {
     "build": {
-      "inputs": ["src/**"],
+      "inputs": [
+        "src/**"
+      ],
       "outputs": [
         "build/**",
         "dist/**",
@@ -11,30 +13,53 @@
     },
     "format": {},
     "test": {
-      "dependsOn": ["^build", "$CI", "$TURBO_CACHE_KEY"],
-      "outputs": []
+      "dependsOn": [
+        "^build"
+      ],
+      "outputs": [],
+      "env": [
+        "CI",
+        "TURBO_CACHE_KEY"
+      ]
     },
     "lint": {
       "outputs": []
     },
     "precommit": {
-      "dependsOn": ["format", "lint"],
+      "dependsOn": [
+        "format",
+        "lint"
+      ],
       "outputs": []
     },
     "package": {
-      "inputs": ["src/**"],
+      "inputs": [
+        "src/**"
+      ],
       "outputs": [
         "package/*"
       ]
     },
     "release:dev": {
-      "dependsOn": ["^build"]
+      "dependsOn": [
+        "^build"
+      ]
     },
     "bump": {
-      "dependsOn": ["^build"],
-      "inputs": ["package.json"],
-      "outputs": ["package.json"]
+      "dependsOn": [
+        "^build"
+      ],
+      "inputs": [
+        "package.json"
+      ],
+      "outputs": [
+        "package.json"
+      ]
     }
   },
-  "globalDependencies": [".eslintrc.json", ".prettierrc", "tsconfig.json"]
+  "globalDependencies": [
+    ".eslintrc.json",
+    ".prettierrc",
+    "tsconfig.json"
+  ]
 }

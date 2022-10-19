@@ -1,10 +1,10 @@
 {
-  "name": "@{{ organization }}/ {{ kebabCase moduleName }}",
+  "name": "@{{ organization }}/ {{ kebabCase projectName }}",
   "version": "0.0.0",
   "license": "SEE LICENSE IN LICENSE.md",
   "repository": {
     "type": "git",
-    "url": "https://github.com/deboxsoft/{{ kebabCase moduleName }}",
+    "url": "https://github.com/deboxsoft/{{ kebabCase projectName }}",
     "directory": "packages/server"
   },
   "maintainers": [
@@ -16,13 +16,7 @@
   "type": "module",
   "types": "libs/index.d.ts",
   "exports": {
-    ".": "./libs/index.js",
-    "./fastify": {
-      "import": {
-        "default": "./libs/fastify/index.js",
-        "types": "./libs/fastify/index.d.ts"
-      }
-    }
+    ".": "./libs/index.js"
   },
   "files": [
     "libs"

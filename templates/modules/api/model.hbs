@@ -11,29 +11,29 @@ import {
   Pagination
 } from "@deboxsoft/module-core";
 
-export const {{ pascalCase moduleName }}Input = z.object({
+export const {{ pascalCase model }}Input = z.object({
 });
-export const {{ pascalCase moduleName }}UpdateInput = {{ pascalCase moduleName }}Input.partial();
-export const {{ pascalCase moduleName }}DataInput = {{ pascalCase moduleName }}Input.omit({ contents: true }).extend({
+export const {{ pascalCase model }}UpdateInput = {{ pascalCase model }}Input.partial();
+export const {{ pascalCase model }}DataInput = {{ pascalCase model }}Input.omit({ contents: true }).extend({
   createdAt: TimeStampSchema,
   modifiedAt: TimeStampSchema,
   createdBy: z.string()
 });
 
-export type {{ pascalCase moduleName }}Input = z.input<typeof {{ pascalCase moduleName }}Input>;
-export type {{ pascalCase moduleName }}UpdateInput = z.input<typeof {{ pascalCase moduleName }}UpdateInput>;
-export type {{ pascalCase moduleName }}DataInput = z.input<typeof {{ pascalCase moduleName }}DataInput>;
-export type {{ pascalCase moduleName }} = z.output<typeof {{ pascalCase moduleName }}DataInput> & { id: ID };
-export type {{ pascalCase moduleName }}Filter = Filter<Omit<{{ pascalCase moduleName }}DataInput, "contents">>;
-export type {{ pascalCase moduleName }}CreateResponse = CreateDataResponse<{
-  createdAt: {{ pascalCase moduleName }}["createdAt"];
-  modifiedAt: {{ pascalCase moduleName }}["modifiedAt"];
-  createdBy: {{ pascalCase moduleName }}["createdBy"];
+export type {{ pascalCase model }}Input = z.input<typeof {{ pascalCase model }}Input>;
+export type {{ pascalCase model }}UpdateInput = z.input<typeof {{ pascalCase model }}UpdateInput>;
+export type {{ pascalCase model }}DataInput = z.input<typeof {{ pascalCase model }}DataInput>;
+export type {{ pascalCase model }} = z.output<typeof {{ pascalCase model }}DataInput> & { id: ID };
+export type {{ pascalCase model }}Filter = Filter<Omit<{{ pascalCase model }}DataInput, "contents">>;
+export type {{ pascalCase model }}CreateResponse = CreateDataResponse<{
+  createdAt: {{ pascalCase model }}["createdAt"];
+  modifiedAt: {{ pascalCase model }}["modifiedAt"];
+  createdBy: {{ pascalCase model }}["createdBy"];
 }>;
-export type {{ pascalCase moduleName }}UpdateResponse = UpdateDataResponse<{
-  modifiedAt: {{ pascalCase moduleName }}["modifiedAt"];
+export type {{ pascalCase model }}UpdateResponse = UpdateDataResponse<{
+  modifiedAt: {{ pascalCase model }}["modifiedAt"];
 }>;
-export type {{ pascalCase moduleName }}RemoveResponse = RemoveDataResponse;
-export type {{ pascalCase moduleName }}FindResponse = DataResponse<{{ pascalCase moduleName }}[]>;
-export type {{ pascalCase moduleName }}FindIdResponse = DataResponse<{{ pascalCase moduleName }} | undefined>;
-export type {{ pascalCase moduleName }}PageResponse = Pagination<{{ pascalCase moduleName }}>;
+export type {{ pascalCase model }}RemoveResponse = RemoveDataResponse;
+export type {{ pascalCase model }}FindResponse = DataResponse<{{ pascalCase model }}[]>;
+export type {{ pascalCase model }}FindIdResponse = DataResponse<{{ pascalCase model }} | undefined>;
+export type {{ pascalCase model }}PageResponse = Pagination<{{ pascalCase model }}>;

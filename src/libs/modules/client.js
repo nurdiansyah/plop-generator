@@ -1,17 +1,19 @@
 import { pascalCase } from "@deboxsoft/module-core";
-import { templateFilesGenerator, getTemplateExportIndexAction } from "../../core/index.js";
-import { Actions, PlopGeneratorFunction } from "../../types.js";
+import { templateFilesGenerator, createAppendAction } from "../../core/index.js";
 import fs from "fs";
 
-export const moduleClientGenerator: PlopGeneratorFunction =
+/**
+ * @param opts {import("../../types").GeneratorOptions}
+ * @return {function({actions?: *, templateDir: *, path: *, data?: *}): *[]}
+ */
+export const moduleClientGenerator =
   ({ plop, prompts }) =>
   ({ actions = [], templateDir, path, data = {} }) => {
     const isMonorepo = data.isMonorepo;
     const model = pascalCase(data.model),
       modulePackage = "client",
       rootPath = `${path}${isMonorepo ? `/${modulePackage}` : ""}`,
-      srcPath = `${rootPath}/src`,
-      svelteTemplateDir = `${templateDir}/svelte`;
+      srcPath = `${rootPath}/src`;
     templateDir = `${templateDir}/${modulePackage}`;
     data.modulePackage = modulePackage;
     if (isMonorepo && !fs.existsSync(rootPath)) {
@@ -27,7 +29,7 @@ export const moduleClientGenerator: PlopGeneratorFunction =
         path: rootPath
       })({ data, actions, templateDir: rootTemplateDir, path: rootPath });
     }
-    const restActions: Actions = [
+    const restActions = [
       {
         type: "add",
         path: `${srcPath}/rest/${model}Rest.ts`,
@@ -35,17 +37,25 @@ export const moduleClientGenerator: PlopGeneratorFunction =
         skipIfExists: true,
         templateFile: `${templateDir}/rest.hbs`
       },
-      getTemplateExportIndexAction(`./${model}Rest.js`, `${srcPath}/rest/index.ts`)
+      createAppendAction({
+        template: `export * from "./${model}Rest.js";`,
+        path: `${srcPath}/rest/index.ts`,
+        data
+      })
     ];
-    const svelteContextActions: Actions = [
+    const svelteContextActions = [
       {
         type: "add",
         path: `${srcPath}/svelte/context/${model}Context.ts`,
         data,
         skipIfExists: true,
-        templateFile: `${svelteTemplateDir}/context.hbs`
+        templateFile: `${templateDir}/svelte-context.hbs`
       },
-      getTemplateExportIndexAction(`./${model}Context.js`, `${srcPath}/svelte/context/index.ts`)
+      createAppendAction({
+        template: `export * from "./${model}Context.js";`,
+        path: `${srcPath}/svelte/context/index.ts`,
+        data
+      })
     ];
     actions.push(...restActions, ...svelteContextActions);
     return actions;
