@@ -28,7 +28,6 @@ export const moduleApiGenerator =
         templateDir: rootTemplateDir,
         path: rootPath
       })({ data, actions, templateDir: rootTemplateDir, path: rootPath });
-      console.log(actions);
     }
     // model
     /**

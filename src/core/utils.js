@@ -84,12 +84,11 @@ export const createAppendAction = ({ append = "", path, template, data }) => {
       template
     };
   }
-  console.log(`/* GEN-DROP */\n${template}`);
   return {
     type: "add",
     path,
     data,
     skipIfExist: true,
-    template: `/* GEN-DROP */\n${template}`
+    template: `/* GEN-DROP */\n${template}\n`
   };
 };
