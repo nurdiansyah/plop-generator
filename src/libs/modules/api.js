@@ -96,6 +96,6 @@ export const moduleApiGenerator =
         }
       ]
     });
-    actions.push(...modelActions, ...serviceActions, ...errorActions);
+    actions.push(...modelActions, ...serviceActions, ...errorActions, ...routeActions);
     return actions;
   };
