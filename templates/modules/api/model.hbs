@@ -3,9 +3,7 @@ import {
   Filter,
   CreateDataResponse,
   UpdateDataResponse,
-  ID,
   IdSchema,
-  TimeStampSchema,
   RemoveDataResponse,
   DataResponse,
   Pagination
@@ -14,25 +12,18 @@ import {
 export const {{ pascalCase model }}Input = z.object({
 });
 export const {{ pascalCase model }}UpdateInput = {{ pascalCase model }}Input.partial();
-export const {{ pascalCase model }}DataInput = {{ pascalCase model }}Input.omit({ contents: true }).extend({
-  createdAt: TimeStampSchema,
-  modifiedAt: TimeStampSchema,
-  createdBy: z.string()
+export const {{ pascalCase model }}DataInput = {{ pascalCase model }}Input;
+export const {{ pascalCase model }} = {{ pascalCase model }}DataInput.extend({
+  id: IdSchema
 });
 
 export type {{ pascalCase model }}Input = z.input<typeof {{ pascalCase model }}Input>;
 export type {{ pascalCase model }}UpdateInput = z.input<typeof {{ pascalCase model }}UpdateInput>;
 export type {{ pascalCase model }}DataInput = z.input<typeof {{ pascalCase model }}DataInput>;
 export type {{ pascalCase model }} = z.output<typeof {{ pascalCase model }}DataInput> & { id: ID };
-export type {{ pascalCase model }}Filter = Filter<Omit<{{ pascalCase model }}DataInput, "contents">>;
-export type {{ pascalCase model }}CreateResponse = CreateDataResponse<{
-  createdAt: {{ pascalCase model }}["createdAt"];
-  modifiedAt: {{ pascalCase model }}["modifiedAt"];
-  createdBy: {{ pascalCase model }}["createdBy"];
-}>;
-export type {{ pascalCase model }}UpdateResponse = UpdateDataResponse<{
-  modifiedAt: {{ pascalCase model }}["modifiedAt"];
-}>;
+export type {{ pascalCase model }}Filter = Filter<{{ pascalCase model }}DataInput>;
+export type {{ pascalCase model }}CreateResponse = CreateDataResponse;
+export type {{ pascalCase model }}UpdateResponse = UpdateDataResponse;
 export type {{ pascalCase model }}RemoveResponse = RemoveDataResponse;
 export type {{ pascalCase model }}FindResponse = DataResponse<{{ pascalCase model }}[]>;
 export type {{ pascalCase model }}FindIdResponse = DataResponse<{{ pascalCase model }} | undefined>;
