@@ -66,27 +66,27 @@ export const moduleServerGenerator =
       appendTemplates: [
         {
           key: "import-services",
-          template: "\tcreate{{ pascalCase model }}ServiceServer,"
+          template: "  create{{ pascalCase model }}ServiceServer,"
         },
         {
           key: "import-mongo",
-          template: "\tcreate{{ pascalCase model }}Repo,"
+          template: "  create{{ pascalCase model }}Repo,"
         },
         {
           key: "import-fastify",
-          template: "\tcreate{{ pascalCase model }}Route,"
+          template: "  create{{ pascalCase model }}Route,"
         },
         {
           key: "create-service",
-          template: "\tawait create{{ pascalCase model }}ServiceServer(config);"
+          template: "  await create{{ pascalCase model }}ServiceServer(config);"
         },
         {
           key: "create-mongo",
-          template: "\tcreate{{ pascalCase model }}Repo();"
+          template: "  create{{ pascalCase model }}Repo();"
         },
         {
           key: "create-fastify",
-          template: "\tcreate{{ pascalCase model }}Route(instance, opts);"
+          template: "  create{{ pascalCase model }}Route(instance, opts);"
         }
       ]
     });

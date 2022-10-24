@@ -62,7 +62,7 @@ export const moduleApiGenerator =
       data,
       templateFile: `${templateDir}/error.hbs`
     });
-
+    // route
     const routeActions = createAppendMultipleAction({
       path: `${srcPath}/route.ts`,
       templateFile: `${templateDir}/route.hbs`,
@@ -70,11 +70,11 @@ export const moduleApiGenerator =
       appendTemplates: [
         {
           key: "type",
-          template: "{{ camelCase model }}Route: string;"
+          template: "  {{ camelCase model }}Route: string;"
         },
         {
           key: "route",
-          template: "{{ camelCase model }}Route: `${base}/{{ camelCase model }}`,"
+          template: "    {{ camelCase model }}Route: `${base}/{{ camelCase model }}`,"
         }
       ]
     });
