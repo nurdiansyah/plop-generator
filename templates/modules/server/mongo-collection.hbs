@@ -1,9 +1,8 @@
-import { Db, ObjectId, TransactionOptions } from "mongodb";
 import { {{ pascalCase model }}Repo, {{ constantCase model }}_REPO_KEY } from "../index.js";
 import { {{ pascalCase model }}Data, {{ pascalCase model }}DataInput, {{ pascalCase model }}Error, {{ pascalCase model }}Filter } from "@deboxsoft/{{ kebabCase projectName }}-api";
 
 import { Container, getLogger, Logger } from "@deboxsoft/module-core";
-import { BaseRepository, getMongoDb } from "@deboxsoft/module-mongo";
+import { BaseRepository, getMongoDb, Db, ObjectId, TransactionOptions } from "@deboxsoft/module-mongo";
 import { ModifiedResult } from "@deboxsoft/module-server";
 
 export const create{{ pascalCase model }}Repo = () => {
