@@ -79,7 +79,7 @@ export const createAppendMultipleAction = ({ template, path, key = "key", data, 
   return actions;
 };
 
-export const createAppendAction = ({ append = "", path, template, data }) => {
+export const createAppendAction = ({ append = "", path, template, data, unique = true }) => {
   let pattern;
   if (fs.existsSync(path)) {
     return {
@@ -87,6 +87,7 @@ export const createAppendAction = ({ append = "", path, template, data }) => {
       path,
       data,
       pattern: /(\/\* GEN-DROP \*\/)/gi,
+      unique,
       template
     };
   }
