@@ -122,29 +122,19 @@ export const createTemplateAction = ({ basePath, templateFile, data, model, suff
   const path = `${basePath}/${model}${suffix}.ts`;
   const indexPath = `${basePath}/index.ts`;
   const indexTemplate = `export * from "./${model}${suffix}.js";`;
-  if (!fs.existsSync(path)) {
-    actions.push({
-      type: "add",
-      data,
-      path,
-      skipIfExists: true,
-      templateFile
-    });
-    actions.push(
-      createAppendAction({
-        template: indexTemplate,
-        path: indexPath,
-        data
-      })
-    );
-  } else if (!fs.existsSync(indexPath)) {
-    actions.push(
-      createAppendAction({
-        template: indexTemplate,
-        path: indexPath,
-        data
-      })
-    );
-  }
+  actions.push({
+    type: "add",
+    data,
+    path,
+    skipIfExists: true,
+    templateFile
+  });
+  actions.push(
+    createAppendAction({
+      template: indexTemplate,
+      path: indexPath,
+      data
+    })
+  );
   return actions;
 };
