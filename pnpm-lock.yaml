@@ -1,63 +1,62 @@
 lockfileVersion: 5.4
 
-importers:
+specifiers:
+  '@babel/types': ^7.19.4
+  '@deboxsoft/module-core': ^2.6.41
+  '@nurdiansyah/bump': ^6.1.2
+  '@nurdiansyah/eslint-config-devel': ^8.0.3
+  '@nurdiansyah/node-plop': ^0.32.3
+  '@nurdiansyah/plop': ^3.1.6
+  '@types/babel__generator': ^7.6.4
+  '@types/edit-json-file': ^1.7.0
+  '@types/inquirer': ^9.0.2
+  '@types/node': ^16.11.68
+  '@typescript-eslint/eslint-plugin': ^5.40.1
+  '@typescript-eslint/parser': ^5.40.1
+  chalk: ^4.1.2
+  dotenv: ^16.0.3
+  edit-json-file: ^1.7.0
+  eslint: 8.22.0
+  fs: 0.0.1-security
+  inquirer: ^9.1.4
+  minimist: ^1.2.7
+  nconf: ^0.12.0
+  nconf-yaml: ^1.0.2
+  node: ^18.11.0
+  prettier: ^2.7.1
+  rimraf: ^3.0.2
+  tslib: ^2.4.0
+  typescript: ~4.7.4
 
-  .:
-    specifiers:
-      '@babel/types': ^7.19.4
-      '@deboxsoft/module-core': ^2.6.41
-      '@nurdiansyah/bump': ^6.1.2
-      '@nurdiansyah/eslint-config-devel': ^8.0.3
-      '@nurdiansyah/node-plop': ^0.32.2
-      '@nurdiansyah/plop': ^3.1.5
-      '@types/babel__generator': ^7.6.4
-      '@types/edit-json-file': ^1.7.0
-      '@types/inquirer': ^9.0.2
-      '@types/node': ^16.11.68
-      '@typescript-eslint/eslint-plugin': ^5.40.1
-      '@typescript-eslint/parser': ^5.40.1
-      chalk: ^4.1.2
-      dotenv: ^16.0.3
-      edit-json-file: ^1.7.0
-      eslint: 8.22.0
-      fs: 0.0.1-security
-      inquirer: ^9.1.4
-      minimist: ^1.2.7
-      nconf: ^0.12.0
-      nconf-yaml: ^1.0.2
-      node: ^18.11.0
-      prettier: ^2.7.1
-      rimraf: ^3.0.2
-      tslib: ^2.4.0
-      typescript: ~4.7.4
-    dependencies:
-      '@deboxsoft/module-core': 2.6.41
-      '@nurdiansyah/node-plop': 0.32.2
-      '@nurdiansyah/plop': 3.1.5
-      dotenv: 16.0.3
-      edit-json-file: 1.7.0
-      minimist: 1.2.7
-      nconf: 0.12.0
-      nconf-yaml: 1.0.2_nconf@0.12.0
-      node: 18.11.0
-    devDependencies:
-      '@babel/types': 7.19.4
-      '@nurdiansyah/bump': 6.1.2
-      '@nurdiansyah/eslint-config-devel': 8.0.3_76nc3uusz5bph575gdsgtjodta
-      '@types/babel__generator': 7.6.4
-      '@types/edit-json-file': 1.7.0
-      '@types/inquirer': 9.0.2
-      '@types/node': 16.11.68
-      '@typescript-eslint/eslint-plugin': 5.40.1_miuv6xbpnfe2ujzbuq3ok3mqxm
-      '@typescript-eslint/parser': 5.40.1_4rv7y5c6xz3vfxwhbrcxxi73bq
-      chalk: 4.1.2
-      eslint: 8.22.0
-      fs: 0.0.1-security
-      inquirer: 9.1.4
-      prettier: 2.7.1
-      rimraf: 3.0.2
-      tslib: 2.4.0
-      typescript: 4.7.4
+dependencies:
+  '@deboxsoft/module-core': 2.6.41
+  '@nurdiansyah/node-plop': 0.32.3
+  '@nurdiansyah/plop': 3.1.6
+  dotenv: 16.0.3
+  edit-json-file: 1.7.0
+  minimist: 1.2.7
+  nconf: 0.12.0
+  nconf-yaml: 1.0.2_nconf@0.12.0
+  node: 18.11.0
+
+devDependencies:
+  '@babel/types': 7.19.4
+  '@nurdiansyah/bump': 6.1.2
+  '@nurdiansyah/eslint-config-devel': 8.0.3_76nc3uusz5bph575gdsgtjodta
+  '@types/babel__generator': 7.6.4
+  '@types/edit-json-file': 1.7.0
+  '@types/inquirer': 9.0.2
+  '@types/node': 16.11.68
+  '@typescript-eslint/eslint-plugin': 5.40.1_miuv6xbpnfe2ujzbuq3ok3mqxm
+  '@typescript-eslint/parser': 5.40.1_4rv7y5c6xz3vfxwhbrcxxi73bq
+  chalk: 4.1.2
+  eslint: 8.22.0
+  fs: 0.0.1-security
+  inquirer: 9.1.4
+  prettier: 2.7.1
+  rimraf: 3.0.2
+  tslib: 2.4.0
+  typescript: 4.7.4
 
 packages:
 
@@ -190,8 +189,8 @@ packages:
       prettier: 2.7.1
     dev: true
 
-  /@nurdiansyah/node-plop/0.32.2:
-    resolution: {integrity: sha512-3RmPwLHrwwg53FoMTIX8nSshKzKtDMYrIPhTyuN6R9cFcVjd6G6y/GSZba44A7QLQaAkRtpiok9cOZ52JJX9HQ==}
+  /@nurdiansyah/node-plop/0.32.3:
+    resolution: {integrity: sha512-CoAuHkRCNF4Qm/4FFQBtvDxd6rzXI79sAynr7xKAiPRUI0c7mVZff7vruVt+pnQckuZEa5UQBJjkZmarfQyuFA==}
     engines: {node: ^12.20.0 || ^14.13.1 || >=16.0.0}
     dependencies:
       '@types/inquirer': 9.0.2
@@ -209,12 +208,12 @@ packages:
       upper-case: 2.0.2
     dev: false
 
-  /@nurdiansyah/plop/3.1.5:
-    resolution: {integrity: sha512-61AEKrv49F3AID3vnLj28WG9rTkzjQSdeW/+xChlfzXD9tLL/Fk5qakpPIGpjG+SGIIuJ0dx35IsnaksldddMA==}
+  /@nurdiansyah/plop/3.1.6:
+    resolution: {integrity: sha512-SHKbM652Xim5hZzsDWWsLbjJ+U9upG722kMESZFOY0rNd4hBXPLKja8D4lEEUUDFLluqO66mvg6e0pC0AmKqcQ==}
     engines: {node: ^12.20.0 || ^14.13.1 || >=16.0.0}
     hasBin: true
     dependencies:
-      '@nurdiansyah/node-plop': 0.32.2
+      '@nurdiansyah/node-plop': 0.32.3
       '@types/liftoff': 4.0.0
       chalk: 5.1.2
       interpret: 2.2.0
