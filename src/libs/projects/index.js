@@ -109,9 +109,6 @@ export default (plop) => {
       // gatsbyAction(actionOptions);
 
       /* INSTALL DEPENDENCIES */
-      console.info("Install Dependencies");
-      if (data.isMonorepo) {
-      }
       const directoriesToInstall = [`${cwd}/${data.name}`, cwd];
       directoriesToInstall.forEach((dir) => {
         actions.push({

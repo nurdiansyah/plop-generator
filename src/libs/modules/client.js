@@ -1,5 +1,5 @@
 import { pascalCase } from "@deboxsoft/module-core";
-import { templateFilesGenerator, createAppendAction } from "../../core/index.js";
+import { templateFilesGenerator, createTemplateAction } from "../../core/index.js";
 import fs from "fs";
 
 /**
@@ -29,34 +29,22 @@ export const moduleClientGenerator =
         path: rootPath
       })({ data, actions, templateDir: rootTemplateDir, path: rootPath });
     }
-    const restActions = [
-      {
-        type: "add",
-        path: `${srcPath}/rest/${model}Rest.ts`,
-        data,
-        skipIfExists: true,
-        templateFile: `${templateDir}/rest.hbs`
-      },
-      createAppendAction({
-        template: `export * from "./${model}Rest.js";`,
-        path: `${srcPath}/rest/index.ts`,
-        data
-      })
-    ];
-    const svelteContextActions = [
-      {
-        type: "add",
-        path: `${srcPath}/svelte/context/${model}Context.ts`,
-        data,
-        skipIfExists: true,
-        templateFile: `${templateDir}/svelte-context.hbs`
-      },
-      createAppendAction({
-        template: `export * from "./${model}Context.js";`,
-        path: `${srcPath}/svelte/context/index.ts`,
-        data
-      })
-    ];
+    const restActions = createTemplateAction({
+      basePath: `${srcPath}/rest`,
+      model,
+      suffix: "Rest",
+      data,
+      templateFile: `${templateDir}/rest.hbs`
+    });
+
+    const svelteContextActions = createTemplateAction({
+      basePath: `${srcPath}/svelte/context`,
+      model,
+      suffix: "Context",
+      data,
+      templateFile: `${templateDir}/svelte-context.hbs`
+    });
+
     actions.push(...restActions, ...svelteContextActions);
     return actions;
   };

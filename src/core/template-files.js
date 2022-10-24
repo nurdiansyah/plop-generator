@@ -18,7 +18,6 @@ export const templateFilesGenerator = ({
     path
   });
   return (options) => {
-    console.log("recursive file actions", options.templateDir, options.path);
     return recursiveFilesAction({
       plop,
       path: options.path || path,

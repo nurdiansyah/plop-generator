@@ -17,7 +17,8 @@ export const getPromptAction = (file, tmpDir, data, action) => {
   }
   return promptAction;
 };
-export const getPatternRegex = (key) => new RegExp(`(\\/\\* GEN-ADD: ${key} \\*\\/)`, "ig");
+export const getPatternRegex = (key, end = false) =>
+  new RegExp(`\\/\\* GEN-${end ? "END" : "ADD"}: ${key} \\*\\/`, "ig");
 
 /**
  * @param opts {Object}
@@ -42,16 +43,20 @@ export const createAppendMultipleAction = ({ template, path, key = "key", data, 
         type,
         path,
         data,
+        unique: true,
         pattern: getPatternRegex(key),
         template
       });
     } else if (appendTemplates) {
-      appendTemplates.forEach(({ key: _key, ..._ }) => {
+      appendTemplates.forEach(({ key: _key, template, ..._ }) => {
         actions.push({
-          type,
+          type: "append",
           path,
           data,
+          unique: true,
+          template,
           pattern: getPatternRegex(_key),
+          patternEnd: getPatternRegex(_key, true),
           ..._
         });
       });
@@ -59,14 +64,15 @@ export const createAppendMultipleAction = ({ template, path, key = "key", data, 
   } else if (templateFile) {
     actions.push({
       type: "add",
-      pattern: getPatternRegex(key),
+      path,
       templateFile: templateFile,
       data
     });
   } else if (template) {
     actions.push({
       type: "add",
-      template: `/* GEN-ADD: ${key} */\n${template}\n`,
+      path,
+      template: `${getPatternRegex(key)}\n${template}\n`,
       data
     });
   }
@@ -91,4 +97,53 @@ export const createAppendAction = ({ append = "", path, template, data }) => {
     skipIfExist: true,
     template: `/* GEN-DROP */\n${template}\n`
   };
+};
+
+/**
+ * @typedef {Object} TemplateActionOptions
+ * @property {Record<string, any>} data
+ * @property {string} templateFile
+ * @property {string} model
+ * @property {string} basePath
+ * @property {string=""} suffix
+ */
+/**
+ *
+ * @param opts{TemplateActionOptions}
+ * @return {import("@nurdiansyah/plop").ActionType[]}
+ */
+export const createTemplateAction = ({ basePath, templateFile, data, model, suffix }) => {
+  /**
+   *
+   * @type {import("@nurdiansyah/plop").ActionType[]}
+   */
+  const actions = [];
+  const path = `${basePath}/${model}${suffix}.ts`;
+  const indexPath = `${basePath}/index.ts`;
+  const indexTemplate = `export * from "./${model}${suffix}.js;"`;
+  if (!fs.existsSync(path)) {
+    actions.push({
+      type: "add",
+      data,
+      path,
+      skipIfExists: true,
+      templateFile
+    });
+    actions.push(
+      createAppendAction({
+        template: indexTemplate,
+        path: indexPath,
+        data
+      })
+    );
+  } else if (!fs.existsSync(indexPath)) {
+    actions.push(
+      createAppendAction({
+        template: indexTemplate,
+        path: indexPath,
+        data
+      })
+    );
+  }
+  return actions;
 };

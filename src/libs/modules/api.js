@@ -1,5 +1,5 @@
 import { pascalCase } from "@deboxsoft/module-core";
-import { createAppendAction, createAppendMultipleAction, templateFilesGenerator } from "../../core/index.js";
+import { createAppendMultipleAction, createTemplateAction, templateFilesGenerator } from "../../core/index.js";
 import fs from "fs";
 
 /**
@@ -33,54 +33,36 @@ export const moduleApiGenerator =
     /**
      * @type {import("../../").Actions}
      */
-    const modelActions = [
-      {
-        type: "add",
-        path: `${srcPath}/models/${model}.ts`,
-        data,
-        skipIfExists: true,
-        templateFile: `${templateDir}/model.hbs`
-      },
-      createAppendAction({
-        template: `export * from "./${model}.js";`,
-        path: `${srcPath}/models/index.ts`,
-        data
-      })
-    ];
+    const modelActions = createTemplateAction({
+      basePath: `${srcPath}/models`,
+      model,
+      suffix: "",
+      data,
+      templateFile: `${templateDir}/model.hbs`
+    });
+
     /**
      * @type {import("../../").Actions}
      */
-    const serviceActions = [
-      {
-        type: "add",
-        path: `${srcPath}/services/${model}Service.ts`,
-        data,
-        skipIfExists: true,
-        templateFile: `${templateDir}/service.hbs`
-      },
-      createAppendAction({
-        template: `export * from "./${model}Service.js";`,
-        path: `${srcPath}/services/index.ts`,
-        data
-      })
-    ];
+    const serviceActions = createTemplateAction({
+      basePath: `${srcPath}/services`,
+      model,
+      suffix: "Service",
+      data,
+      templateFile: `${templateDir}/service.hbs`
+    });
+
     /**
      * @type {import("../../").Actions}
      */
-    const errorActions = [
-      {
-        type: "add",
-        path: `${srcPath}/errors/${model}Error.ts`,
-        data,
-        skipIfExists: true,
-        templateFile: `${templateDir}/error.hbs`
-      },
-      createAppendAction({
-        template: `export * from "./${model}Error.js";`,
-        path: `${srcPath}/errors/index.ts`,
-        data
-      })
-    ];
+    const errorActions = createTemplateAction({
+      basePath: `${srcPath}/errors`,
+      model,
+      suffix: "Error",
+      data,
+      templateFile: `${templateDir}/error.hbs`
+    });
+
     const routeActions = createAppendMultipleAction({
       path: `${srcPath}/route.ts`,
       templateFile: `${templateDir}/route.hbs`,

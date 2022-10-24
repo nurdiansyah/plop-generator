@@ -93,25 +93,26 @@ export default async (plop) => {
         else if (data.package === "server") moduleServerAction(actionOptions);
         else if (data.package === "client") moduleClientAction(actionOptions);
       }
-      /* DEDUPE ACTIONS */
-      const _tmp = {};
-      return actions.reduce((acc, curr) => {
-        // @ts-ignore
-        const path = curr?.path;
-        if (path) {
-          if (_tmp[path]) {
-            return acc;
-          }
-          if (!!curr) {
-            _tmp[path] = curr;
-            acc.push(curr);
-          }
-        } else {
-          // add action not file type
-          acc.push(curr);
-        }
-        return acc;
-      }, []);
+      // /* DEDUPE ACTIONS */
+      // const _tmp = {};
+      // return actions.reduce((acc, curr) => {
+      //   // @ts-ignore
+      //   const path = curr?.path;
+      //   if (path ) {
+      //     if (_tmp[path]) {
+      //       return acc;
+      //     }
+      //     if (!!curr) {
+      //       _tmp[path] = curr;
+      //       acc.push(curr);
+      //     }
+      //   } else {
+      //     // add action not file type
+      //     acc.push(curr);
+      //   }
+      //   return acc;
+      // }, []);
+      return actions;
     }
   });
 };

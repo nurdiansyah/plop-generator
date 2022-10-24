@@ -1,4 +1,4 @@
-import { HttpErrorReplys } from "@fastify/sensible/lib/httpError";
+import { HttpErrorReplys } from "@fastify/sensible/lib/httpError.js";
 import { JwtPayload } from "@deboxsoft/users-api";
 import "@fastify/jwt";
 

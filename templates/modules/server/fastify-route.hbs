@@ -23,8 +23,7 @@ export const create{{ pascalCase  model }}Route = (route: FastifyInstance<any>, 
     try {
       const input = request.body as {{ pascalCase  model }}Input;
       logger.debug("create{{ pascalCase  model }} %o", input);
-      const userId = request.userSession.userId;
-      return await {{ camelCase  model }}Service.create(input, { userId });
+      return await {{ camelCase  model }}Service.create(input);
     } catch (e) {
       logger.debug(`[ERROR] create{{ pascalCase  model }}: %o`, e);
       reply.expectationFailed(e?.message);
