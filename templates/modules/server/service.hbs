@@ -10,26 +10,24 @@ import {
   {{ pascalCase model }}DataInput,
   {{ pascalCase model }}CreateResponse,
   {{ pascalCase model }}UpdateResponse,
-  {{ pascalCase model }}RemoveResponse
+  {{ pascalCase model }}RemoveResponse,
+  {{ constantCase model }}_SERVICE_KEY
 } from "@deboxsoft/{{ camelCase  projectName }}-api";
 import { MQEmitter } from "mqemitter";
 import { get{{ pascalCase model }}Repo, {{ pascalCase model }}Repo } from "../db/index.js";
 import { {{ pascalCase  projectName }}ServerModuleConfig } from "../types.js";
 
-const KEY = "{{ constantCase model }}_SERVICE_SERVER";
 export const create{{ pascalCase model }}ServiceServer = async (opts: {{ pascalCase  projectName }}ServerModuleConfig) => {
   const {{ pascalCase model }}Repo = get{{ pascalCase model }}Repo();
   const {{ pascalCase model }}Service = new {{ pascalCase model }}ServiceServer({{ pascalCase model }}Repo, opts);
-  Container.set(KEY, {{ pascalCase model }}Service);
+  Container.set({{ constantCase model }}_SERVICE_KEY, {{ pascalCase model }}Service);
   return {{ pascalCase model }}Service;
 };
-
-export const get{{ pascalCase model }}ServiceServer = () => Container.get<{{ pascalCase model }}ServiceServer>(KEY);
 
 export class {{ pascalCase model }}ServiceServer implements {{ pascalCase model }}Service {
   logger: Logger;
   event: MQEmitter;
-  constructor(private {{ pascalCase model }}Repo: {{ pascalCase model }}Repo, { logger, event }: {{ pascalCase  projectName }}ServerModuleConfig) {
+  constructor(private {{ pascalCase model }}Repo: {{ pascalCase model }}Repo, { event }: {{ pascalCase  projectName }}ServerModuleConfig) {
     this.logger = getLogger();
     this.event = event;
   }
