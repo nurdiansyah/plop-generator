@@ -19,6 +19,13 @@ export default async (plop) => {
   const prompts = [
     {
       type: "input",
+      name: "organization",
+      message: "organization name",
+      validate: validatePackageName,
+      default: "deboxsoft"
+    },
+    {
+      type: "input",
       name: "projectName",
       message: "project name",
       validate: validatePackageName,
