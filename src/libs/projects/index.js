@@ -19,7 +19,6 @@ export default (plop) => {
   plop.load(`${plop.getPlopfilePath()}/plugins/pnpm-install.js`, undefined, undefined);
 
   // helpers
-  hbsVariableHelpers(plop);
   const templateDir = `${plop.getPlopfilePath()}/templates/${generatorId}`;
   let env = {
     generatorId,
