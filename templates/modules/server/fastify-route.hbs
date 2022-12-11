@@ -1,4 +1,4 @@
-import { IdParams, DataResponse, Pagination, PaginationOptions } from "@deboxsoft/module-core";
+import { IdParams, DataResponse, Pagination, PaginationOptions, getLogger } from "@deboxsoft/module-core";
 import {
   {{ pascalCase  model }}Filter,
   {{ pascalCase  model }}Input,
@@ -17,7 +17,7 @@ import { {{ pascalCase  model }}ServiceServer } from "../services/index.js";
 export const create{{ pascalCase  model }}Route = (route: FastifyInstance<any>, options: {{ pascalCase  projectName }}ServerApiOptions) => {
   const {{ camelCase  model }}Service = get{{ pascalCase  model }}Service<{{ pascalCase  model }}ServiceServer>();
   const apiPath = `/${options.apiPath}/${getModuleApiRoute().{{ camelCase  model }}Route}`;
-  const logger = options.logger;
+  const logger = getLogger();
   logger.debug(`create route '${apiPath}'`);
   route.post(apiPath, {}, async (request, reply): Promise<{{ pascalCase  model }}CreateResponse | void> => {
     try {
