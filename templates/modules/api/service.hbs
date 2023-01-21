@@ -10,14 +10,14 @@ import {
 import { Container, Pagination, PaginationOptions } from "@deboxsoft/module-core";
 
 export const {{ pascalCase model }}Event = {
-  onBeforeCreate: "{{ constantCase model }}-BEFORE-CREATE",
-  onAfterCreate: "{{ constantCase model }}-AFTER-CREATE",
-  onBeforeUpdate: "{{ constantCase model }}-BEFORE-UPDATE",
-  onAfterUpdate: "{{ constantCase model }}-AFTER-UPDATE-EVENT",
-  onBeforeRemove: "{{ constantCase model }}-BEFORE-REMOVE-EVENT",
-  onAfterRemove: "{{ constantCase model }}-AFTER-REMOVE-EVENT"
+  onBeforeCreate: "{{ kebabUpperCase model }}-BEFORE-CREATE",
+  onAfterCreate: "{{ kebabUpperCase model }}-AFTER-CREATE",
+  onBeforeUpdate: "{{ kebabUpperCase model }}-BEFORE-UPDATE",
+  onAfterUpdate: "{{ kebabUpperCase model }}-AFTER-UPDATE-EVENT",
+  onBeforeRemove: "{{ kebabUpperCase model }}-BEFORE-REMOVE-EVENT",
+  onAfterRemove: "{{ kebabUpperCase model }}-AFTER-REMOVE-EVENT"
 };
-export const {{ constantCase model }}_SERVICE_KEY = "{{ constantCase model }}-SERVICE-KEY";
+export const {{ constantCase model }}_SERVICE_KEY = "{{ kebabUpperCase model }}-SERVICE-KEY";
 export const get{{ pascalCase model }}Service = <S extends {{ pascalCase model }}Service = {{ pascalCase model }}Service>() => Container.get<S>({{ constantCase model }}_SERVICE_KEY);
 export const has{{ pascalCase model }}Service = () => Container.has({{ constantCase model }}_SERVICE_KEY);
 export interface {{ pascalCase model }}Service {

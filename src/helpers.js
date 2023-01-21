@@ -9,7 +9,7 @@ export const setHelpers = (plop) => {
     return `{{ ${varName} }}`;
   });
   plop.setHelper("kebabUpperCase", (value) => {
-    return constantCase(value, { delimiter: "" });
+    return constantCase(value, { delimiter: "-" });
   });
   plop.setHelper("preCurly", (txt) => {
     return `$\{${txt}`;
