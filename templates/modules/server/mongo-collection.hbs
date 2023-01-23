@@ -30,13 +30,13 @@ export class {{ pascalCase model }}Collection extends BaseRepository<ObjectId, s
     throw new {{ pascalCase model }}Error({ code: "{{ constantCase model }}_CREATE_FAILED" });
   }
 
-  async update(id: string, input: Partial<{{ pascalCase model }}DataInput>, opts: TransactionOptions = {}) {
+  async update(id: string, input: Partial<{{ pascalCase model }}DataInput>, opts: TransactionOptions = {}): Promise<ModifiedResult<boolean>> {
     const _id = ObjectId.createFromHexString(id);
     const metadata = await this.collection.updateOne({ _id }, { $set: input }, opts);
     return { metadata, data: metadata.acknowledged };
   }
 
-  async remove(id: string | string[], opts: TransactionOptions = {}) {
+  async remove(id: string | string[], opts: TransactionOptions = {}): Promise<ModifiedResult<boolean>> {
     if (Array.isArray(id)) {
       const _ids = id.map((_) => ObjectId.createFromHexString(_));
       const metadata = await this.collection.deleteMany({ _id: { $in: _ids } }, opts);
