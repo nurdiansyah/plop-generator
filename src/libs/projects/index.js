@@ -77,6 +77,8 @@ export default (plop) => {
       let startingPath = cwd;
       if (data.isMonorepo || fs.existsSync(`${cwd}/pnpm-workspace.yaml`)) {
         startingPath = `${startingPath}/packages/${data.name}`;
+      } else if (fs.existsSync(`${cwd}/pnpm-workspace.yaml`)) {
+        startingPath = `packages/${data.name}`;
       } else {
         startingPath = `${startingPath}/${data.name}`;
       }
@@ -108,7 +110,7 @@ export default (plop) => {
       // gatsbyAction(actionOptions);
 
       /* INSTALL DEPENDENCIES */
-      const directoriesToInstall = [`${cwd}/${data.name}`, cwd];
+      const directoriesToInstall = [`${cwd}/${data.name}`];
       directoriesToInstall.forEach((dir) => {
         actions.push({
           type: "pnpm-install",

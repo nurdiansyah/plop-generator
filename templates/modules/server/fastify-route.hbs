@@ -10,7 +10,7 @@ import {
   get{{ pascalCase  model }}Service,
   getModuleApiRoute
 } from "@deboxsoft/{{ kebabCase  projectName }}-api";
-import { FastifyInstance } from "fastify";
+import { FastifyInstance, FastifyReply, FastifyRequest } from "@deboxsoft/module-fastify";
 import { {{ pascalCase  projectName }}ServerApiOptions } from "./types.js";
 import { {{ pascalCase  model }}ServiceServer } from "../services/index.js";
 
@@ -19,7 +19,10 @@ export const create{{ pascalCase  model }}Route = (route: FastifyInstance<any>, 
   const apiPath = `/${options.apiPath}/${getModuleApiRoute().{{ camelCase  model }}Route}`;
   const logger = getLogger();
   logger.debug(`create route '${apiPath}'`);
-  route.post(apiPath, {}, async (request, reply): Promise<{{ pascalCase  model }}CreateResponse | void> => {
+  route.post(
+    apiPath,
+    {},
+    async (request: FastifyRequest, reply: FastifyReply): Promise<{{ pascalCase  model }}CreateResponse | void> => {
     try {
       const input = request.body as {{ pascalCase  model }}Input;
       logger.debug("create{{ pascalCase  model }} %o", input);
@@ -29,7 +32,10 @@ export const create{{ pascalCase  model }}Route = (route: FastifyInstance<any>, 
       reply.expectationFailed(e?.message);
     }
   });
-  route.put(`${apiPath}/:id`, {}, async (request, reply): Promise<{{ pascalCase  model }}UpdateResponse | void> => {
+  route.put(
+    `${apiPath}/:id`,
+    {},
+    async (request: FastifyRequest, reply: FastifyReply): Promise<{{ pascalCase  model }}UpdateResponse | void> => {
     try {
       const { id } = request.params as IdParams;
       const input = request.body as {{ pascalCase  model }}UpdateInput;
@@ -40,7 +46,10 @@ export const create{{ pascalCase  model }}Route = (route: FastifyInstance<any>, 
       reply.expectationFailed(e?.message);
     }
   });
-  route.delete(`${apiPath}/:id`, {}, async (request, reply): Promise<{{ pascalCase  model }}RemoveResponse | void> => {
+  route.delete(
+    `${apiPath}/:id`,
+    {},
+    async (request: FastifyRequest, reply: FastifyReply): Promise<{{ pascalCase  model }}RemoveResponse | void> => {
     try {
       const { id } = request.params as IdParams;
       logger.debug("remove{{ pascalCase  model }} %s", id);
@@ -50,7 +59,10 @@ export const create{{ pascalCase  model }}Route = (route: FastifyInstance<any>, 
       reply.expectationFailed(e?.message);
     }
   });
-  route.get(apiPath, {}, async (request, reply): Promise<DataResponse<{{ pascalCase  model }}[]> | void> => {
+  route.get(
+    apiPath,
+    {},
+    async (request: FastifyRequest, reply: FastifyReply): Promise<DataResponse<{{ pascalCase  model }}[]> | void> => {
     try {
       const filter = request.params as {{ pascalCase  model }}Filter;
       logger.debug("find{{ pascalCase  model }} '%o'", filter);
@@ -61,7 +73,10 @@ export const create{{ pascalCase  model }}Route = (route: FastifyInstance<any>, 
       reply.expectationFailed(e?.message);
     }
   });
-  route.post(`${apiPath}/page`, {}, async (request, reply): Promise<Pagination<{{ pascalCase  model }}Filter> | void> => {
+  route.post(
+    `${apiPath}/page`,
+    {},
+    async (request: FastifyRequest, reply: FastifyReply): Promise<Pagination<{{ pascalCase  model }}Filter> | void> => {
     try {
       const opts = request.body as PaginationOptions<{{ pascalCase  model }}Filter>;
       logger.debug("find{{ pascalCase  model }}Page '%o'", opts);
@@ -71,7 +86,10 @@ export const create{{ pascalCase  model }}Route = (route: FastifyInstance<any>, 
       reply.expectationFailed(e?.message);
     }
   });
-  route.get(`${apiPath}/:id`, {}, async (request, reply): Promise<DataResponse<{{ pascalCase  model }} | undefined> | void> => {
+  route.get(
+    `${apiPath}/:id`,
+    {},
+    async (request: FastifyRequest, reply: FastifyReply): Promise<DataResponse<{{ pascalCase  model }} | undefined> | void> => {
     try {
       const { id } = request.params as IdParams;
       logger.debug("find{{ pascalCase  model }}ById '%s'", id);

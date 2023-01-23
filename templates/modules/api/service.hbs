@@ -17,7 +17,7 @@ export const {{ pascalCase model }}Event = {
   onBeforeRemove: "{{ kebabUpperCase model }}-BEFORE-REMOVE-EVENT",
   onAfterRemove: "{{ kebabUpperCase model }}-AFTER-REMOVE-EVENT"
 };
-export const {{ constantCase model }}_SERVICE_KEY = "{{ kebabUpperCase model }}-SERVICE-KEY";
+export const {{ constantCase model }}_SERVICE_KEY = "{{ kebabUpperCase  model }}-SERVICE-KEY";
 export const get{{ pascalCase model }}Service = <S extends {{ pascalCase model }}Service = {{ pascalCase model }}Service>() => Container.get<S>({{ constantCase model }}_SERVICE_KEY);
 export const has{{ pascalCase model }}Service = () => Container.has({{ constantCase model }}_SERVICE_KEY);
 export interface {{ pascalCase model }}Service {
