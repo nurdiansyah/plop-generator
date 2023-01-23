@@ -1,0 +1,109 @@
+import { getContext, hasContext, setContext } from "svelte";
+import {
+  {{ pascalCase  model }},
+  {{ pascalCase  model }}CreateResponse,
+  {{ pascalCase  model }}Event,
+  {{ pascalCase  model }}Filter,
+  {{ pascalCase  model }}Input,
+  {{ pascalCase  model }}RemoveResponse,
+  {{ pascalCase  model }}Service,
+  {{ pascalCase  model }}UpdateInput,
+  {{ pascalCase  model }}UpdateResponse
+} from "@deboxsoft/{{ kebabCase projectName }}-api";
+import { Logger, Pagination, PaginationOptions } from "@deboxsoft/module-core";
+import { createEventEmitter } from "@deboxsoft/module-client";
+import { createPaginationStore, PaginationStore } from "@deboxsoft/module-client/libs/svelte";
+
+type {{ pascalCase  model }}ContextOptions = {
+  initial?: {{ pascalCase  model }}[];
+  {{ camelCase  model }}Service: {{ pascalCase  model }}Service;
+  logger: Logger;
+};
+
+export interface {{ pascalCase model }}Context extends {{ pascalCase model }}Service {
+  paginationStore: PaginationStore<{{ pascalCase model }}, {{ pascalCase model }}Filter>;
+}
+
+const {{ camelCase  model }}ContextKey = "{{ kebabUpperCase }}-CONTEXT-KEY";
+export const create{{ pascalCase  model }}Context = (opts: {{ pascalCase  model }}ContextOptions) => {
+  const {{ camelCase model }}Service = get{{ pascalCase model }}Service();
+  const paginationStore = createPaginationStore<{{ pascalCase model }}, {{ pascalCase model }}Filter>({ initial: opts.initial });
+  const logger = getLogger();
+  const event = createEventEmitter();
+
+  const create = async (input: {{ pascalCase model }}Input): Promise<{{ pascalCase model }}CreateResponse> => {
+    try {
+      const _input = {{ pascalCase model }}Input.parse(input);
+      event.emit({{ pascalCase model }}Event.onBeforeCreate, _input);
+      const response = await {{ camelCase model }}Service.create(input);
+      const {{ camelCase model }} = {
+        ..._input,
+        ...response.meta,
+        id: response.data
+      };
+      paginationStore.dataStore.push({{ camelCase model }});
+      event.emit({{ pascalCase model }}Event.onAfterCreate, {{ camelCase model }});
+      return response;
+    } catch (e) {
+      logger.debug(`[error] ${e?.message}`);
+      throw e;
+    }
+  };
+
+  const update = async (id: string, input: {{ pascalCase model }}UpdateInput): Promise<{{ pascalCase model }}UpdateResponse> => {
+    try {
+      input = {{ pascalCase model }}UpdateInput.parse(input);
+      event.emit({{ pascalCase model }}Event.onBeforeUpdate, { id, input });
+      const response = await {{ camelCase model }}Service.update(id, input);
+      if (response.data) {
+        paginationStore.dataStore.update({ id, input });
+        event.emit({{ pascalCase model }}Event.onAfterUpdate, id, input);
+      }
+      return response;
+    } catch (e) {
+      logger.debug(`[error] ${e?.message}`);
+      throw e;
+    }
+  };
+
+  const remove = async (id: string, index?: number): Promise<{{ pascalCase model }}RemoveResponse> => {
+    try {
+      event.emit({{ pascalCase model }}Event.onBeforeRemove, id);
+      const response = await {{ camelCase model }}Service.remove(id);
+      if (response.data) {
+        paginationStore.dataStore.remove({ id, index });
+        event.emit({{ pascalCase model }}Event.onAfterRemove, id);
+      }
+      return response;
+    } catch (e) {
+      logger.debug(`[error] ${e?.message}`);
+      throw e;
+    }
+  };
+
+  const findById = async (id: string): Promise<{{ pascalCase model }} | undefined> => {
+    return {{ camelCase model }}Service.findById(id);
+  };
+
+  const find = (filter: {{ pascalCase model }}Filter): Promise<{{ pascalCase model }}[]> => {
+    return {{ camelCase model }}Service.find(filter);
+  };
+
+  const findPage = (filter: PaginationOptions<{{ pascalCase model }}Filter>): Promise<Pagination<{{ pascalCase model }}>> => {
+    return {{ camelCase model }}Service.findPage(filter);
+  };
+  const {{ camelCase model }}Context: {{ pascalCase model }}Context = {
+    paginationStore,
+    find,
+    findPage,
+    findById,
+    create,
+    update,
+    remove
+  };
+  return {{ camelCase  model }}Context;
+};
+
+export const get{{ pascalCase  model }}Context = () => getContext<{{ pascalCase  model }}Context>({{ camelCase  model }}ContextKey);
+
+export const has{{ pascalCase  model }}Context = () => hasContext({{ camelCase  model }}ContextKey);
