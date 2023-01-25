@@ -14,8 +14,8 @@ import {
   getModuleApiRoute
 } from "@deboxsoft/{{ kebabCase projectName }}-api";
 
-type {{ pascalCase model }}ServiceRestOptions = RestOptions;
-export const create{{ pascalCase model }}ServiceRest = (opts: {{ pascalCase model }}ServiceRestOptions) => {
+type {{ pascalCase model }}ServiceRestOptions = Omit<RestOptions>;
+export const create{{ pascalCase model }}ServiceRest = (opts: {{ pascalCase model }}ServiceRestOptions = {}) => {
   const {{ camelCase model }}ServiceRest = new {{ pascalCase model }}ServiceRest(opts);
   Container.set({{ constantCase model }}_SERVICE_KEY, {{ camelCase model }}ServiceRest);
   return {{ camelCase model }}ServiceRest;
