@@ -1,13 +1,19 @@
-import { IdParams, DataResponse, Pagination, PaginationOptions, getLogger } from "@deboxsoft/module-core";
+import {
+  IdParams,
+  DataResponse,
+  Pagination,
+  PaginationOptions,
+  CreateResult,
+  UpdateResult,
+  RemoveResult,
+  getLogger
+} from "@deboxsoft/module-core";
 import {
   {{ pascalCase  model }}Filter,
   {{ pascalCase  model }}Input,
   {{ pascalCase  model }}UpdateInput,
   {{ pascalCase  model }},
   get{{ pascalCase  model }}Service,
-  CreateResult,
-  UpdateResult,
-  RemoveResult,
   getModuleApiRoute
 } from "@deboxsoft/{{ kebabCase  projectName }}-api";
 import { FastifyInstance, FastifyReply, FastifyRequest } from "@deboxsoft/module-fastify";

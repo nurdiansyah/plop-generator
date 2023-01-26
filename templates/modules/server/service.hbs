@@ -1,4 +1,12 @@
-import { Container, getLogger, Logger, PaginationOptions } from "@deboxsoft/module-core";
+import {
+  Container,
+  getLogger,
+  Logger,
+  CreateResult,
+  UpdateResult,
+  RemoveResult,
+  PaginationOptions
+} from "@deboxsoft/module-core";
 import {
   {{ pascalCase model }}Filter,
   {{ pascalCase model }},
@@ -8,9 +16,6 @@ import {
   {{ pascalCase model }}Service,
   {{ pascalCase model }}UpdateInput,
   {{ pascalCase model }}DataInput,
-  CreateResult,
-  UpdateResult,
-  RemoveResult,
   {{ constantCase model }}_SERVICE_KEY
 } from "@deboxsoft/{{ camelCase  projectName }}-api";
 import { MQEmitter } from "mqemitter";
@@ -18,8 +23,8 @@ import { get{{ pascalCase model }}Repo, {{ pascalCase model }}Repo } from "../db
 import { {{ pascalCase  projectName }}ServerModuleConfig } from "../types.js";
 
 export const create{{ pascalCase model }}ServiceServer = async (opts: {{ pascalCase  projectName }}ServerModuleConfig) => {
-  const {{ pascalCase model }}Repo = get{{ pascalCase model }}Repo();
-  const {{ pascalCase model }}Service = new {{ pascalCase model }}ServiceServer({{ pascalCase model }}Repo, opts);
+  const {{ camelCase model }}Repo = get{{ pascalCase model }}Repo();
+  const {{ pascalCase model }}Service = new {{ pascalCase model }}ServiceServer({{ camelCase model }}Repo, opts);
   Container.set({{ constantCase model }}_SERVICE_KEY, {{ pascalCase model }}Service);
   return {{ pascalCase model }}Service;
 };
@@ -27,7 +32,7 @@ export const create{{ pascalCase model }}ServiceServer = async (opts: {{ pascalC
 export class {{ pascalCase model }}ServiceServer implements {{ pascalCase model }}Service {
   logger: Logger;
   event: MQEmitter;
-  constructor(private {{ camelCase model }}Repo: {{ pascalCase model }}Repo, { event }: {{ pascalCase  projectName }}ServerModuleConfig) {
+  constructor(private {{ camelCase model }}Repo: {{ camelCase model }}Repo, { event }: {{ pascalCase  projectName }}ServerModuleConfig) {
     this.logger = getLogger();
     this.event = event;
   }
@@ -35,9 +40,9 @@ export class {{ pascalCase model }}ServiceServer implements {{ pascalCase model 
   async create(input: {{ pascalCase model }}Input): Promise<CreateResult> {
     const dataInput: {{ pascalCase model }}DataInput = {{ pascalCase model }}Input.parse(input);
     this.event.emit({ topic: {{ pascalCase model }}Event.onBeforeCreate, input: dataInput });
-    const { data: id } = await this.{{ pascalCase model }}Repo.create(dataInput);
+    const { data: id } = await this.{{ camelCase model }}Repo.create(dataInput);
     if (id) {
-      this.{{ pascalCase model }}Repo.findById(id).then((_) => {
+      this.{{ camelCase model }}Repo.findById(id).then((_) => {
         if (_) {
           this.event.emit({ topic: {{ pascalCase model }}Event.onAfterCreate, data: _ });
           return _;
@@ -55,7 +60,7 @@ export class {{ pascalCase model }}ServiceServer implements {{ pascalCase model 
   async update(id, input: {{ pascalCase model }}UpdateInput): Promise<UpdateResult> {
     const dataInput: Partial<{{ pascalCase model }}DataInput> = {{ pascalCase model }}UpdateInput.parse(input);
     this.event.emit({ topic: {{ pascalCase model }}Event.onBeforeUpdate, id, input: dataInput });
-    const { data } = await this.{{ pascalCase model }}Repo.update(id, dataInput);
+    const { data } = await this.{{ camelCase model }}Repo.update(id, dataInput);
     if (data) {
       this.findById(id).then((_) => {
         if (_) {
@@ -72,7 +77,7 @@ export class {{ pascalCase model }}ServiceServer implements {{ pascalCase model 
 
   async remove(id: string): Promise<RemoveResult> {
     this.event.emit({ topic: {{ pascalCase model }}Event.onBeforeRemove, id });
-    const { data } = await this.{{ pascalCase model }}Repo.remove(id);
+    const { data } = await this.{{ camelCase model }}Repo.remove(id);
     if (data) {
       this.event.emit({ topic: {{ pascalCase model }}Event.onAfterRemove, id });
       return {
@@ -84,14 +89,14 @@ export class {{ pascalCase model }}ServiceServer implements {{ pascalCase model 
   }
 
   async findById(id: string): Promise<{{ pascalCase model }} | undefined> {
-    return await this.{{ pascalCase model }}Repo.findById(id);
+    return await this.{{ camelCase model }}Repo.findById(id);
   }
 
   async find(filter?: {{ pascalCase model }}Filter): Promise<{{ pascalCase model }}[]> {
-    return await this.{{ pascalCase model }}Repo.find(filter);
+    return await this.{{ camelCase model }}Repo.find(filter);
   }
 
   findPage(opts: PaginationOptions<{{ pascalCase model }}Filter>) {
-    return this.{{ pascalCase model }}Repo.findPage(opts);
+    return this.{{ camelCase model }}Repo.findPage(opts);
   }
 }
