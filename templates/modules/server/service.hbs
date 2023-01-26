@@ -8,9 +8,9 @@ import {
   {{ pascalCase model }}Service,
   {{ pascalCase model }}UpdateInput,
   {{ pascalCase model }}DataInput,
-  {{ pascalCase model }}CreateResponse,
-  {{ pascalCase model }}UpdateResponse,
-  {{ pascalCase model }}RemoveResponse,
+  CreateResult,
+  UpdateResult,
+  RemoveResult,
   {{ constantCase model }}_SERVICE_KEY
 } from "@deboxsoft/{{ camelCase  projectName }}-api";
 import { MQEmitter } from "mqemitter";
@@ -32,7 +32,7 @@ export class {{ pascalCase model }}ServiceServer implements {{ pascalCase model 
     this.event = event;
   }
 
-  async create(input: {{ pascalCase model }}Input): Promise<{{ pascalCase model }}CreateResponse> {
+  async create(input: {{ pascalCase model }}Input): Promise<CreateResult> {
     const dataInput: {{ pascalCase model }}DataInput = {{ pascalCase model }}Input.parse(input);
     this.event.emit({ topic: {{ pascalCase model }}Event.onBeforeCreate, input: dataInput });
     const { data: id } = await this.{{ pascalCase model }}Repo.create(dataInput);
@@ -52,7 +52,7 @@ export class {{ pascalCase model }}ServiceServer implements {{ pascalCase model 
     throw new {{ pascalCase model }}Error({ code: "{{ constantCase model }}_CREATE_FAILED" });
   }
 
-  async update(id, input: {{ pascalCase model }}UpdateInput): Promise<{{ pascalCase model }}UpdateResponse> {
+  async update(id, input: {{ pascalCase model }}UpdateInput): Promise<UpdateResult> {
     const dataInput: Partial<{{ pascalCase model }}DataInput> = {{ pascalCase model }}UpdateInput.parse(input);
     this.event.emit({ topic: {{ pascalCase model }}Event.onBeforeUpdate, id, input: dataInput });
     const { data } = await this.{{ pascalCase model }}Repo.update(id, dataInput);
@@ -70,7 +70,7 @@ export class {{ pascalCase model }}ServiceServer implements {{ pascalCase model 
     throw new {{ pascalCase model }}Error({ code: "{{ constantCase model }}_UPDATE_FAILED", args: { id } });
   }
 
-  async remove(id: string): Promise<{{ pascalCase model }}RemoveResponse> {
+  async remove(id: string): Promise<RemoveResult> {
     this.event.emit({ topic: {{ pascalCase model }}Event.onBeforeRemove, id });
     const { data } = await this.{{ pascalCase model }}Repo.remove(id);
     if (data) {

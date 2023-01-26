@@ -31,7 +31,7 @@ export const create{{ pascalCase  model }}Context = (opts: {{ pascalCase  model 
   const logger = getLogger();
   const event = createEventEmitter();
 
-  const create = async (input: {{ pascalCase model }}Input): Promise<{{ pascalCase model }}CreateResponse> => {
+  const create = async (input: {{ pascalCase model }}Input): Promise<CreateResult> => {
     try {
       const _input = {{ pascalCase model }}Input.parse(input);
       event.emit({{ pascalCase model }}Event.onBeforeCreate, _input);
@@ -50,7 +50,7 @@ export const create{{ pascalCase  model }}Context = (opts: {{ pascalCase  model 
     }
   };
 
-  const update = async (id: string, input: {{ pascalCase model }}UpdateInput): Promise<{{ pascalCase model }}UpdateResponse> => {
+  const update = async (id: string, input: {{ pascalCase model }}UpdateInput): Promise<UpdateResult> => {
     try {
       input = {{ pascalCase model }}UpdateInput.parse(input);
       event.emit({{ pascalCase model }}Event.onBeforeUpdate, { id, input });
@@ -66,7 +66,7 @@ export const create{{ pascalCase  model }}Context = (opts: {{ pascalCase  model 
     }
   };
 
-  const remove = async (id: string, index?: number): Promise<{{ pascalCase model }}RemoveResponse> => {
+  const remove = async (id: string, index?: number): Promise<RemoveResult> => {
     try {
       event.emit({{ pascalCase model }}Event.onBeforeRemove, id);
       const response = await {{ camelCase model }}Service.remove(id);

@@ -40,7 +40,7 @@ export class {{ pascalCase  model }}Context implements {{ pascalCase  model }}Se
     return this.paginationStore.pageInfo;
   }
 
-  async create(input: {{ pascalCase  model }}Input): Promise<{{ pascalCase  model }}CreateResponse> {
+  async create(input: {{ pascalCase  model }}Input): Promise<CreateResult> {
     try {
       const _input = {{ pascalCase  model }}Input.parse(input);
       this.event.emit({{ pascalCase  model }}Event.onBeforeCreate, _input);
@@ -59,7 +59,7 @@ export class {{ pascalCase  model }}Context implements {{ pascalCase  model }}Se
     }
   }
 
-  async update(id: string, input: {{ pascalCase  model }}UpdateInput): Promise<{{ pascalCase  model }}UpdateResponse> {
+  async update(id: string, input: {{ pascalCase  model }}UpdateInput): Promise<UpdateResult> {
     try {
       input = {{ pascalCase  model }}UpdateInput.parse(input);
       this.event.emit({{ pascalCase  model }}Event.onBeforeUpdate, { id, input });
@@ -75,7 +75,7 @@ export class {{ pascalCase  model }}Context implements {{ pascalCase  model }}Se
     }
   }
 
-  async remove(id: string, index?: number): Promise<{{ pascalCase  model }}RemoveResponse> {
+  async remove(id: string, index?: number): Promise<RemoveResult> {
     try {
       this.event.emit({{ pascalCase  model }}Event.onBeforeRemove, id);
       const response = await this.{{ camelCase  model }}Service.remove(id);
@@ -101,8 +101,9 @@ export class {{ pascalCase  model }}Context implements {{ pascalCase  model }}Se
     return this.{{ camelCase  model }}Service.find(filter);
   }
 
-  findPage(filter: PaginationOptions<{{ pascalCase  model }}Filter>): Promise<Pagination<{{ pascalCase  model }}>> {
-    return this.{{ camelCase  model }}Service.findPage(filter);
+  async findPage(options: PaginationOptions<{{ pascalCase  model }}Filter>): Promise<Pagination<{{ pascalCase  model }}>> {
+    const pagination = await this.{{ camelCase  model }}Service.findPage(options);
+    return this.paginationStore.page(options, pagination);
   }
 }
 

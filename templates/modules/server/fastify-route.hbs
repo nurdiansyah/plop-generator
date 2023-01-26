@@ -2,12 +2,12 @@ import { IdParams, DataResponse, Pagination, PaginationOptions, getLogger } from
 import {
   {{ pascalCase  model }}Filter,
   {{ pascalCase  model }}Input,
-  {{ pascalCase  model }}CreateResponse,
-  {{ pascalCase  model }}UpdateResponse,
   {{ pascalCase  model }}UpdateInput,
   {{ pascalCase  model }},
-  {{ pascalCase  model }}RemoveResponse,
   get{{ pascalCase  model }}Service,
+  CreateResult,
+  UpdateResult,
+  RemoveResult,
   getModuleApiRoute
 } from "@deboxsoft/{{ kebabCase  projectName }}-api";
 import { FastifyInstance, FastifyReply, FastifyRequest } from "@deboxsoft/module-fastify";
@@ -22,7 +22,7 @@ export const create{{ pascalCase  model }}Route = (route: FastifyInstance<any>, 
   route.post(
     apiPath,
     {},
-    async (request: FastifyRequest, reply: FastifyReply): Promise<{{ pascalCase  model }}CreateResponse | void> => {
+    async (request: FastifyRequest, reply: FastifyReply): Promise<CreateResult | void> => {
     try {
       const input = request.body as {{ pascalCase  model }}Input;
       logger.debug("create{{ pascalCase  model }} %o", input);
@@ -35,7 +35,7 @@ export const create{{ pascalCase  model }}Route = (route: FastifyInstance<any>, 
   route.put(
     `${apiPath}/:id`,
     {},
-    async (request: FastifyRequest, reply: FastifyReply): Promise<{{ pascalCase  model }}UpdateResponse | void> => {
+    async (request: FastifyRequest, reply: FastifyReply): Promise<UpdateResult | void> => {
     try {
       const { id } = request.params as IdParams;
       const input = request.body as {{ pascalCase  model }}UpdateInput;
@@ -49,7 +49,7 @@ export const create{{ pascalCase  model }}Route = (route: FastifyInstance<any>, 
   route.delete(
     `${apiPath}/:id`,
     {},
-    async (request: FastifyRequest, reply: FastifyReply): Promise<{{ pascalCase  model }}RemoveResponse | void> => {
+    async (request: FastifyRequest, reply: FastifyReply): Promise<RemoveResult | void> => {
     try {
       const { id } = request.params as IdParams;
       logger.debug("remove{{ pascalCase  model }} %s", id);

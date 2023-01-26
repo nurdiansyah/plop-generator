@@ -16,16 +16,11 @@ export const {{ pascalCase model }}DataInput = {{ pascalCase model }}Input;
 export const {{ pascalCase model }}Data = {{ pascalCase model }}DataInput.extend({
   id: IdSchema
 });
+export const {{ pascalCase model }} = {{ pascalCase model }}Data
 
 export type {{ pascalCase model }}Input = z.input<typeof {{ pascalCase model }}Input>;
 export type {{ pascalCase model }}UpdateInput = z.input<typeof {{ pascalCase model }}UpdateInput>;
 export type {{ pascalCase model }}DataInput = z.input<typeof {{ pascalCase model }}DataInput>;
 export type {{ pascalCase model }}Data = z.output<typeof {{ pascalCase model }}Data>;
-export type {{ pascalCase model }} = {{ pascalCase model }}Data;
+export type {{ pascalCase model }} = z.output<typeof {{ pascalCase model }};
 export type {{ pascalCase model }}Filter = Filter<{{ pascalCase model }}DataInput>;
-export type {{ pascalCase model }}CreateResponse = CreateDataResponse;
-export type {{ pascalCase model }}UpdateResponse = UpdateDataResponse;
-export type {{ pascalCase model }}RemoveResponse = RemoveDataResponse;
-export type {{ pascalCase model }}FindResponse = DataResponse<{{ pascalCase model }}[]>;
-export type {{ pascalCase model }}FindIdResponse = DataResponse<{{ pascalCase model }} | undefined>;
-export type {{ pascalCase model }}PageResponse = Pagination<{{ pascalCase model }}>;
