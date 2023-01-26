@@ -121,7 +121,7 @@ export const createTemplateAction = ({ basePath, templateFile, data, model, suff
   const actions = [];
   const path = `${basePath}/${model}${suffix}.ts`;
   const indexPath = `${basePath}/index.ts`;
-  const indexTemplate = `export * from "./${model}${suffix}.js";`;
+  const indexTemplate = `export * from "./${model}${suffix}";`;
   actions.push({
     type: "add",
     data,

@@ -107,7 +107,7 @@ export class {{ pascalCase  model }}Context implements {{ pascalCase  model }}Se
   }
 }
 
-const {{ camelCase  model }}ContextKey = "{{ kebabUpperCase }}-CONTEXT-KEY";
+const {{ camelCase  model }}ContextKey = "{{ kebabUpperCase model }}-CONTEXT-KEY";
 export const create{{ pascalCase  model }}Context = (opts: {{ pascalCase  model }}ContextOptions) => {
   if (has{{ pascalCase  model }}Context()) {
     return get{{ pascalCase  model }}Context();
