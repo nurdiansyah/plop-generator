@@ -1,13 +1,12 @@
+import { {{ pascalCase model }}, {{ pascalCase model }}Filter, {{ pascalCase model }}Input, {{ pascalCase model }}UpdateInput } from "../models";
 import {
-  {{ pascalCase model }},
-  {{ pascalCase model }}Filter,
-  {{ pascalCase model }}Input,
-  {{ pascalCase model }}UpdateInput,
+  Container,
+  Pagination,
+  PaginationOptions,
   CreateResult,
   UpdateResult,
   RemoveResult
-} from "../models";
-import { Container, Pagination, PaginationOptions } from "@deboxsoft/module-core";
+} from "@deboxsoft/module-core";
 
 export const {{ pascalCase model }}Event = {
   onBeforeCreate: "{{ kebabUpperCase model }}-BEFORE-CREATE",

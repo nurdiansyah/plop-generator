@@ -1,12 +1,7 @@
 import {
   z,
   Filter,
-  CreateDataResponse,
-  UpdateDataResponse,
-  IdSchema,
-  RemoveDataResponse,
-  DataResponse,
-  Pagination
+  IdSchema
 } from "@deboxsoft/module-core";
 
 export const {{ pascalCase model }}Input = z.object({
@@ -22,5 +17,5 @@ export type {{ pascalCase model }}Input = z.input<typeof {{ pascalCase model }}I
 export type {{ pascalCase model }}UpdateInput = z.input<typeof {{ pascalCase model }}UpdateInput>;
 export type {{ pascalCase model }}DataInput = z.input<typeof {{ pascalCase model }}DataInput>;
 export type {{ pascalCase model }}Data = z.output<typeof {{ pascalCase model }}Data>;
-export type {{ pascalCase model }} = z.output<typeof {{ pascalCase model }};
+export type {{ pascalCase model }} = z.output<typeof {{ pascalCase model }}>;
 export type {{ pascalCase model }}Filter = Filter<{{ pascalCase model }}DataInput>;
