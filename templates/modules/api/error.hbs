@@ -1,8 +1,4 @@
-import {
-  DbxError,
-  DbxErrorOptions,
-  ModuleConfig,
-} from "@deboxsoft/module-core";
+import { DbxError, DbxErrorOptions, ModuleConfig } from "@deboxsoft/module-core";
 
 export type {{ pascalCase model }}CodeMessageError = keyof typeof codeMessageDefault;
 type Options = DbxErrorOptions<{{ pascalCase model }}CodeMessageError> & {

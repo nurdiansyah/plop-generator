@@ -1,5 +1,15 @@
 import { createURLSearchParams, FetchApi, getFetchApi, RestOptions } from "@deboxsoft/module-client";
-import { Container, DataResponse, getLogger, Logger, Pagination, PaginationOptions } from "@deboxsoft/module-core";
+import {
+  Container,
+  DataResponse,
+  getLogger,
+  Logger,
+  Pagination,
+  CreateResult,
+  UpdateResult,
+  RemoveResult,
+  PaginationOptions
+} from "@deboxsoft/module-core";
 import {
   {{ pascalCase model }},
   {{ pascalCase model }}Input,
@@ -8,9 +18,6 @@ import {
   {{ pascalCase model }}Filter,
   {{ constantCase model }}_SERVICE_KEY,
   {{ pascalCase model }}Service,
-  CreateResult,
-  UpdateResult,
-  RemoveResult,
   getModuleApiRoute
 } from "@deboxsoft/{{ kebabCase projectName }}-api";
 

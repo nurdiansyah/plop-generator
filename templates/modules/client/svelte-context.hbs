@@ -1,16 +1,21 @@
 import { getContext, hasContext, setContext } from "svelte";
 import {
   {{ pascalCase  model }},
-  {{ pascalCase  model }}CreateResponse,
   {{ pascalCase  model }}Event,
   {{ pascalCase  model }}Filter,
   {{ pascalCase  model }}Input,
-  {{ pascalCase  model }}RemoveResponse,
   {{ pascalCase  model }}Service,
-  {{ pascalCase  model }}UpdateInput,
-  {{ pascalCase  model }}UpdateResponse
+  {{ pascalCase  model }}UpdateInput
 } from "@deboxsoft/{{ kebabCase projectName }}-api";
-import { Logger, Pagination, PaginationOptions } from "@deboxsoft/module-core";
+import {
+  Logger,
+  Pagination,
+  CreateResult,
+  UpdateResult,
+  RemoveResult,
+  getLogger,
+  PaginationOptions
+} from "@deboxsoft/module-core";
 import { createEventEmitter } from "@deboxsoft/module-client";
 import { createPaginationStore, PaginationStore } from "@deboxsoft/module-client/libs/svelte";
 
@@ -27,9 +32,9 @@ export class {{ pascalCase  model }}Context implements {{ pascalCase  model }}Se
   private event = createEventEmitter();
 
   constructor(opts: {{ pascalCase  model }}ContextOptions) {
-    this.{{ camelCase  model }}Service = opts.{{ camelCase  model }}Service;
+    this.{{ camelCase  model }}Service = get{{ camelCase  model }}Service();
     this.paginationStore = createPaginationStore<{{ pascalCase  model }}, {{ pascalCase  model }}Filter>({ initial: opts.initial });
-    this.logger = opts.logger;
+    this.logger = getLogger();
   }
 
   get dataStore() {
