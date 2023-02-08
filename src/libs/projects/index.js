@@ -2,9 +2,6 @@ import path from "path";
 import fs from "fs";
 
 import { validatePackageName, templateFilesGenerator } from "../../core/index.js";
-import { e2eGenerator } from "./e2e.js";
-import { gatsbyGenerator } from "./gatsby.js";
-import { pipelinesGenerator } from "./pipelines.js";
 import { getConfigService } from "@deboxsoft/module-core/libs/config";
 
 const generatorId = "projects";

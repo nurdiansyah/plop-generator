@@ -19,7 +19,7 @@ import {
   {{ constantCase model }}_SERVICE_KEY,
   {{ pascalCase model }}Service,
   getModuleApiRoute
-} from "@deboxsoft/{{ kebabCase projectName }}-api";
+} from "@deboxsoft/{{ kebabCase projectName }}-core";
 
 type {{ pascalCase model }}ServiceRestOptions = Omit<RestOptions>;
 export const create{{ pascalCase model }}ServiceRest = (opts: {{ pascalCase model }}ServiceRestOptions = {}) => {

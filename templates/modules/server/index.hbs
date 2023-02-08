@@ -3,25 +3,25 @@ import {
   /* GEN-ADD: import-services */
   create{{ pascalCase model }}ServiceServer
   /* GEN-END: import-services */
-} from "./services/index.js";
+} from "./services";
 
 // prettier-ignore
 import {
   /* GEN-ADD: import-mongo */
   create{{ pascalCase model }}Repo
   /* GEN-END: import-mongo */
-} from "./db/mongo/index.js";
+} from "./db/mongo";
 
 // prettier-ignore
 import {
   /* GEN-ADD: import-fastify */
   create{{ pascalCase model }}Route
   /* GEN-END: import-fastify */
-} from "./fastify/index.js";
+} from "./fastify";
 
 import { FastifyInstance } from "fastify";
-import { {{ pascalCase projectName }}ServerApiOptions } from "./fastify/types.js";
-import { {{ pascalCase projectName }}ServerModuleConfig } from "./types.js";
+import { {{ pascalCase projectName }}ServerApiOptions } from "./fastify/types";
+import { {{ pascalCase projectName }}ServerModuleConfig } from "./types";
 
 export const create{{ pascalCase projectName }}ServiceServer = async (config: {{ pascalCase projectName }}ServerModuleConfig) => {
   /* GEN-ADD: create-service */

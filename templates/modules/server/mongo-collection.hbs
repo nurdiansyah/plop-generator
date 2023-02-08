@@ -1,5 +1,5 @@
 import { {{ pascalCase model }}Repo, {{ constantCase model }}_REPO_KEY } from "../";
-import { {{ pascalCase model }}Data, {{ pascalCase model }}DataInput, {{ pascalCase model }}Error, {{ pascalCase model }}Filter } from "@deboxsoft/{{ kebabCase projectName }}-api";
+import { {{ pascalCase model }}Data, {{ pascalCase model }}DataInput, {{ pascalCase model }}Error, {{ pascalCase model }}Filter } from "@deboxsoft/{{ kebabCase projectName }}-core";
 
 import { Container, getLogger, Logger } from "@deboxsoft/module-core";
 import { BaseRepository, getMongoDb, Db, ObjectId, TransactionOptions } from "@deboxsoft/module-mongo";

@@ -1,5 +1,5 @@
 {
-  "name": "@{{ organization }}/ {{ kebabCase projectName }}",
+  "name": "@{{ organization }}/{{ kebabCase projectName }}-server",
   "version": "0.0.0",
   "license": "SEE LICENSE IN LICENSE.md",
   "repository": {
@@ -24,8 +24,7 @@
   "scripts": {
     "build": "tsup",
     "format": "eslint --fix 'src/**/*.ts'",
-    "test": "ava",
-    "test:watch": "ava -w",
+    "test": "vitest",
     "bump": "pnpm build && bump",
     "publish:dev": "pnpm publish --tag dev --no-git-checks",
     "release": "pnpm bump -t \"server-v\" -c \"release server v\" && pnpm publish",
@@ -34,43 +33,19 @@
   "publishConfig": {
     "access": "public"
   },
-  "dependencies": {
-    "@deboxsoft/teaching-factory-api": "workspace:^"
-  },
   "devDependencies": {
-    "@deboxsoft/module-core": "~2.6.40",
-    "@deboxsoft/module-mongo": "~2.6.17",
-    "@deboxsoft/module-server": "~2.6.14",
-    "@fastify/jwt": "^6.3.1",
-    "@fastify/sensible": "^5.1.0",
-    "@fastify/swagger": "^7.4.1",
-    "@types/jsonwebtoken": "^8.5.8",
-    "fastify": "^4.3.0",
-    "fastify-plugin": "^4.0.0",
+    "@{{ organization }}/{{ kebabCase projectName }}-core": "workspace:^",
+    "@deboxsoft/module-core": "latest",
+    "@deboxsoft/module-mongo": "latest",
+    "@deboxsoft/module-server": "latest",
     "mongodb": "~4.9.0",
-    "mongodb-memory-server": "^6.9.6",
-    "mqemitter": "~5.0.0",
-    "notation": "~2.0.0"
+    "mongodb-memory-server": "^6.9.6"
   },
   "peerDependencies": {
+    "@deboxsoft/teaching-factory-core": "0.x",
     "@deboxsoft/module-core": "2.4.x",
     "@deboxsoft/module-mongo": "2.4.x",
     "@deboxsoft/module-server": "2.4.x",
-    "mongodb": "4.x",
-    "mqemitter": "4.x"
-  },
-  "peerDependenciesMeta": {
-    "fastify": {
-      "optional": true
-    },
-    "@fastify/jwt": {
-      "optional": true
-    },
-    "@fastify/sensible": {
-      "optional": true
-    },
-    "@fastify/swagger": {
-      "optional": true
-    }
+    "mongodb": "4.x"
   }
 }

@@ -17,8 +17,8 @@ import {
   {{ pascalCase model }}UpdateInput,
   {{ pascalCase model }}DataInput,
   {{ constantCase model }}_SERVICE_KEY
-} from "@deboxsoft/{{ camelCase  projectName }}-api";
-import { MQEmitter } from "mqemitter";
+} from "@deboxsoft/{{ camelCase  projectName }}-core";
+import { MQEmitter } from "@deboxsoft/module-server";
 import { get{{ pascalCase model }}Repo, {{ pascalCase model }}Repo } from "../db";
 import { {{ pascalCase  projectName }}ServerModuleConfig } from "../types";
 
@@ -32,7 +32,7 @@ export const create{{ pascalCase model }}ServiceServer = async (opts: {{ pascalC
 export class {{ pascalCase model }}ServiceServer implements {{ pascalCase model }}Service {
   logger: Logger;
   event: MQEmitter;
-  constructor(private {{ camelCase model }}Repo: {{ camelCase model }}Repo, { event }: {{ pascalCase  projectName }}ServerModuleConfig) {
+  constructor(private {{ camelCase model }}Repo: {{ pascalCase model }}Repo, { event }: {{ pascalCase  projectName }}ServerModuleConfig) {
     this.logger = getLogger();
     this.event = event;
   }

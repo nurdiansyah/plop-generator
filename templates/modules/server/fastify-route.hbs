@@ -15,10 +15,10 @@ import {
   {{ pascalCase  model }},
   get{{ pascalCase  model }}Service,
   getModuleApiRoute
-} from "@deboxsoft/{{ kebabCase  projectName }}-api";
+} from "@deboxsoft/{{ kebabCase  projectName }}-core";
 import { FastifyInstance, FastifyReply, FastifyRequest } from "@deboxsoft/module-fastify";
-import { {{ pascalCase  projectName }}ServerApiOptions } from "./types.js";
-import { {{ pascalCase  model }}ServiceServer } from "../services/index.js";
+import { {{ pascalCase  projectName }}ServerApiOptions } from "./types";
+import { {{ pascalCase  model }}ServiceServer } from "../services";
 
 export const create{{ pascalCase  model }}Route = (route: FastifyInstance<any>, options: {{ pascalCase  projectName }}ServerApiOptions) => {
   const {{ camelCase  model }}Service = get{{ pascalCase  model }}Service<{{ pascalCase  model }}ServiceServer>();

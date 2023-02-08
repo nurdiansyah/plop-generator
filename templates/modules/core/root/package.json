@@ -1,11 +1,11 @@
 {
-  "name": "@deboxsoft/{{ kebabCase projectName }}-api",
+  "name": "@deboxsoft/{{ kebabCase projectName }}-core",
   "version": "0.0.0",
   "license": "SEE LICENSE IN LICENSE.md",
   "repository": {
     "type": "git",
     "url": "https://github.com/deboxsoft/{{ kebabCase projectName }}",
-    "directory": "packages/api"
+    "directory": "packages/core"
   },
   "maintainers": [
     {
@@ -24,8 +24,7 @@
   "scripts": {
     "build": "tsup",
     "format": "eslint --fix 'src/**/*.ts'",
-    "test": "ava",
-    "test:watch": "ava -w",
+    "test": "vitest",
     "bump": "pnpm build && bump",
     "publish:dev": "pnpm publish --tag dev --no-git-checks",
     "release": "pnpm bump -t \"api-v\" -c \"release api v\" && pnpm publish",
