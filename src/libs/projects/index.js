@@ -96,9 +96,6 @@ export default (plop) => {
 
       /* APPEND CUSTOM ACTION HANDLERS BELOW */
       /***************👇👇👇*************** */
-      /* CYPRESS/E2E FILES */
-      /* CICD SUPPORT */
-      pipelineAction(actionOptions);
 
       /* INSTALL DEPENDENCIES */
       const directoriesToInstall = [`${cwd}/${data.name}`];
