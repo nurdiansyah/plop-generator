@@ -62,6 +62,7 @@
     "src",
     "types.*",
     "templates",
+    "templates/**/.gitignore",
     "CODEOWNERS"
   ],
   "directories": {
