@@ -62,8 +62,6 @@
     "src",
     "types.*",
     "templates",
-    "templates/**/.gitignore",
-    "templates/**/.npmrc",
     "CODEOWNERS"
   ],
   "directories": {

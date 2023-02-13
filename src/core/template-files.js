@@ -75,7 +75,8 @@ function recursiveFilesAction({
   const tmpFile = templateDir.replace(".", "");
   const files = fs.readdirSync(templateDir);
   files.forEach((file) => {
-    const _path = `${path}/${file.replace(/(\.prompt|\.append)$/, "")}`;
+    // fix .gitignore | .npmignore => __.gitignore
+    const _path = `${path}/${file.replace(/(^___)|((\.prompt|\.append)$)/, "")}`;
     const isFile = file.includes(".") || file.endsWith("file");
     const skip = skipPattern?.test(file);
     let action = {};
