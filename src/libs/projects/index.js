@@ -62,9 +62,6 @@ export default (plop) => {
     templateDir
   };
   const templateFilesAction = templateFilesGenerator(generatorOptions);
-  const e2eAction = e2eGenerator(generatorOptions);
-  const gatsbyAction = gatsbyGenerator(generatorOptions);
-  const pipelineAction = pipelinesGenerator(generatorOptions);
   plop.setGenerator(generatorId, {
     description: "Module Project Files",
     prompts,
@@ -100,11 +97,8 @@ export default (plop) => {
       /* APPEND CUSTOM ACTION HANDLERS BELOW */
       /***************👇👇👇*************** */
       /* CYPRESS/E2E FILES */
-      // e2eAction(actionOptions);
       /* CICD SUPPORT */
       pipelineAction(actionOptions);
-      /* GATSBY CUSTOM HANDLERS */
-      // gatsbyAction(actionOptions);
 
       /* INSTALL DEPENDENCIES */
       const directoriesToInstall = [`${cwd}/${data.name}`];
