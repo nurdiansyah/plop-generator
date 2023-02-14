@@ -6,12 +6,12 @@ import fs from "fs";
  * @param opts {import("../../types.js").GeneratorOptions}
  * @return {import("../../types.js").PlopGeneratorFunction}
  */
-export const moduleApiGenerator =
+export const moduleCoreGenerator =
   ({ plop, prompts }) =>
   ({ actions = [], templateDir, path, data = {} }) => {
     const isMonorepo = data.isMonorepo;
     const model = pascalCase(data.model),
-      modulePackage = "api",
+      modulePackage = "core",
       rootPath = `${path}${data.isMonorepo ? `/${modulePackage}` : ""}`,
       srcPath = `${rootPath}/src`;
     templateDir = `${templateDir}/${modulePackage}`;

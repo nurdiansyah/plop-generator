@@ -1,7 +1,7 @@
 import fs from "fs";
 import { getConfigService } from "@deboxsoft/module-core/libs/config";
 import { validatePackageName } from "../../core/index.js";
-import { moduleApiGenerator } from "./api.js";
+import { moduleCoreGenerator } from "./core.js";
 import { moduleServerGenerator } from "./server.js";
 import { moduleClientGenerator } from "./client.js";
 import inquirer from "inquirer";
@@ -71,7 +71,7 @@ export default async (plop) => {
     templateDir
   };
   let moduleApiAction, moduleServerAction, moduleClientAction;
-  moduleApiAction = moduleApiGenerator(generatorOptions);
+  moduleApiAction = moduleCoreGenerator(generatorOptions);
   moduleServerAction = moduleServerGenerator(generatorOptions);
   moduleClientAction = moduleClientGenerator(generatorOptions);
   plop.setGenerator(generatorId, {
