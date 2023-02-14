@@ -17,7 +17,8 @@
     "format": "turbo run format",
     "lint": "turbo run lint",
     "build": "turbo run build",
-    "test": "turbo run test"
+    "test": "turbo run test",
+    "commit": "git cz"
   },
   "devDependencies": {
     "@commitlint/config-conventional": "^17.4.2",
@@ -51,5 +52,10 @@
     "yarpm": "^1.1.1",
     "vite": "^4.1.1",
     "vitest": "^0.27.1"
+  },
+  "config": {
+    "commitizen": {
+      "path": "@commitlint/cz-commitlint"
+    }
   }
 }
