@@ -50,7 +50,7 @@ export default async (plop) => {
     await promptModule({
       type: "checkbox",
       name: "packages",
-      choices: ["api", "server", "client"]
+      choices: ["core", "server", "client"]
     }).then((answer) => {
       env.packages = answer.packages;
     });
@@ -70,8 +70,8 @@ export default async (plop) => {
     actions,
     templateDir
   };
-  let moduleApiAction, moduleServerAction, moduleClientAction;
-  moduleApiAction = moduleCoreGenerator(generatorOptions);
+  let moduleCoreAction, moduleServerAction, moduleClientAction;
+  moduleCoreAction = moduleCoreGenerator(generatorOptions);
   moduleServerAction = moduleServerGenerator(generatorOptions);
   moduleClientAction = moduleClientGenerator(generatorOptions);
   plop.setGenerator(generatorId, {
@@ -92,11 +92,11 @@ export default async (plop) => {
       /* APPEND CUSTOM ACTION HANDLERS BELOW */
       /***************👇👇👇*************** */
       if (isMonorepo) {
-        if (data.packages.includes("api")) moduleApiAction(actionOptions);
+        if (data.packages.includes("core")) moduleCoreAction(actionOptions);
         if (data.packages.includes("client")) moduleClientAction(actionOptions);
         if (data.packages.includes("server")) moduleServerAction(actionOptions);
       } else {
-        if (data.package === "api") moduleApiAction(actionOptions);
+        if (data.package === "core") moduleCoreAction(actionOptions);
         else if (data.package === "server") moduleServerAction(actionOptions);
         else if (data.package === "client") moduleClientAction(actionOptions);
       }
