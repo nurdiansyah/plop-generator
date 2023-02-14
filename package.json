@@ -14,9 +14,8 @@
     "test": "echo Error: no test specified",
     "start": "plop",
     "plop": "plop",
-    "build": "fd --glob \"*.d.ts\" src -x rm {} && tsc",
     "postinstall": "node ./bin/postInstall.js",
-    "bump": "pnpm build && bump",
+    "bump": "bump",
     "publish:dev": "pnpm publish --tag dev --no-git-checks",
     "release": "pnpm bump -t -c && pnpm publish",
     "release:dev": "pnpm bump prerelease && pnpm publish:dev"

@@ -11,7 +11,7 @@
     "allowSyntheticDefaultImports": true,
     "importHelpers": true,
     "resolveJsonModule": true,
-    "declaration": true,
+    "declaration": false,
     "emitDeclarationOnly": true,
     "declarationDir": "src",
     "allowJs": true
