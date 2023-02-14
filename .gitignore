@@ -107,4 +107,5 @@ typings/
 /core
 /types.*
 /examples
+src/**/*.d.ts
 
