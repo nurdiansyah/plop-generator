@@ -1,6 +1,6 @@
 {
   "name": "@deboxsoft/plop-generator",
-  "version": "1.0.19",
+  "version": "1.0.20",
   "description": "Plop Generator to scaffold js/ts projects",
   "type": "module",
   "types": "libs",
@@ -23,7 +23,7 @@
   "author": "Nurdiansyah <nurdiansyah>",
   "license": "SEE LICENSE",
   "dependencies": {
-    "@deboxsoft/module-core": "^2.6.41",
+    "@deboxsoft/module-core": "^2.6.96",
     "@nurdiansyah/node-plop": "^0.32.3",
     "@nurdiansyah/plop": "^3.1.6",
     "dotenv": "^16.0.3",
