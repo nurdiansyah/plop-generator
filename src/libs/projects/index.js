@@ -2,7 +2,7 @@ import path from "path";
 import fs from "fs";
 
 import { validatePackageName, templateFilesGenerator } from "../../core/index.js";
-import { getConfigService } from "@deboxsoft/module-core/libs/config";
+import { getConfigService } from "@deboxsoft/module-core";
 
 const generatorId = "projects";
 

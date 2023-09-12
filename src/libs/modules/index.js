@@ -1,5 +1,5 @@
 import fs from "fs";
-import { getConfigService } from "@deboxsoft/module-core/libs/config";
+import { getConfigService } from "@deboxsoft/module-core";
 import { validatePackageName } from "../../core/index.js";
 import { moduleCoreGenerator } from "./core.js";
 import { moduleServerGenerator } from "./server.js";
