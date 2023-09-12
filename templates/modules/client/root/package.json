@@ -42,14 +42,14 @@
     "@deboxsoft/module-client": "^2.6.21",
     "@deboxsoft/module-core": "^2.6.40",
     "@deboxsoft/svelte-core": "1.1.3-beta.12",
-    "@deboxsoft/{{ kebabCase projectName }}-core": "workspace:^",
+    "@{{ organization }}/{{ kebabCase projectName }}-core": "workspace:^",
     "svelte": "^3.x"
   },
   "peerDependencies": {
     "@deboxsoft/module-client": "2.x",
     "@deboxsoft/module-core": "2.x",
     "@deboxsoft/svelte-core": "1.x || 1.1.3-beta.x",
-    "@deboxsoft/{{ kebabCase projectName }}-api": "workspace:^",
+    "@{{ organization }}/{{ kebabCase projectName }}-core": "workspace:^",
     "svelte": "^3.x"
   }
 }

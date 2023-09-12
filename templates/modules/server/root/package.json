@@ -36,16 +36,16 @@
   "devDependencies": {
     "@{{ organization }}/{{ kebabCase projectName }}-core": "workspace:^",
     "@deboxsoft/module-core": "latest",
+    "@deboxsoft/module-fastify": "latest",
     "@deboxsoft/module-mongo": "latest",
     "@deboxsoft/module-server": "latest",
-    "mongodb": "~4.9.0",
     "mongodb-memory-server": "^6.9.6"
   },
   "peerDependencies": {
-    "@deboxsoft/teaching-factory-core": "0.x",
-    "@deboxsoft/module-core": "2.4.x",
-    "@deboxsoft/module-mongo": "2.4.x",
-    "@deboxsoft/module-server": "2.4.x",
-    "mongodb": "4.x"
+    "@{{ organization }}/{{ kebabCase projectName }}-core": "workspace:^",
+    "@deboxsoft/module-core": "2.x",
+    "@deboxsoft/module-mongo": "2.x",
+    "@deboxsoft/module-server": "2.x",
+    "@deboxsoft/module-fastify": "2.x"
   }
 }

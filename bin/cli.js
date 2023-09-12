@@ -1,8 +1,7 @@
 #!/usr/bin/env node
 import path from "node:path";
 import minimist from "minimist";
-import { Container, camelCase, constantCase } from "@deboxsoft/module-core";
-import { CONFIG_KEY } from "@deboxsoft/module-core/libs/config";
+import { Container, camelCase, constantCase, CONFIG_KEY } from "@deboxsoft/module-core";
 import { Plop, run } from "@nurdiansyah/plop";
 import { fileURLToPath } from "node:url";
 import { config as dotenv } from "dotenv";
