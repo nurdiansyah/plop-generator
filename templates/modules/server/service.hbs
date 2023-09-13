@@ -33,7 +33,7 @@ export const create{{ pascalCase model }}ServiceServer = async (opts: {{ pascalC
 export class {{ pascalCase model }}ServiceServer implements {{ pascalCase model }}Service {
   logger: Logger;
   event: MQEmitter;
-  constructor(private {{ camelCase model }}Repo: {{ pascalCase model }}Repo) {
+  constructor(private {{ camelCase model }}Repo: {{ pascalCase model }}Repo, private opts: {{ pascalCase  projectName }}ServerModuleConfig) {
     this.logger = getLogger();
     this.event = mq(getConfig("event"));
   }
