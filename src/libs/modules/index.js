@@ -72,7 +72,7 @@ export default async (plop) => {
   };
   let moduleCoreAction, moduleServerAction, moduleClientAction;
   moduleCoreAction = moduleCoreGenerator(generatorOptions);
-  moduleServerAction = moduleServerGenerator(generatorOptions);
+  moduleServerAction = await moduleServerGenerator(generatorOptions);
   moduleClientAction = moduleClientGenerator(generatorOptions);
   plop.setGenerator(generatorId, {
     description: "generator module deboxsoft framework",

@@ -1,9 +1,18 @@
 import { pascalCase } from "@deboxsoft/module-core";
 import fs from "fs";
 import { createAppendMultipleAction, createTemplateAction, templateFilesGenerator } from "../../core/index.js";
-export const moduleServerGenerator =
-  ({ plop, prompts }) =>
-  ({ actions = [], templateDir, path, data = {} }) => {
+import inquirer from "inquirer";
+export const moduleServerGenerator = async ({ plop, prompts }) => {
+  const promptModule = inquirer.createPromptModule();
+  let isFastifyRoute = false;
+  await promptModule({
+    type: "confirm",
+    name: "isFastifyRoute",
+    message: "include fastify routes?"
+  }).then((answer) => {
+    isFastifyRoute = answer.isFastifyRoute;
+  });
+  return ({ actions = [], templateDir, path, data = {} }) => {
     const isMonorepo = data.isMonorepo;
     const model = pascalCase(data.model),
       modulePackage = "server",
@@ -48,49 +57,55 @@ export const moduleServerGenerator =
       templateFile: `${templateDir}/mongo-collection.hbs`
     });
 
-    const fastifyRouteActions = createTemplateAction({
-      basePath: `${srcPath}/fastify`,
-      model,
-      suffix: "Route",
-      data,
-      templateFile: `${templateDir}/fastify-route.hbs`
-    });
+    const fastifyRouteActions = isFastifyRoute
+      ? createTemplateAction({
+          basePath: `${srcPath}/fastify`,
+          model,
+          suffix: "Route",
+          data,
+          templateFile: `${templateDir}/fastify-route.hbs`
+        })
+      : [];
 
     actions.push(...serviceActions, ...repoActions, ...mongoCollectionActions, ...fastifyRouteActions);
     // index
+    const appendTemplates = [
+      {
+        key: "import-services",
+        template: "  create{{ pascalCase model }}ServiceServer,"
+      },
+      {
+        key: "import-mongo",
+        template: "  create{{ pascalCase model }}Repo,"
+      },
+      {
+        key: "create-service",
+        template: "  await create{{ pascalCase model }}ServiceServer(config);"
+      },
+      {
+        key: "create-mongo",
+        template: "  create{{ pascalCase model }}Repo();"
+      }
+    ];
+    if (isFastifyRoute) {
+      appendTemplates.push({
+        key: "import-fastify",
+        template: "  create{{ pascalCase model }}Route,"
+      });
+      appendTemplates.push({
+        key: "create-fastify",
+        template: "  create{{ pascalCase model }}Route(instance, opts);"
+      });
+    }
     const indexActions = createAppendMultipleAction({
       type: "add",
       path: `${srcPath}/index.ts`,
       data,
       templateFile: `${templateDir}/index.hbs`,
-      appendTemplates: [
-        {
-          key: "import-services",
-          template: "  create{{ pascalCase model }}ServiceServer,"
-        },
-        {
-          key: "import-mongo",
-          template: "  create{{ pascalCase model }}Repo,"
-        },
-        {
-          key: "import-fastify",
-          template: "  create{{ pascalCase model }}Route,"
-        },
-        {
-          key: "create-service",
-          template: "  await create{{ pascalCase model }}ServiceServer(config);"
-        },
-        {
-          key: "create-mongo",
-          template: "  create{{ pascalCase model }}Repo();"
-        },
-        {
-          key: "create-fastify",
-          template: "  create{{ pascalCase model }}Route(instance, opts);"
-        }
-      ]
+      appendTemplates
     });
     actions.push(...indexActions);
     // console.log(actions);
     return actions;
   };
+};
