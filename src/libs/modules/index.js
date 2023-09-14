@@ -71,9 +71,11 @@ export default async (plop) => {
     templateDir
   };
   let moduleCoreAction, moduleServerAction, moduleClientAction;
-  moduleCoreAction = moduleCoreGenerator(generatorOptions);
-  moduleServerAction = await moduleServerGenerator(generatorOptions);
-  moduleClientAction = moduleClientGenerator(generatorOptions);
+  if (env.packages.includes("core") || env.package === "core") moduleCoreAction = moduleCoreGenerator(generatorOptions);
+  if (env.packages.includes("server") || env.package === "server")
+    moduleServerAction = await moduleServerGenerator(generatorOptions);
+  if (env.packages.includes("client") || env.package === "client")
+    moduleClientAction = moduleClientGenerator(generatorOptions);
   plop.setGenerator(generatorId, {
     description: "generator module deboxsoft framework",
     prompts,

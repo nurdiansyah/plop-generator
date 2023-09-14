@@ -54,7 +54,7 @@ export class {{ pascalCase model }}Collection extends BaseRepository<ObjectId, s
       .toArray();
   }
 
-  findById(id: string, opts: TransactionOptions = {}): Promise<{{ pascalCase model }}Data | undefined> {
+  async findById(id: string, opts: TransactionOptions = {}): Promise<{{ pascalCase model }}Data | undefined> {
     try {
       const _id = ObjectId.createFromHexString(id);
       const query: Record<string, any> = { _id };
