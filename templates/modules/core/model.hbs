@@ -11,7 +11,7 @@ export const {{ pascalCase model }} = {{ pascalCase model }}Data
 
 export type {{ pascalCase model }}Input = z.input<typeof {{ pascalCase model }}Input>;
 export type {{ pascalCase model }}UpdateInput = z.input<typeof {{ pascalCase model }}UpdateInput>;
-export type {{ pascalCase model }}DataInput = z.input<typeof {{ pascalCase model }}DataInput>;
+export type {{ pascalCase model }}DataInput = z.output<typeof {{ pascalCase model }}DataInput>;
 export type {{ pascalCase model }}Data = z.output<typeof {{ pascalCase model }}Data>;
 export type {{ pascalCase model }} = z.output<typeof {{ pascalCase model }}>;
 export type {{ pascalCase model }}Filter = Filter<{{ pascalCase model }}DataInput>;
