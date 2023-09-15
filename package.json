@@ -1,6 +1,6 @@
 {
   "name": "@deboxsoft/plop-generator",
-  "version": "1.0.29",
+  "version": "1.0.30",
   "description": "Plop Generator to scaffold js/ts projects",
   "type": "module",
   "types": "libs",
