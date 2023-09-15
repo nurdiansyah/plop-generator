@@ -21,7 +21,7 @@ export class {{ pascalCase model }}Collection extends BaseRepository<ObjectId, s
     this.logger = getLogger();
   }
 
-  async setupIndex() {}
+  setupIndex() {}
   async create(input: {{ pascalCase model }}DataInput, opts: TransactionOptions = {}): Promise<ModifiedResult<string>> {
     const metadata = await this.collection.insertOne(this._parseDataInput(input), opts);
     if (metadata.insertedId) {
