@@ -1,5 +1,6 @@
 import { {{ pascalCase model }}, {{ pascalCase model }}Filter, {{ pascalCase model }}Input, {{ pascalCase model }}UpdateInput } from "../models";
 import {
+  type ID,
   Container,
   Pagination,
   PaginationOptions,
@@ -21,9 +22,9 @@ export const get{{ pascalCase model }}Service = <S extends {{ pascalCase model }
 export const has{{ pascalCase model }}Service = () => Container.has({{ constantCase model }}_SERVICE_KEY);
 export interface {{ pascalCase model }}Service {
   create(input: {{ pascalCase model }}Input): Promise<CreateResult>;
-  update(id: string, input: Partial<{{ pascalCase model }}Input>): Promise<UpdateResult>;
-  remove(id: string): Promise<RemoveResult>;
-  findById(id: string): Promise<{{ pascalCase model }} | undefined>;
+  update(id: ID, input: Partial<{{ pascalCase model }}Input>): Promise<UpdateResult>;
+  remove(id: ID): Promise<RemoveResult>;
+  findById(id: ID): Promise<{{ pascalCase model }} | undefined>;
   find(filter?: Record<string, any>): Promise<{{ pascalCase model }}[]>;
   findPage(options?: PaginationOptions<{{ pascalCase model }}Filter>): Promise<Pagination<{{ pascalCase model }}>>;
 }
