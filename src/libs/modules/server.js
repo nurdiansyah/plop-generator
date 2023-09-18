@@ -105,7 +105,6 @@ export const moduleServerGenerator = async ({ plop, prompts }) => {
       appendTemplates
     });
     actions.push(...indexActions);
-    // console.log(actions);
     return actions;
   };
 };

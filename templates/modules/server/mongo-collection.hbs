@@ -1,5 +1,5 @@
 import { {{ pascalCase model }}Repo, {{ constantCase model }}_REPO_KEY } from "../";
-import { {{ pascalCase model }}Data, {{ pascalCase model }}DataInput, {{ pascalCase model }}Error, {{ pascalCase model }}Filter } from "@deboxsoft/{{ kebabCase projectName }}-core";
+import { {{ pascalCase model }}DataInput, {{ pascalCase model }}Error, {{ pascalCase model }}Filter } from "@deboxsoft/{{ kebabCase projectName }}-core";
 
 import { type ID, Container, getLogger, Logger } from "@deboxsoft/module-core";
 import { BaseRepository, getMongoDb, Db, ObjectId, TransactionOptions } from "@deboxsoft/module-mongo";
@@ -12,7 +12,7 @@ export const create{{ pascalCase model }}Repo = () => {
   return {{ camelCase model }}Repo;
 };
 
-export class {{ pascalCase model }}Collection extends BaseRepository<ObjectId, string, {{ pascalCase model }}Data> implements {{ pascalCase model }}Repo {
+export class {{ pascalCase model }}Collection extends BaseRepository<ObjectId, string, {{ pascalCase model }}> implements {{ pascalCase model }}Repo {
   private logger: Logger;
   constructor(db: Db) {
     super();
@@ -47,14 +47,14 @@ export class {{ pascalCase model }}Collection extends BaseRepository<ObjectId, s
     return { metadata, data: metadata.acknowledged };
   }
 
-  find(filter: {{ pascalCase model }}Filter = {}, opts: TransactionOptions = {}): Promise<{{ pascalCase model }}Data[]> {
+  find(filter: {{ pascalCase model }}Filter = {}, opts: TransactionOptions = {}): Promise<{{ pascalCase model }}[]> {
     return this.collection
       .find(filter, { sort: { _id: 1 }, ...opts })
       .map(this._parseDataOutput)
       .toArray();
   }
 
-  async findById(id: ID, opts: TransactionOptions = {}): Promise<{{ pascalCase model }}Data | undefined> {
+  async findById(id: ID, opts: TransactionOptions = {}): Promise<{{ pascalCase model }} | undefined> {
     try {
       const _id = ObjectId.createFromHexString(id);
       const query: Record<string, any> = { _id };
