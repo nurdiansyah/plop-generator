@@ -56,7 +56,7 @@ export class {{ pascalCase model }}ServiceServer implements {{ pascalCase model 
         meta: {}
       };
     }
-    throw new {{ pascalCase model }}Error({ code: "{{ constantCase model }}_CREATE_FAILED", config: this.opts });
+    throw new {{ pascalCase model }}Error({ code: "{{ constantCase model }}_CREATE_FAILED", errors: this.opts.errors });
   }
 
   async update(id: ID, input: Partial<{{ pascalCase model }}Input>): Promise<UpdateResult> {
@@ -74,7 +74,7 @@ export class {{ pascalCase model }}ServiceServer implements {{ pascalCase model 
         meta: {}
       };
     }
-    throw new {{ pascalCase model }}Error({ code: "{{ constantCase model }}_UPDATE_FAILED", args: { id }, config: this.opts });
+    throw new {{ pascalCase model }}Error({ code: "{{ constantCase model }}_UPDATE_FAILED", args: { id }, , errors: this.opts.errors });
   }
 
   async remove(id: ID): Promise<RemoveResult> {
@@ -87,7 +87,7 @@ export class {{ pascalCase model }}ServiceServer implements {{ pascalCase model 
         meta: {}
       };
     }
-    throw new {{ pascalCase model }}Error({ code: "{{ constantCase model }}_REMOVE_FAILED", args: { id }, config: this.opts });
+    throw new {{ pascalCase model }}Error({ code: "{{ constantCase model }}_REMOVE_FAILED", args: { id }, , errors: this.opts.errors });
   }
 
   async findById(id: ID): Promise<{{ pascalCase model }} | undefined> {

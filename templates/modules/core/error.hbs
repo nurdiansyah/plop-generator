@@ -1,8 +1,8 @@
-import { DbxError, DbxErrorOptions, ModuleConfig } from "@deboxsoft/module-core";
+import { DbxError, DbxErrorOptions } from "@deboxsoft/module-core";
 
 export type {{ pascalCase model }}CodeMessageError = keyof typeof codeMessageDefault;
 type Options = DbxErrorOptions<{{ pascalCase model }}CodeMessageError> & {
-  config?: Partial<ModuleConfig>;
+  errors?: Records<string, string>;
 };
 const codeMessageDefault = {
   {{ constantCase model }}_NOT_FOUND: "{{ pascalCase model }} id `{{ exceptVar "id"}} not found.`",
@@ -12,7 +12,7 @@ const codeMessageDefault = {
 };
 
 export class {{ pascalCase model }}Error extends DbxError<{{ pascalCase model }}CodeMessageError> {
-  constructor({ config = {}, message, ...options }: Options) {
+  constructor({ errors = {}, message, ...options }: Options) {
     super({
       instanceOf: "{{ pascalCase model }}Error",
       ...options,
