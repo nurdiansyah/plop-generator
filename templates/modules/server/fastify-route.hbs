@@ -44,7 +44,7 @@ export const create{{ pascalCase  model }}Route = (route: FastifyInstance<any>, 
     async (request: FastifyRequest, reply: FastifyReply): Promise<UpdateResult | void> => {
     try {
       const { id } = request.params as IdParams;
-      const input = request.body as {{ pascalCase  model }}UpdateInput;
+      const input = request.body as Partial<{{ pascalCase  model }}Input>;
       logger.debug("update{{ pascalCase  model }} id %s", id);
       return await {{ camelCase  model }}Service.update(id, input);
     } catch (e) {

@@ -58,7 +58,7 @@ export class {{ pascalCase model }}ServiceServer implements {{ pascalCase model 
     throw new {{ pascalCase model }}Error({ code: "{{ constantCase model }}_CREATE_FAILED" });
   }
 
-  async update(id, input: {{ pascalCase model }}UpdateInput): Promise<UpdateResult> {
+  async update(id, input: Partial<{{ pascalCase model }}Input>): Promise<UpdateResult> {
     const dataInput: Partial<{{ pascalCase model }}DataInput> = {{ pascalCase model }}UpdateInput.parse(input);
     this.event.emit({ topic: {{ pascalCase model }}Event.onBeforeUpdate, id, input: dataInput });
     const { data } = await this.{{ camelCase model }}Repo.update(id, dataInput);
