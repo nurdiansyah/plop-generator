@@ -3,9 +3,6 @@ import {
   Container,
   getLogger,
   Logger,
-  CreateResult,
-  UpdateResult,
-  RemoveResult,
   PaginationOptions,
   getConfig
 } from "@deboxsoft/module-core";
@@ -39,40 +36,32 @@ export class {{ pascalCase model }}ServiceServer implements {{ pascalCase model 
     this.event = mq(getConfig("event"));
   }
 
-  async create(input: {{ pascalCase model }}Input): Promise<CreateResult> {
+  async create(input: {{ pascalCase model }}Input): Promise<{{ pascalCase model }}> {
     const dataInput: {{ pascalCase model }}DataInput = {{ pascalCase model }}Input.parse(input);
     this.event.emit({ topic: {{ pascalCase model }}Event.onBeforeCreate, input: dataInput });
     const { data: id } = await this.{{ camelCase model }}Repo.create(dataInput);
     if (id) {
-      this.{{ camelCase model }}Repo.findById(id).then((_) => {
+      return this.{{ camelCase model }}Repo.findById(id).then((_) => {
         if (_) {
           this.event.emit({ topic: {{ pascalCase model }}Event.onAfterCreate, data: _ });
           return _;
-        } else {
         }
       });
-      return {
-        data: id,
-        meta: {}
-      };
     }
     throw new {{ pascalCase model }}Error({ code: "{{ constantCase model }}_CREATE_FAILED", errors: this.opts.errors });
   }
 
-  async update(id: ID, input: Partial<{{ pascalCase model }}Input>): Promise<UpdateResult> {
+  async update(id: ID, input: Partial<{{ pascalCase model }}Input>): Promise<{{ pascalCase model }}> {
     const dataInput: Partial<{{ pascalCase model }}DataInput> = {{ pascalCase model }}UpdateInput.parse(input);
     this.event.emit({ topic: {{ pascalCase model }}Event.onBeforeUpdate, id, input: dataInput });
     const { data } = await this.{{ camelCase model }}Repo.update(id, dataInput);
     if (data) {
-      this.findById(id).then((_) => {
+      return this.findById(id).then((_) => {
         if (_) {
           this.event.emit({ topic: {{ pascalCase model }}Event.onAfterUpdate, data: _ });
+          return _;
         }
       });
-      return {
-        data,
-        meta: {}
-      };
     }
     throw new {{ pascalCase model }}Error({ code: "{{ constantCase model }}_UPDATE_FAILED", args: { id }, , errors: this.opts.errors });
   }
@@ -82,10 +71,7 @@ export class {{ pascalCase model }}ServiceServer implements {{ pascalCase model 
     const { data } = await this.{{ camelCase model }}Repo.remove(id);
     if (data) {
       this.event.emit({ topic: {{ pascalCase model }}Event.onAfterRemove, id });
-      return {
-        data,
-        meta: {}
-      };
+      return data;
     }
     throw new {{ pascalCase model }}Error({ code: "{{ constantCase model }}_REMOVE_FAILED", args: { id }, , errors: this.opts.errors });
   }

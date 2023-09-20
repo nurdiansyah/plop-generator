@@ -3,10 +3,7 @@ import {
   type ID,
   Container,
   Pagination,
-  PaginationOptions,
-  CreateResult,
-  UpdateResult,
-  RemoveResult
+  PaginationOptions
 } from "@deboxsoft/module-core";
 
 export const {{ pascalCase model }}Event = {
@@ -21,9 +18,9 @@ export const {{ constantCase model }}_SERVICE_KEY = "{{ kebabUpperCase  model }}
 export const get{{ pascalCase model }}Service = <S extends {{ pascalCase model }}Service = {{ pascalCase model }}Service>() => Container.get<S>({{ constantCase model }}_SERVICE_KEY);
 export const has{{ pascalCase model }}Service = () => Container.has({{ constantCase model }}_SERVICE_KEY);
 export interface {{ pascalCase model }}Service {
-  create(input: {{ pascalCase model }}Input): Promise<CreateResult>;
-  update(id: ID, input: Partial<{{ pascalCase model }}Input>): Promise<UpdateResult>;
-  remove(id: ID): Promise<RemoveResult>;
+  create(input: {{ pascalCase model }}Input): Promise<{{ pascalCase model }}>;
+  update(id: ID, input: Partial<{{ pascalCase model }}Input>): Promise<{{ pascalCase model }}>;
+  remove(id: ID): Promise<boolean>;
   findById(id: ID): Promise<{{ pascalCase model }} | undefined>;
   find(filter?: Record<string, any>): Promise<{{ pascalCase model }}[]>;
   findPage(options?: PaginationOptions<{{ pascalCase model }}Filter>): Promise<Pagination<{{ pascalCase model }}>>;

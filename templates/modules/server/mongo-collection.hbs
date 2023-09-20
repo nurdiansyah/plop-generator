@@ -31,18 +31,18 @@ export class {{ pascalCase model }}Collection extends BaseRepository<ObjectId, s
   }
 
   async update(id: ID, input: Partial<{{ pascalCase model }}DataInput>, opts: TransactionOptions = {}): Promise<ModifiedResult<boolean>> {
-    const _id = ObjectId.createFromHexString(id);
+    const _id = this.convertFromId(id);
     const metadata = await this.collection.updateOne({ _id }, { $set: input }, opts);
     return { metadata, data: metadata.acknowledged };
   }
 
   async remove(id: ID | ID[], opts: TransactionOptions = {}): Promise<ModifiedResult<boolean>> {
     if (Array.isArray(id)) {
-      const _ids = id.map((_) => ObjectId.createFromHexString(_));
+      const _ids = id.map((_) => this.convertFromId(_));
       const metadata = await this.collection.deleteMany({ _id: { $in: _ids } }, opts);
       return { metadata, data: metadata.acknowledged };
     }
-    const _id = ObjectId.createFromHexString(id);
+    const _id = this.convertFromId(id);
     const metadata = await this.collection.deleteOne({ _id }, opts);
     return { metadata, data: metadata.acknowledged };
   }
@@ -56,7 +56,7 @@ export class {{ pascalCase model }}Collection extends BaseRepository<ObjectId, s
 
   async findById(id: ID, opts: TransactionOptions = {}): Promise<{{ pascalCase model }} | undefined> {
     try {
-      const _id = ObjectId.createFromHexString(id);
+      const _id = this.convertFromId(id);
       const query: Record<string, any> = { _id };
       return this.collection.findOne(query, opts).then(this._parseDataOutput);
     } catch (e) {
