@@ -2,7 +2,7 @@ import { DbxError, DbxErrorOptions } from "@deboxsoft/module-core";
 
 export type {{ pascalCase model }}CodeMessageError = keyof typeof codeMessageDefault;
 type Options = DbxErrorOptions<{{ pascalCase model }}CodeMessageError> & {
-  errors?: Records<string, string>;
+  errors?: Record<string, string>;
 };
 const codeMessageDefault = {
   {{ constantCase model }}_NOT_FOUND: "{{ pascalCase model }} id `{{ exceptVar "id"}} not found.`",
@@ -19,7 +19,7 @@ export class {{ pascalCase model }}Error extends DbxError<{{ pascalCase model }}
     });
     if (this.code) {
       this.setMessage(
-        config[this.code] || codeMessageDefault[this.code],
+        options[this.code] || codeMessageDefault[this.code],
         this.args
       );
     } else if (message) {
