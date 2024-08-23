@@ -1,6 +1,6 @@
 {
   "name": "@deboxsoft/plop-generator",
-  "version": "1.0.35",
+  "version": "1.0.36",
   "description": "Plop Generator to scaffold js/ts projects",
   "type": "module",
   "types": "libs",
@@ -30,8 +30,7 @@
     "edit-json-file": "^1.7.0",
     "minimist": "^1.2.7",
     "nconf": "^0.12.0",
-    "nconf-yaml": "^1.0.2",
-    "node": "^18.11.0"
+    "nconf-yaml": "^1.0.2"
   },
   "devDependencies": {
     "@babel/types": "^7.19.4",
