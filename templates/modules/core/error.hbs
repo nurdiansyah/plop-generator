@@ -1,4 +1,4 @@
-import { DbxError, DbxErrorOptions } from "@deboxsoft/module-core";
+import { DbxError, DbxErrorOptions, getConfig } from "@deboxsoft/module-core";
 
 export type {{ pascalCase model }}CodeMessageError = keyof typeof codeMessageDefault;
 type Options = DbxErrorOptions<{{ pascalCase model }}CodeMessageError> & {
@@ -17,9 +17,10 @@ export class {{ pascalCase model }}Error extends DbxError<{{ pascalCase model }}
       instanceOf: "{{ pascalCase model }}Error",
       ...options,
     });
+    const configErrors = getConfig("errors") || {};
     if (this.code) {
       this.setMessage(
-        options[this.code] || codeMessageDefault[this.code],
+        errors[this.code] || configErrors[this.code] || codeMessageDefault[this.code],
         this.args
       );
     } else if (message) {
